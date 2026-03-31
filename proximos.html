@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Próximos Produtos — SyncX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg: #060608;
+  --bg2: #0d0d10;
+  --bg3: #13131a;
+  --accent: #e02020;
+  --accent2: #ff4444;
+  --accent-glow: rgba(224,32,32,0.18);
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(224,32,32,0.35);
+  --text: #f0f0f0;
+  --text-muted: #666672;
+  --text-dim: #3a3a45;
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'DM Mono', monospace;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-display);
+  overflow-x: hidden;
+  cursor: none;
+}
+#cursor {
+  width: 10px; height: 10px;
+  background: var(--accent); border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9999;
+}
+#cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(224,32,32,0.5); border-radius: 50%;
+  position: fixed; top: 0; left: 0;
+  pointer-events: none; z-index: 9998;
+  transition: transform 0.35s ease, width 0.3s, height 0.3s, border-color 0.3s;
+}
+body:has(a:hover) #cursor-ring,
+body:has(button:hover) #cursor-ring {
+  width: 46px; height: 46px; border-color: var(--accent);
+}
+#bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 48px; height: 64px;
+  background: rgba(6,6,8,0.85); backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-logo { font-size: 22px; font-weight: 800; letter-spacing: -0.5px; color: var(--text); text-decoration: none; }
+.nav-logo span { color: var(--accent); }
+.nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+.nav-links a { color: var(--text-muted); text-decoration: none; font-size: 13px; font-weight: 600; letter-spacing: 0.5px; text-transform: uppercase; transition: color 0.2s; cursor: none; }
+.nav-links a:hover, .nav-links a.active { color: var(--text); }
+.nav-links a.active { color: var(--accent); }
+.btn-ghost {
+  background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+  font-family: var(--font-display); font-size: 13px; font-weight: 600;
+  padding: 8px 18px; border-radius: 6px; cursor: none;
+  transition: border-color 0.2s, color 0.2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-ghost:hover { border-color: var(--border-hover); color: var(--text); }
+.btn-primary {
+  background: var(--accent); color: #fff;
+  font-family: var(--font-display); font-size: 13px; font-weight: 700;
+  padding: 8px 20px; border: none; border-radius: 6px; cursor: none;
+  transition: background 0.2s, box-shadow 0.2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+.btn-primary:hover { background: var(--accent2); box-shadow: 0 0 24px rgba(224,32,32,0.45); }
+
+/* PAGE HERO */
+.page-hero {
+  position: relative; z-index: 1;
+  padding: 140px 48px 60px;
+  max-width: 1200px; margin: 0 auto;
+  display: flex; flex-direction: column; gap: 16px;
+}
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; color: var(--text-muted); font-family: var(--font-mono);
+}
+.breadcrumb a { color: var(--text-muted); text-decoration: none; transition: color 0.2s; cursor: none; }
+.breadcrumb a:hover { color: var(--text); }
+.breadcrumb span { color: var(--text-dim); }
+.breadcrumb strong { color: var(--accent); }
+.page-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); }
+.page-title {
+  font-size: clamp(40px, 6vw, 72px); font-weight: 800;
+  letter-spacing: -2px; line-height: 1;
+}
+.page-desc { font-size: 16px; color: var(--text-muted); max-width: 520px; line-height: 1.7; }
+
+/* NOTICE BANNER */
+.notice-banner {
+  position: relative; z-index: 1;
+  margin: 0 48px 0;
+  max-width: 1200px; margin-left: auto; margin-right: auto;
+  padding: 0 48px;
+}
+.notice {
+  background: rgba(234,179,8,0.06);
+  border: 1px solid rgba(234,179,8,0.2);
+  border-radius: 10px;
+  padding: 14px 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  font-size: 13px; color: #ca8a04; line-height: 1.6;
+}
+.notice svg { flex-shrink: 0; margin-top: 1px; }
+
+/* SECTION */
+.section {
+  position: relative; z-index: 1;
+  padding: 60px 48px 100px;
+  max-width: 1200px; margin: 0 auto;
+}
+.section-label { font-size: 11px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--accent); margin-bottom: 14px; }
+.section-title { font-size: clamp(26px, 3vw, 36px); font-weight: 800; letter-spacing: -1px; margin-bottom: 40px; }
+
+/* PRODUCT CARDS */
+.upcoming-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.upcoming-card {
+  background: var(--bg2);
+  padding: 36px 32px;
+  position: relative; overflow: hidden;
+  transition: background 0.3s;
+  display: flex; flex-direction: column; gap: 0;
+}
+.upcoming-card::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, var(--accent-glow), transparent 60%);
+  opacity: 0; transition: opacity 0.4s;
+  pointer-events: none;
+}
+.upcoming-card:hover { background: var(--bg3); }
+.upcoming-card:hover::before { opacity: 1; }
+
+.card-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 20px;
+}
+.product-tag {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 4px;
+}
+.tag-orange { background: rgba(234,88,12,0.1); color: #f97316; border: 1px solid rgba(234,88,12,0.2); }
+.tag-purple { background: rgba(139,92,246,0.1); color: #a78bfa; border: 1px solid rgba(139,92,246,0.2); }
+.tag-cyan   { background: rgba(6,182,212,0.1);  color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
+.tag-gray   { background: rgba(255,255,255,0.04); color: var(--text-muted); border: 1px solid var(--border); }
+
+.status-pill {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.status-dot { width: 6px; height: 6px; border-radius: 50%; }
+.dot-dev  { background: var(--accent); animation: pulse 2s infinite; box-shadow: 0 0 8px rgba(224,32,32,0.5); }
+.dot-soon { background: var(--text-dim); }
+@keyframes pulse { 0%,100% { opacity:1; transform:scale(1); } 50% { opacity:0.5; transform:scale(1.4); } }
+
+.product-name { font-size: 24px; font-weight: 800; letter-spacing: -0.3px; margin-bottom: 10px; }
+.product-desc { font-size: 14px; color: var(--text-muted); line-height: 1.65; margin-bottom: 24px; }
+
+/* Platform badges */
+.platform-row {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+.platform-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 5px 11px; border-radius: 100px;
+}
+.plat-available {
+  background: rgba(34,197,94,0.08);
+  border: 1px solid rgba(34,197,94,0.2);
+  color: #4ade80;
+}
+.plat-unavailable {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.plat-soon {
+  background: rgba(234,179,8,0.06);
+  border: 1px solid rgba(234,179,8,0.15);
+  color: #ca8a04;
+}
+.plat-ios {
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed rgba(255,255,255,0.08);
+  color: var(--text-dim);
+}
+.platform-badge svg { width: 12px; height: 12px; }
+
+/* Feature list */
+.feature-list {
+  list-style: none; display: flex; flex-direction: column; gap: 7px;
+  margin-bottom: 28px;
+}
+.feature-list li {
+  font-size: 13px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 10px;
+}
+.feature-list li::before {
+  content: ''; width: 4px; height: 4px;
+  background: var(--accent); border-radius: 50%; flex-shrink: 0;
+}
+.feature-list li.dim { color: var(--text-dim); }
+.feature-list li.dim::before { background: var(--text-dim); }
+
+/* Platform note */
+.platform-note {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 12px; color: var(--text-muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+  font-family: var(--font-mono);
+}
+.platform-note strong { color: var(--text); font-family: var(--font-display); }
+
+.card-actions { display: flex; gap: 10px; flex-wrap: wrap; position: relative; z-index: 2; margin-top: auto; }
+
+/* DIVIDER */
+.divider { position: relative; z-index: 1; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+
+/* FOOTER */
+footer { position: relative; z-index: 1; border-top: 1px solid var(--border); padding: 40px 48px; }
+.footer-bottom {
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; color: var(--text-dim);
+}
+.footer-bottom a { color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+.footer-bottom a:hover { color: var(--text-muted); }
+.footer-links { display: flex; gap: 24px; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+
+/* MOBILE */
+@media (max-width: 768px) {
+  nav { padding: 0 20px; }
+  .nav-links { display: none; }
+  .page-hero, .notice-banner, .section { padding-left: 20px; padding-right: 20px; }
+  .upcoming-grid { grid-template-columns: 1fr; }
+  footer { padding: 30px 20px; }
+  .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  body { cursor: auto; }
+  #cursor, #cursor-ring { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">Sync<span>X</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html#products">Produtos</a></li>
+    <li><a href="proximos.html" class="active">Próximos</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="index.html#community">Comunidade</a></li>
+  </ul>
+  <div style="display:flex;gap:12px;align-items:center;">
+    <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost">Discord</a>
+    <a href="index.html#products" class="btn-primary">Ver Produtos</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="breadcrumb reveal">
+    <a href="index.html">SyncX</a>
+    <span>/</span>
+    <strong>Próximos Produtos</strong>
+  </div>
+  <p class="page-label reveal reveal-delay-1">Em desenvolvimento</p>
+  <h1 class="page-title reveal reveal-delay-2">O que vem<br/>por aí.</h1>
+  <p class="page-desc reveal reveal-delay-3">Produtos em desenvolvimento ativo. Acompanhe o progresso e receba notificações de lançamento no Discord.</p>
+</div>
+
+<!-- NOTICE -->
+<div class="notice-banner">
+  <div class="notice reveal">
+    <svg width="16" height="16" fill="none" stroke="#ca8a04" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Todos os produtos nesta página estão em fase de desenvolvimento. Datas de lançamento podem mudar. Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank" style="color:#f59e0b;text-decoration:underline;">Discord</a> para atualizações em tempo real.
+  </div>
+</div>
+
+<!-- PRODUCTS -->
+<div class="section">
+  <p class="section-label reveal">Painéis de Jogo</p>
+  <h2 class="section-title reveal reveal-delay-1">Próximos lançamentos</h2>
+
+  <div class="upcoming-grid">
+
+    <!-- Painel External FF -->
+    <div class="upcoming-card reveal">
+      <div class="card-header">
+        <span class="product-tag tag-orange">External</span>
+        <div class="status-pill"><span class="status-dot dot-dev"></span>Em dev</div>
+      </div>
+      <div class="product-name">Painel External FF</div>
+      <div class="product-desc">Cheat externo para Free Fire. Roda fora do processo do jogo, reduzindo risco de detecção. Interface limpa e objetiva.</div>
+
+      <div class="platform-row">
+        <span class="platform-badge plat-available">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Windows
+        </span>
+        <span class="platform-badge plat-soon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Android — Em breve
+        </span>
+        <span class="platform-badge plat-ios">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+          iOS — Indefinido
+        </span>
+      </div>
+
+      <div class="platform-note">
+        <strong>Disponível no momento:</strong> apenas PC (Windows).<br/>
+        Versão Android em desenvolvimento. iOS depende de acesso a hardware Mac — sem data definida.
+      </div>
+
+      <ul class="feature-list">
+        <li>Aimbot com predição de trajetória</li>
+        <li>Wallhack / ESP de inimigos</li>
+        <li>Sem ban via injeção externa</li>
+        <li>Overlay minimalista in-game</li>
+        <li class="dim">Android — planejado</li>
+        <li class="dim">iOS — sem previsão</li>
+      </ul>
+
+      <div class="card-actions">
+        <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost" style="font-size:13px;padding:9px 18px;">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Notificar no Discord
+        </a>
+      </div>
+    </div>
+
+    <!-- Painel Internal FF -->
+    <div class="upcoming-card reveal reveal-delay-1">
+      <div class="card-header">
+        <span class="product-tag tag-purple">Internal</span>
+        <div class="status-pill"><span class="status-dot dot-dev"></span>Em dev</div>
+      </div>
+      <div class="product-name">Painel Internal FF</div>
+      <div class="product-desc">Cheat interno para Free Fire. Roda injetado dentro do processo do jogo, permitindo acesso direto à memória e mais features.</div>
+
+      <div class="platform-row">
+        <span class="platform-badge plat-available">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Windows
+        </span>
+        <span class="platform-badge plat-soon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Android — Em breve
+        </span>
+        <span class="platform-badge plat-ios">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z"/></svg>
+          iOS — Indefinido
+        </span>
+      </div>
+
+      <div class="platform-note">
+        <strong>Disponível no momento:</strong> apenas PC (Windows).<br/>
+        Versão Android planejada. iOS requer Mac físico ou Hackintosh — sem previsão definida.
+      </div>
+
+      <ul class="feature-list">
+        <li>Acesso direto à memória do jogo</li>
+        <li>Mais features que a versão external</li>
+        <li>Speed, No Recoil, Anti-ban interno</li>
+        <li>UI in-game com menu overlay</li>
+        <li class="dim">Android — planejado</li>
+        <li class="dim">iOS — sem previsão</li>
+      </ul>
+
+      <div class="card-actions">
+        <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost" style="font-size:13px;padding:9px 18px;">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Notificar no Discord
+        </a>
+      </div>
+    </div>
+
+    <!-- Painel FiveM -->
+    <div class="upcoming-card reveal reveal-delay-2">
+      <div class="card-header">
+        <span class="product-tag tag-cyan">FiveM</span>
+        <div class="status-pill"><span class="status-dot dot-soon"></span>Planejado</div>
+      </div>
+      <div class="product-name">Painel FiveM</div>
+      <div class="product-desc">Painel de cheats para servidores FiveM (GTA V multiplayer). Focado em servidores RP e PvP, com features específicas por servidor.</div>
+
+      <div class="platform-row">
+        <span class="platform-badge plat-available">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          Windows
+        </span>
+      </div>
+
+      <div class="platform-note">
+        <strong>Plataforma:</strong> PC (Windows) exclusivamente.<br/>
+        FiveM é um mod multiplayer para GTA V — disponível apenas em desktop.
+      </div>
+
+      <ul class="feature-list">
+        <li>Menu in-game com hotkey</li>
+        <li>Aimbot e ESP para PvP</li>
+        <li>Speed, God Mode, NoClip</li>
+        <li>Bypass anti-cheat FiveM</li>
+        <li>Suporte a múltiplos servidores</li>
+        <li class="dim">Sem data de lançamento definida</li>
+      </ul>
+
+      <div class="card-actions">
+        <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost" style="font-size:13px;padding:9px 18px;">
+          <svg width="13" height="13" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+          Notificar no Discord
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-bottom">
+    <span>SyncX © 2025 — Não afiliado à Activision, Garena ou Cfx.re.</span>
+    <div class="footer-links">
+      <a href="index.html">Início</a>
+      <a href="index.html#community">Discord</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring   = document.getElementById('cursor-ring');
+let mx=0, my=0, rx=0, ry=0;
+document.addEventListener('mousemove', e => { mx=e.clientX; my=e.clientY; });
+(function animCursor() {
+  rx += (mx-rx)*0.18; ry += (my-ry)*0.18;
+  cursor.style.transform = `translate(${mx-5}px,${my-5}px)`;
+  ring.style.transform   = `translate(${rx-16}px,${ry-16}px)`;
+  requestAnimationFrame(animCursor);
+})();
+
+// CANVAS
+const canvas = document.getElementById('bg-canvas');
+const ctx = canvas.getContext('2d');
+let W, H;
+function resize() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
+resize(); window.addEventListener('resize', resize);
+const particles = Array.from({length:70}, () => ({
+  x: Math.random()*window.innerWidth, y: Math.random()*window.innerHeight,
+  vx:(Math.random()-.5)*.35, vy:(Math.random()-.5)*.35,
+  r: Math.random()*1.5+.5
+}));
+(function draw() {
+  ctx.clearRect(0,0,W,H);
+  for(let i=0;i<particles.length;i++){
+    const p=particles[i];
+    p.x+=p.vx; p.y+=p.vy;
+    if(p.x<0||p.x>W) p.vx*=-1;
+    if(p.y<0||p.y>H) p.vy*=-1;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(224,32,32,0.4)'; ctx.fill();
+    for(let j=i+1;j<particles.length;j++){
+      const q=particles[j], dx=p.x-q.x, dy=p.y-q.y, d=Math.sqrt(dx*dx+dy*dy);
+      if(d<140){ ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
+        ctx.strokeStyle=`rgba(224,32,32,${(1-d/140)*0.12})`; ctx.lineWidth=.6; ctx.stroke(); }
+    }
+  }
+  requestAnimationFrame(draw);
+})();
+
+// REVEAL
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('visible'); io.unobserve(e.target); } });
+}, {threshold:0.1});
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
