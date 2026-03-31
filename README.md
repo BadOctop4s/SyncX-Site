@@ -1,1 +1,1 @@
-# SyncX-Site
+# SyncX
