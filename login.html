@@ -92,9 +92,8 @@
   transition: background 0.2s, color 0.2s;
 }
 .tab-btn.active { background: var(--surface-h); color: var(--text); }
-#form-signup { display: none; }
-#form-signup.active, #form-login.active { display: block; }
-#form-login { display: block; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
 .btn-full { width: 100%; justify-content: center; }
 </style>
 </head>
@@ -132,7 +131,7 @@
     </div>
 
     <!-- Login form -->
-    <div id="form-login" class="active">
+    <div id="form-login" class="tab-panel active">
       <div id="login-error" class="login-error"></div>
       <div class="form-group">
         <label class="form-label">Email</label>
@@ -148,8 +147,12 @@
     </div>
 
     <!-- Signup form -->
-    <div id="form-signup">
+    <div id="form-signup" class="tab-panel">
       <div id="signup-error" class="login-error"></div>
+      <div class="form-group">
+        <label class="form-label">Nome de usuário</label>
+        <input id="signup-username" type="text" class="form-input" placeholder="SeuNome"/>
+      </div>
       <div class="form-group">
         <label class="form-label">Email</label>
         <input id="signup-email" type="email" class="form-input" placeholder="seu@email.com"/>
@@ -182,8 +185,8 @@
 
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach((b,i) => b.classList.toggle('active', (i===0&&tab==='login')||(i===1&&tab==='signup')));
-  document.getElementById('form-login').classList.toggle('active', tab === 'login');
-  document.getElementById('form-signup').classList.toggle('active', tab === 'signup');
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('form-' + tab).classList.add('active');
 }
 
 function showError(id, msg) {
@@ -215,9 +218,12 @@ async function handleEmailSignup() {
   if (pass.length < 6) { showError('signup-error', 'Senha deve ter no mínimo 6 caracteres.'); return; }
   try {
     await signUpWithEmail(email, pass);
-    showError('signup-error', '✓ Conta criada! Verifique seu email para confirmar.');
-    document.getElementById('signup-error').style.borderColor = 'rgba(34,197,94,0.3)';
-    document.getElementById('signup-error').style.color = '#4ade80';
+    const errEl = document.getElementById('signup-error');
+    errEl.textContent = '✓ Conta criada! Verifique seu email para confirmar.';
+    errEl.style.borderColor = 'rgba(34,197,94,0.3)';
+    errEl.style.color = '#4ade80';
+    errEl.style.background = 'rgba(34,197,94,0.06)';
+    errEl.classList.add('show');
   } catch(e) {
     showError('signup-error', e.message || 'Erro ao criar conta.');
   }

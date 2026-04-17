@@ -247,6 +247,7 @@ body::after {
 .badge-purple { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); color: #a78bfa; }
 .badge-cyan   { background: rgba(6,182,212,0.08); border: 1px solid rgba(6,182,212,0.2); color: #22d3ee; }
 .badge-orange { background: rgba(234,88,12,0.08); border: 1px solid rgba(234,88,12,0.2); color: #fb923c; }
+.badge-pink   { background: rgba(236,72,153,0.08); border: 1px solid rgba(236,72,153,0.2); color: #f472b6; }
 
 .badge .dot {
   width: 5px; height: 5px; border-radius: 50%;

@@ -83,7 +83,7 @@
           <div class="sidebar-avatar" id="user-avatar">?</div>
           <div class="sidebar-user-info">
             <div class="sidebar-user-name" id="user-name">Carregando...</div>
-            <div class="sidebar-user-role">Membro</div>
+            <div class="sidebar-user-role" id="user-role">Membro</div>
           </div>
           <button onclick="signOut()" title="Sair"
             style="background:none;border:none;color:var(--text-3);padding:4px;border-radius:4px;flex-shrink:0;">
@@ -115,6 +115,12 @@
               <div class="stat-label">Status da Conta</div>
               <div class="stat-value" style="font-size:18px;" id="stat-status">
                 <span class="badge badge-gray">Verificando...</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Cargo no Discord</div>
+              <div class="stat-value" style="font-size:15px;margin-top:4px;" id="stat-role">
+                <span class="badge badge-gray">—</span>
               </div>
             </div>
             <div class="stat-card">
@@ -352,6 +358,68 @@
       navigator.clipboard.writeText(key).then(() => toast('Chave copiada!'));
     }
 
+    // ── DISCORD ROLE CONFIG ──
+    // Coloque aqui os IDs dos cargos do seu servidor.
+    // Para descobrir os IDs: no Discord, ative modo desenvolvedor,
+    // clique com botão direito no cargo → Copiar ID.
+    const GUILD_ID = 'SEU_GUILD_ID_AQUI'; // ID do servidor SyncX
+
+    const ROLE_DEFINITIONS = [
+      // { id, label, badgeClass, tier } — tier maior = mais alto
+      { id: '1447093178007162983', label: 'Creator/Programmer', badgeClass: 'badge-purple', tier: 100 },
+      { id: '1443034423829467269', label: 'ADMIN', badgeClass: 'badge-red', tier: 80 },
+      { id: '1443329537927544872', label: 'DEVELOPER', badgeClass: 'badge-blue', tier: 70 },
+      { id: '1449539967444582412', label: 'STAFF', badgeClass: 'badge-green', tier: 50 },
+      { id: '1450894744669655325', label: 'Server Booster', badgeClass: 'badge-pink', tier: 30 },
+      { id: '1443339614835179672', label: 'Membros', badgeClass: 'badge-gray', tier: 10 },
+    ];
+    // Nota: Se o usuário for o Owner do servidor (dono), ele aparece como Creator/Programmer
+    // automaticamente se tiver o cargo correspondente.
+
+    // Tenta buscar os cargos do membro via provider_token do Supabase (Discord OAuth)
+    async function fetchDiscordRoles(providerToken, userId) {
+      if (!providerToken || !GUILD_ID || GUILD_ID === 'SEU_GUILD_ID_AQUI') return [];
+      try {
+        const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
+          headers: { 'Authorization': `Bearer ${providerToken}` }
+        });
+        if (!res.ok) return [];
+        const member = await res.json();
+        return member.roles || [];
+      } catch { return []; }
+    }
+
+    function resolveTopRole(roleIds) {
+      let best = null;
+      for (const def of ROLE_DEFINITIONS) {
+        if (roleIds.includes(def.id)) {
+          if (!best || def.tier > best.tier) best = def;
+        }
+      }
+      return best || { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
+    }
+
+    function applyRoleUI(role) {
+      // Sidebar
+      document.getElementById('user-role').textContent = role.label;
+      // Stat card
+      document.getElementById('stat-role').innerHTML =
+        `<span class="badge ${role.badgeClass}">${role.label}</span>`;
+      // Features exclusivas por tier
+      if (role.tier >= 80) {
+        // ADMIN+: mostra painel admin (poderia redirecionar para admin page)
+        const adminNotice = document.createElement('div');
+        adminNotice.className = 'notice';
+        adminNotice.style.marginTop = '16px';
+        adminNotice.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <div>Acesso elevado: <strong>${role.label}</strong> — você tem acesso a recursos exclusivos de staff.</div>`;
+        const overview = document.getElementById('page-overview');
+        if (overview && !document.getElementById('admin-notice')) {
+          adminNotice.id = 'admin-notice';
+          overview.appendChild(adminNotice);
+        }
+      }
+    }
+
     // ── LOAD USER ──
     async function loadDashboard() {
       const session = await requireAuth();
@@ -375,6 +443,23 @@
       document.getElementById('stat-since').textContent = since;
       document.getElementById('stat-email').textContent = user.email || '—';
       document.getElementById('stat-email-confirmed').textContent = user.email_confirmed_at ? '✓ Verificado' : 'Não verificado';
+
+      // Discord role detection
+      const providerToken = session.provider_token; // disponível em logins via Discord OAuth
+      const discordId = user.user_metadata?.provider_id || user.user_metadata?.sub;
+      if (providerToken) {
+        const roleIds = await fetchDiscordRoles(providerToken, discordId);
+        const topRole = resolveTopRole(roleIds);
+        applyRoleUI(topRole);
+        // Salva role na sessão para uso rápido
+        try { sessionStorage.setItem('syncx_role', JSON.stringify(topRole)); } catch { }
+      } else {
+        // Login por email — tenta usar role salva ou mostra Membro
+        try {
+          const saved = JSON.parse(sessionStorage.getItem('syncx_role'));
+          if (saved) applyRoleUI(saved);
+        } catch { }
+      }
 
       // Load license
       const license = await getUserLicense(user.id);
