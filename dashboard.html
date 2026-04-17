@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+<!-- SyncX — Dashboard -->
 
 <head>
   <meta charset="UTF-8" />
@@ -56,7 +57,7 @@
         </a>
         <a href="#activate" class="sidebar-link" data-page="activate">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           Ativar Licença
         </a>
@@ -227,7 +228,9 @@
           <div id="license-card" class="license-card">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
               <div>
-                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">SyncX Zero Hour</div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">
+                  SyncX Zero Hour</div>
                 <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">Chave de Produto</div>
               </div>
               <span id="license-status-badge" class="license-status status-inactive">Sem licença</span>
@@ -238,22 +241,30 @@
             </div>
             <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;">
               <div>
-                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Válida até</div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Válida até</div>
                 <div style="font-size:13px;color:var(--text-2);" id="license-expiry">—</div>
               </div>
               <div>
-                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Username</div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Username</div>
                 <div style="font-size:13px;color:var(--text-2);" id="license-username">—</div>
               </div>
               <div>
-                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Duração</div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Duração</div>
                 <div style="font-size:13px;color:var(--text-2);" id="license-duration">—</div>
               </div>
             </div>
           </div>
           <div id="license-no-key" class="notice" style="margin-top:16px;">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> ou
             <a href="#activate" onclick="showPage('activate')">ative sua licença</a> se já tem uma key.
@@ -263,27 +274,46 @@
         <!-- ACTIVATE PAGE -->
         <div id="page-activate" class="dash-page" style="display:none;">
           <div class="heading-sm" style="margin-bottom:8px;">Ativar Licença</div>
-          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Insira a key que você recebeu para ativar o SyncX Zero Hour na sua conta.</p>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Insira a key que você recebeu para ativar o
+            SyncX Zero Hour na sua conta.</p>
           <div style="max-width:480px;">
-            <div id="activate-error" style="display:none;background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--accent-2);margin-bottom:16px;"></div>
-            <div id="activate-success" style="display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#4ade80;margin-bottom:16px;"></div>
-            <div style="margin-bottom:14px;">
-              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">KEY DO ZEROHOUR</label>
-              <input id="activate-key" type="text" placeholder="SYNCX-XXXX-XXXX-XXXX" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+            <div id="activate-error"
+              style="display:none;background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--accent-2);margin-bottom:16px;">
+            </div>
+            <div id="activate-success"
+              style="display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#4ade80;margin-bottom:16px;">
             </div>
             <div style="margin-bottom:14px;">
-              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">USERNAME (para login no cheat)</label>
-              <input id="activate-username" type="text" placeholder="SeuNome" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">KEY
+                DO ZEROHOUR</label>
+              <input id="activate-key" type="text" placeholder="SYNCX-XXXX-XXXX-XXXX"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <div style="margin-bottom:14px;">
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">USERNAME
+                (para login no cheat)</label>
+              <input id="activate-username" type="text" placeholder="SeuNome"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
             </div>
             <div style="margin-bottom:20px;">
-              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">SENHA (para login no cheat)</label>
-              <input id="activate-password" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">SENHA
+                (para login no cheat)</label>
+              <input id="activate-password" type="password" placeholder="Mínimo 6 caracteres"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
             </div>
-            <button onclick="activateLicense()" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">
+            <button onclick="activateLicense()" class="btn btn-primary"
+              style="width:100%;justify-content:center;padding:13px;">
               Ativar Licença
             </button>
             <p style="font-size:12px;color:var(--text-3);margin-top:12px;text-align:center;">
-              Recebeu sua key no Discord após a compra. Problemas? <a href="https://discord.gg/faUyqCdd3P" target="_blank" style="color:var(--accent);">Suporte</a>
+              Recebeu sua key no Discord após a compra. Problemas? <a href="https://discord.gg/faUyqCdd3P"
+                target="_blank" style="color:var(--accent);">Suporte</a>
             </p>
           </div>
         </div>
@@ -421,7 +451,8 @@
         <!-- ══ ADMIN PAGE ══ -->
         <div id="page-admin" class="dash-page" style="display:none;">
           <div class="heading-sm" style="margin-bottom:8px;">Painel Admin</div>
-          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a ADMIN e superior.</p>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a
+            ADMIN e superior.</p>
 
           <!-- Stats -->
           <div class="stat-grid" style="margin-bottom:24px;">
@@ -444,12 +475,15 @@
           </div>
 
           <!-- Gerar Key -->
-          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+          <div
+            style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
             <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Gerar Nova Key</div>
             <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;">
               <div>
-                <label style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Duração</label>
-                <select id="gen-duration" style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;">
+                <label
+                  style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Duração</label>
+                <select id="gen-duration"
+                  style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;">
                   <option value="7">7 dias</option>
                   <option value="30" selected>30 dias</option>
                   <option value="90">90 dias</option>
@@ -459,26 +493,36 @@
                 </select>
               </div>
               <div>
-                <label style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Quantidade</label>
-                <input id="gen-amount" type="number" value="1" min="1" max="50" style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;"/>
+                <label
+                  style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Quantidade</label>
+                <input id="gen-amount" type="number" value="1" min="1" max="50"
+                  style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;" />
               </div>
               <button onclick="adminGenerateKeys()" class="btn btn-primary" style="white-space:nowrap;">
-                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
                 Gerar
               </button>
             </div>
             <!-- Keys geradas -->
             <div id="generated-keys-wrap" style="display:none;margin-top:16px;">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
-                <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;">Keys Geradas</div>
+                <div
+                  style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;">
+                  Keys Geradas</div>
                 <button onclick="copyAllKeys()" class="btn btn-ghost btn-sm">Copiar todas</button>
               </div>
-              <div id="generated-keys-list" style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;"></div>
+              <div id="generated-keys-list"
+                style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;">
+              </div>
             </div>
           </div>
 
           <!-- Lista de licenças -->
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
               <div class="heading-sm" style="font-size:15px;">Licenças Cadastradas</div>
               <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
@@ -496,7 +540,10 @@
                   </tr>
                 </thead>
                 <tbody id="admin-licenses-tbody">
-                  <tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar para carregar</td></tr>
+                  <tr>
+                    <td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar para
+                      carregar</td>
+                  </tr>
                 </tbody>
               </table>
             </div>
@@ -504,7 +551,8 @@
 
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
             <button class="btn btn-ghost btn-sm" onclick="adminLoadStats()">Atualizar Stats</button>
-            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Abrir Supabase</a>
+            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+              class="btn btn-ghost btn-sm">Abrir Supabase</a>
           </div>
         </div>
 
@@ -598,7 +646,7 @@
     // ── GERAR KEY (admin) ──
     function generateRandomKey() {
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-      const seg = () => Array.from({length:6}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+      const seg = () => Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
       return `SYNCX-${seg()}-${seg()}-${seg()}`;
     }
 
@@ -708,7 +756,7 @@
       const data = encoder.encode(password + userId);
       const hashBuffer = await crypto.subtle.digest('SHA-256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));
-      const passwordHash = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+      const passwordHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
 
       // Ativa a key
       const { error: updateErr } = await sb.from('licenses').update({
@@ -783,14 +831,14 @@
         const roleIds = await fetchDiscordRoles(session.provider_token);
         if (roleIds.length > 0) {
           const role = resolveTopRole(roleIds);
-          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch {}
+          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch { }
           return role;
         }
       }
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
         if (saved && saved.label) return saved;
-      } catch {}
+      } catch { }
       return { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
     }
 
