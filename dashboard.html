@@ -552,55 +552,51 @@
     ];
 
     async function fetchDiscordRoles(providerToken) {
-      if (!providerToken || !GUILD_ID) return [];
+      if (!providerToken || !GUILD_ID) {
+        console.warn('[SyncX] fetchDiscordRoles: sem providerToken ou GUILD_ID');
+        return [];
+      }
       try {
+        console.log('[SyncX] Buscando cargos... token início:', providerToken.substring(0,12) + '...');
         const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
           headers: { 'Authorization': `Bearer ${providerToken}` }
         });
+        const body = await res.json();
+        console.log('[SyncX] Discord API status:', res.status, '| body:', JSON.stringify(body).substring(0,200));
         if (!res.ok) return [];
-        const member = await res.json();
-        return member.roles || [];
-      } catch { return []; }
+        return body.roles || [];
+      } catch(e) {
+        console.error('[SyncX] Erro ao buscar cargos:', e);
+        return [];
+      }
     }
 
-    // Tenta buscar role do Discord de todas as formas disponíveis
     async function detectDiscordRole(session) {
       const user = session.user;
-      const storageKey = `syncx_role_${user.id}`;
+      const storageKey = 'syncx_role_' + user.id;
 
-      // 1. Tenta via provider_token (só funciona logo após OAuth login)
       if (session.provider_token) {
+        console.log('[SyncX] Tentando via session.provider_token...');
         const roleIds = await fetchDiscordRoles(session.provider_token);
         if (roleIds.length > 0) {
           const role = resolveTopRole(roleIds);
+          console.log('[SyncX] Role resolvido:', role.label);
           try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch {}
           return role;
         }
+      } else {
+        console.warn('[SyncX] provider_token ausente (esperado apos reload)');
       }
 
-      // 2. Tenta via user_metadata.provider_token (Supabase às vezes guarda)
-      const metaToken = user.user_metadata?.provider_token;
-      if (metaToken) {
-        const roleIds = await fetchDiscordRoles(metaToken);
-        if (roleIds.length > 0) {
-          const role = resolveTopRole(roleIds);
-          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch {}
-          return role;
-        }
-      }
-
-      // 3. Fallback: role salvo no localStorage (persiste entre sessões)
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
-        if (saved && saved.label) return saved;
+        if (saved && saved.label) {
+          console.log('[SyncX] Role do localStorage:', saved.label);
+          return saved;
+        }
       } catch {}
 
-      // 4. Fallback legado: sessionStorage
-      try {
-        const saved = JSON.parse(sessionStorage.getItem('syncx_role'));
-        if (saved && saved.label) return saved;
-      } catch {}
-
+      console.log('[SyncX] Nenhum role encontrado, usando Membro padrao');
       return { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
     }
 
