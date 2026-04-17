@@ -378,7 +378,7 @@
 
     // Tenta buscar os cargos do membro via provider_token do Supabase (Discord OAuth)
     async function fetchDiscordRoles(providerToken, userId) {
-      if (!providerToken || !GUILD_ID || GUILD_ID === 'SEU_GUILD_ID_AQUI') return [];
+      if (!providerToken || !GUILD_ID || GUILD_ID === '1441668291918561424') return [];
       try {
         const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
           headers: { 'Authorization': `Bearer ${providerToken}` }
