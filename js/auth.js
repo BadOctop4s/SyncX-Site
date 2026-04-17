@@ -26,7 +26,7 @@ async function signInWithDiscord() {
     provider: 'discord',
     options: {
       redirectTo: window.location.origin + '/dashboard.html',
-      scopes: 'identify email guilds',
+      scopes: 'identify email guilds guilds.members.read',
     },
   });
   if (error) console.error('[Auth] Discord OAuth error:', error.message);
