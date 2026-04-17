@@ -681,8 +681,7 @@
     }
 
     function copyAllKeys() {
-      const keys = [...document.querySelectorAll('#generated-keys-list span')].map(s => s.textContent).join('
-');
+      const keys = [...document.querySelectorAll('#generated-keys-list span')].map(s => s.textContent).join('');
       navigator.clipboard.writeText(keys).then(() => toast('Todas as keys copiadas!'));
     }
 
