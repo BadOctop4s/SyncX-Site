@@ -1,334 +1,408 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Dashboard — SyncX</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
-<link rel="stylesheet" href="css/dashboard.css"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SyncX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
 </head>
+
 <body>
-<div id="x-cursor"></div>
-<div id="x-cursor-ring"></div>
-<canvas id="x-canvas"></canvas>
-<div id="toast-container"></div>
+  <div id="x-cursor"></div>
+  <div id="x-cursor-ring"></div>
+  <canvas id="x-canvas"></canvas>
+  <div id="toast-container"></div>
 
-<div class="dash-layout" style="position:relative;z-index:2;">
+  <div class="dash-layout" style="position:relative;z-index:2;">
 
-  <!-- SIDEBAR -->
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <span style="font-family:var(--font-display);font-size:18px;font-weight:800;">Sync<span style="color:var(--accent);">X</span></span>
-      <span class="badge badge-red" style="margin-left:auto;font-size:9px;">Dashboard</span>
-    </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span style="font-family:var(--font-display);font-size:18px;font-weight:800;">Sync<span
+            style="color:var(--accent);">X</span></span>
+        <span class="badge badge-red" style="margin-left:auto;font-size:9px;">Dashboard</span>
+      </div>
 
-    <nav class="sidebar-nav">
-      <a href="#overview" class="sidebar-link active" data-page="overview">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-        Overview
-      </a>
-      <a href="#license" class="sidebar-link" data-page="license">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-        Licença
-      </a>
-      <a href="#downloads" class="sidebar-link" data-page="downloads">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        Downloads
-      </a>
+      <nav class="sidebar-nav">
+        <a href="#overview" class="sidebar-link active" data-page="overview">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Overview
+        </a>
+        <a href="#license" class="sidebar-link" data-page="license">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          Licença
+        </a>
+        <a href="#downloads" class="sidebar-link" data-page="downloads">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Downloads
+        </a>
 
-      <div class="sidebar-section-label">Links</div>
-      <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sidebar-link">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-        Discord
-      </a>
-      <a href="https://github.com/BadOctop4s" target="_blank" class="sidebar-link">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        GitHub
-      </a>
-      <a href="index.html" class="sidebar-link">
-        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Início
-      </a>
-    </nav>
+        <div class="sidebar-section-label">Links</div>
+        <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Discord
+        </a>
+        <a href="https://github.com/BadOctop4s" target="_blank" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          GitHub
+        </a>
+        <a href="index.html" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          Início
+        </a>
+      </nav>
 
-    <div class="sidebar-footer">
-      <div class="sidebar-user">
-        <div class="sidebar-avatar" id="user-avatar">?</div>
-        <div class="sidebar-user-info">
-          <div class="sidebar-user-name" id="user-name">Carregando...</div>
-          <div class="sidebar-user-role">Membro</div>
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="user-avatar">?</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="user-name">Carregando...</div>
+            <div class="sidebar-user-role">Membro</div>
+          </div>
+          <button onclick="signOut()" title="Sair"
+            style="background:none;border:none;color:var(--text-3);padding:4px;border-radius:4px;flex-shrink:0;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
         </div>
-        <button onclick="signOut()" title="Sair" style="background:none;border:none;color:var(--text-3);padding:4px;border-radius:4px;flex-shrink:0;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-        </button>
       </div>
-    </div>
-  </aside>
+    </aside>
 
-  <!-- MAIN -->
-  <main class="dash-main">
-    <div class="dash-topbar">
-      <div class="dash-topbar-title" id="page-title">Overview</div>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <span class="badge badge-green"><span class="dot dot-pulse"></span>Online</span>
+    <!-- MAIN -->
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-topbar-title" id="page-title">Overview</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="badge badge-green"><span class="dot dot-pulse"></span>Online</span>
+        </div>
       </div>
-    </div>
 
-    <div class="dash-content">
+      <div class="dash-content">
 
-      <!-- OVERVIEW PAGE -->
-      <div id="page-overview" class="dash-page">
-        <div class="stat-grid">
-          <div class="stat-card">
-            <div class="stat-label">Status da Conta</div>
-            <div class="stat-value" style="font-size:18px;" id="stat-status">
-              <span class="badge badge-gray">Verificando...</span>
+        <!-- OVERVIEW PAGE -->
+        <div id="page-overview" class="dash-page">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Status da Conta</div>
+              <div class="stat-value" style="font-size:18px;" id="stat-status">
+                <span class="badge badge-gray">Verificando...</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Produtos Ativos</div>
+              <div class="stat-value" id="stat-products">—</div>
+              <div class="stat-sub">licenças ativas</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Membro desde</div>
+              <div class="stat-value" style="font-size:16px;" id="stat-since">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Email</div>
+              <div class="stat-value" style="font-size:13px;letter-spacing:0;" id="stat-email">—</div>
+              <div class="stat-sub" id="stat-email-confirmed"></div>
             </div>
           </div>
-          <div class="stat-card">
-            <div class="stat-label">Produtos Ativos</div>
-            <div class="stat-value" id="stat-products">—</div>
-            <div class="stat-sub">licenças ativas</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Membro desde</div>
-            <div class="stat-value" style="font-size:16px;" id="stat-since">—</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-label">Email</div>
-            <div class="stat-value" style="font-size:13px;letter-spacing:0;" id="stat-email">—</div>
-            <div class="stat-sub" id="stat-email-confirmed"></div>
+
+          <!-- Quick actions -->
+          <div style="margin-top:8px;">
+            <div class="heading-sm" style="margin-bottom:16px;">Acesso Rápido</div>
+            <div class="download-grid">
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+                <h3>SyncX Zero Hour</h3>
+                <p>Versão mais recente do cheat externo.</p>
+                <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe"
+                  class="btn btn-primary btn-sm">
+                  Baixar .exe
+                </a>
+              </div>
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </div>
+                <h3>Royal Hub</h3>
+                <p>Loadstring pronto para executar.</p>
+                <button onclick="copyLoadstringDash(this)" class="btn btn-primary btn-sm" style="border:none;">
+                  Copiar Loadstring
+                </button>
+              </div>
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <h3>Suporte</h3>
+                <p>Precisa de ajuda? Acesse o Discord.</p>
+                <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-discord btn-sm">Abrir Discord</a>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- Quick actions -->
-        <div style="margin-top:8px;">
-          <div class="heading-sm" style="margin-bottom:16px;">Acesso Rápido</div>
-          <div class="download-grid">
-            <div class="download-card">
-              <div class="download-card-icon">
-                <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <!-- LICENSE PAGE -->
+        <div id="page-license" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:20px;">Sua Licença</div>
+          <div class="license-card" id="license-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">
+                  Royal Hub</div>
+                <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">Chave de Produto</div>
               </div>
-              <h3>SyncX Zero Hour</h3>
-              <p>Versão mais recente do cheat externo.</p>
-              <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe" class="btn btn-primary btn-sm">
-                Baixar .exe
+              <span id="license-status-badge" class="license-status status-inactive">Sem licença</span>
+            </div>
+
+            <div class="license-key-wrap">
+              <div class="license-key" id="license-key-text">Nenhuma chave encontrada</div>
+              <button onclick="copyLicenseKey()" class="btn btn-ghost btn-sm">Copiar</button>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Válida até</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-expiry">—</div>
+              </div>
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Produto</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-product">—</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="notice" style="margin-top:16px;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> para obter
+            suporte e informações sobre licenças.
+          </div>
+        </div>
+
+        <!-- DOWNLOADS PAGE -->
+        <div id="page-downloads" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:20px;">Downloads</div>
+
+          <!-- Zero Hour -->
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                  <div class="heading-sm">SyncX Zero Hour</div>
+                  <span class="badge badge-red">v2.0</span>
+                </div>
+                <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Cheat externo para Zero Hour.
+                  Windows 10/11.</div>
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">SHA256: <span
+                    style="color:var(--text-2);">Em breve</span></div>
+              </div>
+              <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe"
+                class="btn btn-primary">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download .exe
               </a>
             </div>
-            <div class="download-card">
-              <div class="download-card-icon">
-                <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+
+          <!-- Royal Hub -->
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                  <div class="heading-sm">Royal Hub</div>
+                  <span class="badge badge-blue">Teste gratis</span>
+                </div>
+                <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Script Lua para Roblox. Execute via
+                  executor.</div>
               </div>
-              <h3>Royal Hub</h3>
-              <p>Loadstring pronto para executar.</p>
-              <button onclick="copyLoadstringDash(this)" class="btn btn-primary btn-sm" style="border:none;">
+              <button onclick="copyLoadstringDash(this)" class="btn btn-primary" style="border:none;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
                 Copiar Loadstring
               </button>
             </div>
-            <div class="download-card">
-              <div class="download-card-icon">
-                <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-              </div>
-              <h3>Suporte</h3>
-              <p>Precisa de ajuda? Acesse o Discord.</p>
-              <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-discord btn-sm">Abrir Discord</a>
+            <div
+              style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--text-3);word-break:break-all;">
+              loadstring(game:HttpGet(<span
+                style="color:#7ec891;">"https://raw.githubusercontent.com/BadOctop4s/RoyalHub/main/Source.lua"</span>))()
             </div>
           </div>
+
+          <!-- Drivers note -->
+          <div class="notice">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <div>Alguns produtos podem requerer drivers adicionais (VC++ Redistributable, .NET 6+). Se houver problemas
+              ao abrir, instale o <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">Visual C++
+                Redistributable</a> e o <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0"
+                target="_blank">.NET 6</a>.</div>
+          </div>
         </div>
+
       </div>
+    </main>
+  </div>
 
-      <!-- LICENSE PAGE -->
-      <div id="page-license" class="dash-page" style="display:none;">
-        <div class="heading-sm" style="margin-bottom:20px;">Sua Licença</div>
-        <div class="license-card" id="license-card">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">Royal Hub</div>
-              <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">Chave de Produto</div>
-            </div>
-            <span id="license-status-badge" class="license-status status-inactive">Sem licença</span>
-          </div>
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ── PAGE ROUTING ──
+    function showPage(page) {
+      document.querySelectorAll('.dash-page').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      const pageEl = document.getElementById('page-' + page);
+      if (pageEl) pageEl.style.display = 'block';
+      const link = document.querySelector(`[data-page="${page}"]`);
+      if (link) link.classList.add('active');
+      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads' };
+      document.getElementById('page-title').textContent = titles[page] || page;
+    }
 
-          <div class="license-key-wrap">
-            <div class="license-key" id="license-key-text">Nenhuma chave encontrada</div>
-            <button onclick="copyLicenseKey()" class="btn btn-ghost btn-sm">Copiar</button>
-          </div>
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        showPage(link.dataset.page);
+      });
+    });
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
-            <div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Válida até</div>
-              <div style="font-size:13px;color:var(--text-2);" id="license-expiry">—</div>
-            </div>
-            <div>
-              <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Produto</div>
-              <div style="font-size:13px;color:var(--text-2);" id="license-product">—</div>
-            </div>
-          </div>
-        </div>
+    // ── TOAST ──
+    function toast(msg, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<span class="toast-dot"></span>${msg}`;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
 
-        <div class="notice" style="margin-top:16px;">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> para obter suporte e informações sobre licenças.
-        </div>
-      </div>
+    // ── COPY ──
+    function copyLoadstringDash(btn) {
+      const code = SYNCX_CONFIG.downloads.royalhub_loadstring;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = btn.innerHTML.replace(/Copiar Loadstring/, '✓ Copiado!');
+        btn.style.background = '#16a34a';
+        toast('Loadstring copiado!');
+        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2200);
+      });
+    }
 
-      <!-- DOWNLOADS PAGE -->
-      <div id="page-downloads" class="dash-page" style="display:none;">
-        <div class="heading-sm" style="margin-bottom:20px;">Downloads</div>
+    function copyLicenseKey() {
+      const key = document.getElementById('license-key-text').textContent;
+      if (key === 'Nenhuma chave encontrada') return;
+      navigator.clipboard.writeText(key).then(() => toast('Chave copiada!'));
+    }
 
-        <!-- Zero Hour -->
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <div class="heading-sm">SyncX Zero Hour</div>
-                <span class="badge badge-red">v2.0</span>
-              </div>
-              <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Cheat externo para Roblox. Windows 10/11.</div>
-              <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">SHA256: <span style="color:var(--text-2);">Em breve</span></div>
-            </div>
-            <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe" class="btn btn-primary">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Download .exe
-            </a>
-          </div>
-        </div>
+    // ── LOAD USER ──
+    async function loadDashboard() {
+      const session = await requireAuth();
+      if (!session) return;
 
-        <!-- Royal Hub -->
-        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
-            <div>
-              <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-                <div class="heading-sm">Royal Hub</div>
-                <span class="badge badge-blue">Open Source</span>
-              </div>
-              <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Script Lua para Roblox. Execute via executor.</div>
-            </div>
-            <button onclick="copyLoadstringDash(this)" class="btn btn-primary" style="border:none;">
-              <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-              Copiar Loadstring
-            </button>
-          </div>
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--text-3);word-break:break-all;">
-            loadstring(game:HttpGet(<span style="color:#7ec891;">"https://raw.githubusercontent.com/BadOctop4s/RoyalHub/main/Source.lua"</span>))()
-          </div>
-        </div>
+      const user = session.user;
 
-        <!-- Drivers note -->
-        <div class="notice">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <div>Alguns produtos podem requerer drivers adicionais (VC++ Redistributable, .NET 6+). Se houver problemas ao abrir, instale o <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">Visual C++ Redistributable</a> e o <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0" target="_blank">.NET 6</a>.</div>
-        </div>
-      </div>
+      // Set user info
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuário';
+      const avatar = user.user_metadata?.avatar_url;
+      document.getElementById('user-name').textContent = name;
+      const avatarEl = document.getElementById('user-avatar');
+      if (avatar) {
+        avatarEl.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="avatar"/>`;
+      } else {
+        avatarEl.textContent = name[0].toUpperCase();
+      }
 
-    </div>
-  </main>
-</div>
+      // Stats
+      const since = new Date(user.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
+      document.getElementById('stat-since').textContent = since;
+      document.getElementById('stat-email').textContent = user.email || '—';
+      document.getElementById('stat-email-confirmed').textContent = user.email_confirmed_at ? '✓ Verificado' : 'Não verificado';
 
-<script src="js/config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/auth.js"></script>
-<script src="js/main.js"></script>
-<script>
-// ── PAGE ROUTING ──
-function showPage(page) {
-  document.querySelectorAll('.dash-page').forEach(p => p.style.display = 'none');
-  document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-  const pageEl = document.getElementById('page-' + page);
-  if (pageEl) pageEl.style.display = 'block';
-  const link = document.querySelector(`[data-page="${page}"]`);
-  if (link) link.classList.add('active');
-  const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads' };
-  document.getElementById('page-title').textContent = titles[page] || page;
-}
+      // Load license
+      const license = await getUserLicense(user.id);
+      if (license) {
+        document.getElementById('stat-status').innerHTML = '<span class="badge badge-green"><span class="dot"></span>Ativo</span>';
+        document.getElementById('stat-products').textContent = '1';
+        document.getElementById('license-key-text').textContent = license.key || 'N/A';
+        document.getElementById('license-product').textContent = license.product || 'Royal Hub';
+        document.getElementById('license-expiry').textContent = license.expires_at
+          ? new Date(license.expires_at).toLocaleDateString('pt-BR')
+          : 'Vitalício';
+        const statusBadge = document.getElementById('license-status-badge');
+        const isActive = !license.expires_at || new Date(license.expires_at) > new Date();
+        statusBadge.textContent = isActive ? 'Ativo' : 'Expirado';
+        statusBadge.className = `license-status ${isActive ? 'status-active' : 'status-expired'}`;
+      } else {
+        document.getElementById('stat-status').innerHTML = '<span class="badge badge-gray">Sem licença</span>';
+        document.getElementById('stat-products').textContent = '0';
+      }
 
-document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
-  link.addEventListener('click', e => {
-    e.preventDefault();
-    showPage(link.dataset.page);
-  });
-});
+      // Listen for auth changes
+      onAuthChange((event) => {
+        if (event === 'SIGNED_OUT') window.location.href = 'login.html';
+      });
+    }
 
-// ── TOAST ──
-function toast(msg, type = 'success') {
-  const c = document.getElementById('toast-container');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<span class="toast-dot"></span>${msg}`;
-  c.appendChild(t);
-  setTimeout(() => t.remove(), 3500);
-}
-
-// ── COPY ──
-function copyLoadstringDash(btn) {
-  const code = SYNCX_CONFIG.downloads.royalhub_loadstring;
-  navigator.clipboard.writeText(code).then(() => {
-    const orig = btn.innerHTML;
-    btn.innerHTML = btn.innerHTML.replace(/Copiar Loadstring/, '✓ Copiado!');
-    btn.style.background = '#16a34a';
-    toast('Loadstring copiado!');
-    setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2200);
-  });
-}
-
-function copyLicenseKey() {
-  const key = document.getElementById('license-key-text').textContent;
-  if (key === 'Nenhuma chave encontrada') return;
-  navigator.clipboard.writeText(key).then(() => toast('Chave copiada!'));
-}
-
-// ── LOAD USER ──
-async function loadDashboard() {
-  const session = await requireAuth();
-  if (!session) return;
-
-  const user = session.user;
-
-  // Set user info
-  const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuário';
-  const avatar = user.user_metadata?.avatar_url;
-  document.getElementById('user-name').textContent = name;
-  const avatarEl = document.getElementById('user-avatar');
-  if (avatar) {
-    avatarEl.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="avatar"/>`;
-  } else {
-    avatarEl.textContent = name[0].toUpperCase();
-  }
-
-  // Stats
-  const since = new Date(user.created_at).toLocaleDateString('pt-BR', { year:'numeric', month:'short', day:'numeric' });
-  document.getElementById('stat-since').textContent = since;
-  document.getElementById('stat-email').textContent = user.email || '—';
-  document.getElementById('stat-email-confirmed').textContent = user.email_confirmed_at ? '✓ Verificado' : 'Não verificado';
-
-  // Load license
-  const license = await getUserLicense(user.id);
-  if (license) {
-    document.getElementById('stat-status').innerHTML = '<span class="badge badge-green"><span class="dot"></span>Ativo</span>';
-    document.getElementById('stat-products').textContent = '1';
-    document.getElementById('license-key-text').textContent = license.key || 'N/A';
-    document.getElementById('license-product').textContent = license.product || 'Royal Hub';
-    document.getElementById('license-expiry').textContent = license.expires_at
-      ? new Date(license.expires_at).toLocaleDateString('pt-BR')
-      : 'Vitalício';
-    const statusBadge = document.getElementById('license-status-badge');
-    const isActive = !license.expires_at || new Date(license.expires_at) > new Date();
-    statusBadge.textContent = isActive ? 'Ativo' : 'Expirado';
-    statusBadge.className = `license-status ${isActive ? 'status-active' : 'status-expired'}`;
-  } else {
-    document.getElementById('stat-status').innerHTML = '<span class="badge badge-gray">Sem licença</span>';
-    document.getElementById('stat-products').textContent = '0';
-  }
-
-  // Listen for auth changes
-  onAuthChange((event) => {
-    if (event === 'SIGNED_OUT') window.location.href = 'login.html';
-  });
-}
-
-loadDashboard();
-</script>
+    loadDashboard();
+  </script>
 </body>
+
 </html>
