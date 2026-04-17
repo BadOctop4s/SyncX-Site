@@ -552,7 +552,7 @@
     ];
 
     async function fetchDiscordRoles(providerToken) {
-      if (!providerToken || !GUILD_ID || GUILD_ID === '1441668291918561424') return [];
+      if (!providerToken || !GUILD_ID) return [];
       try {
         const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
           headers: { 'Authorization': `Bearer ${providerToken}` }

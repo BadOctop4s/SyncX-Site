@@ -25,6 +25,9 @@
   border: 1px solid transparent;
   border-radius: 0;
   box-shadow: none;
+  /* Garantir alinhamento vertical correto */
+  display: flex;
+  align-items: center;
   transition:
     top 0.5s cubic-bezier(0.22,1,0.36,1),
     width 0.5s cubic-bezier(0.22,1,0.36,1),
@@ -36,7 +39,17 @@
     border-color 0.45s ease,
     box-shadow 0.45s ease;
 }
-#nav .nav-inner { padding: 0 48px; }
+#nav .nav-inner {
+  padding: 0 48px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+/* Forçar alinhamento dos links da nav para evitar ícone sobre texto */
+#nav .nav-links { display: flex; align-items: center; gap: 6px; list-style: none; }
+#nav .nav-links a { display: flex; align-items: center; line-height: 1; white-space: nowrap; }
+#nav .nav-actions { display: flex; align-items: center; gap: 8px; }
 #nav.scrolled {
   top: 10px;
   width: calc(100% - 56px);
