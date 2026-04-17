@@ -563,6 +563,47 @@
       } catch { return []; }
     }
 
+    // Tenta buscar role do Discord de todas as formas disponíveis
+    async function detectDiscordRole(session) {
+      const user = session.user;
+      const storageKey = `syncx_role_${user.id}`;
+
+      // 1. Tenta via provider_token (só funciona logo após OAuth login)
+      if (session.provider_token) {
+        const roleIds = await fetchDiscordRoles(session.provider_token);
+        if (roleIds.length > 0) {
+          const role = resolveTopRole(roleIds);
+          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch {}
+          return role;
+        }
+      }
+
+      // 2. Tenta via user_metadata.provider_token (Supabase às vezes guarda)
+      const metaToken = user.user_metadata?.provider_token;
+      if (metaToken) {
+        const roleIds = await fetchDiscordRoles(metaToken);
+        if (roleIds.length > 0) {
+          const role = resolveTopRole(roleIds);
+          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch {}
+          return role;
+        }
+      }
+
+      // 3. Fallback: role salvo no localStorage (persiste entre sessões)
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        if (saved && saved.label) return saved;
+      } catch {}
+
+      // 4. Fallback legado: sessionStorage
+      try {
+        const saved = JSON.parse(sessionStorage.getItem('syncx_role'));
+        if (saved && saved.label) return saved;
+      } catch {}
+
+      return { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
+    }
+
     function resolveTopRole(roleIds) {
       let best = { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
       for (const def of ROLE_DEFINITIONS) {
@@ -639,20 +680,8 @@
       const devDate = document.getElementById('dev-build-date');
       if (devDate) devDate.textContent = new Date().toLocaleDateString('pt-BR');
 
-      // Discord role detection via provider_token
-      const providerToken = session.provider_token;
-      let topRole = { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
-      if (providerToken) {
-        const roleIds = await fetchDiscordRoles(providerToken);
-        topRole = resolveTopRole(roleIds);
-        try { sessionStorage.setItem('syncx_role', JSON.stringify(topRole)); } catch { }
-      } else {
-        // Login por email — tenta usar role salva
-        try {
-          const saved = JSON.parse(sessionStorage.getItem('syncx_role'));
-          if (saved) topRole = saved;
-        } catch { }
-      }
+      // Discord role detection — persiste via localStorage
+      const topRole = await detectDiscordRole(session);
       applyRoleUI(topRole, user.id);
 
       // Se admin+, carrega stats automaticamente
