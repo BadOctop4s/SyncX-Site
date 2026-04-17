@@ -54,6 +54,12 @@
           </svg>
           Downloads
         </a>
+        <a href="#activate" class="sidebar-link" data-page="activate">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Ativar Licença
+        </a>
 
         <!-- Seções exclusivas por cargo — aparecem via JS -->
         <a href="#" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
@@ -218,46 +224,67 @@
         <!-- LICENSE PAGE -->
         <div id="page-license" class="dash-page" style="display:none;">
           <div class="heading-sm" style="margin-bottom:20px;">Sua Licença</div>
-          <div class="license-card" id="license-card">
+          <div id="license-card" class="license-card">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
               <div>
-                <div
-                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">
-                  Royal Hub</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">SyncX Zero Hour</div>
                 <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">Chave de Produto</div>
               </div>
               <span id="license-status-badge" class="license-status status-inactive">Sem licença</span>
             </div>
-
             <div class="license-key-wrap">
               <div class="license-key" id="license-key-text">Nenhuma chave encontrada</div>
               <button onclick="copyLicenseKey()" class="btn btn-ghost btn-sm">Copiar</button>
             </div>
-
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px;">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;">
               <div>
-                <div
-                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
-                  Válida até</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Válida até</div>
                 <div style="font-size:13px;color:var(--text-2);" id="license-expiry">—</div>
               </div>
               <div>
-                <div
-                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
-                  Produto</div>
-                <div style="font-size:13px;color:var(--text-2);" id="license-product">—</div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Username</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-username">—</div>
+              </div>
+              <div>
+                <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">Duração</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-duration">—</div>
               </div>
             </div>
           </div>
-
-          <div class="notice" style="margin-top:16px;">
+          <div id="license-no-key" class="notice" style="margin-top:16px;">
             <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="10" />
-              <line x1="12" y1="8" x2="12" y2="12" />
-              <line x1="12" y1="16" x2="12.01" y2="16" />
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
-            Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> para obter
-            suporte e informações sobre licenças.
+            Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> ou
+            <a href="#activate" onclick="showPage('activate')">ative sua licença</a> se já tem uma key.
+          </div>
+        </div>
+
+        <!-- ACTIVATE PAGE -->
+        <div id="page-activate" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Ativar Licença</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Insira a key que você recebeu para ativar o SyncX Zero Hour na sua conta.</p>
+          <div style="max-width:480px;">
+            <div id="activate-error" style="display:none;background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--accent-2);margin-bottom:16px;"></div>
+            <div id="activate-success" style="display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#4ade80;margin-bottom:16px;"></div>
+            <div style="margin-bottom:14px;">
+              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">KEY DO ZEROHOUR</label>
+              <input id="activate-key" type="text" placeholder="SYNCX-XXXX-XXXX-XXXX" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+            <div style="margin-bottom:14px;">
+              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">USERNAME (para login no cheat)</label>
+              <input id="activate-username" type="text" placeholder="SeuNome" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">SENHA (para login no cheat)</label>
+              <input id="activate-password" type="password" placeholder="Mínimo 6 caracteres" style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+            </div>
+            <button onclick="activateLicense()" class="btn btn-primary" style="width:100%;justify-content:center;padding:13px;">
+              Ativar Licença
+            </button>
+            <p style="font-size:12px;color:var(--text-3);margin-top:12px;text-align:center;">
+              Recebeu sua key no Discord após a compra. Problemas? <a href="https://discord.gg/faUyqCdd3P" target="_blank" style="color:var(--accent);">Suporte</a>
+            </p>
           </div>
         </div>
 
@@ -394,12 +421,17 @@
         <!-- ══ ADMIN PAGE ══ -->
         <div id="page-admin" class="dash-page" style="display:none;">
           <div class="heading-sm" style="margin-bottom:8px;">Painel Admin</div>
-          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a
-            ADMIN e superior.</p>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a ADMIN e superior.</p>
+
+          <!-- Stats -->
           <div class="stat-grid" style="margin-bottom:24px;">
             <div class="stat-card">
               <div class="stat-label">Total de licenças</div>
               <div class="stat-value" id="admin-licenses">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Licenças ativas</div>
+              <div class="stat-value" id="admin-licenses-active">—</div>
             </div>
             <div class="stat-card">
               <div class="stat-label">Usuários cadastrados</div>
@@ -410,23 +442,69 @@
               <div class="stat-value" style="font-size:15px;" id="admin-access-level">—</div>
             </div>
           </div>
-          <div
-            style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;">
-            <div class="heading-sm" style="margin-bottom:16px;">Gerenciar Licenças</div>
-            <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <button class="btn btn-primary btn-sm" onclick="adminLoadStats()">Atualizar Stats</button>
-              <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
-                class="btn btn-ghost btn-sm">Abrir Supabase</a>
+
+          <!-- Gerar Key -->
+          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Gerar Nova Key</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;">
+              <div>
+                <label style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Duração</label>
+                <select id="gen-duration" style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;">
+                  <option value="7">7 dias</option>
+                  <option value="30" selected>30 dias</option>
+                  <option value="90">90 dias</option>
+                  <option value="180">180 dias</option>
+                  <option value="365">1 ano</option>
+                  <option value="36500">Vitalício</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Quantidade</label>
+                <input id="gen-amount" type="number" value="1" min="1" max="50" style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;"/>
+              </div>
+              <button onclick="adminGenerateKeys()" class="btn btn-primary" style="white-space:nowrap;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Gerar
+              </button>
             </div>
-            <div class="notice" style="margin-top:16px;">
-              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="10" />
-                <line x1="12" y1="8" x2="12" y2="12" />
-                <line x1="12" y1="16" x2="12.01" y2="16" />
-              </svg>
-              Operações destrutivas (deletar usuários, revogar licenças) são feitas diretamente no Supabase Dashboard
-              por segurança.
+            <!-- Keys geradas -->
+            <div id="generated-keys-wrap" style="display:none;margin-top:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;">Keys Geradas</div>
+                <button onclick="copyAllKeys()" class="btn btn-ghost btn-sm">Copiar todas</button>
+              </div>
+              <div id="generated-keys-list" style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;"></div>
             </div>
+          </div>
+
+          <!-- Lista de licenças -->
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div class="heading-sm" style="font-size:15px;">Licenças Cadastradas</div>
+              <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="dash-table" id="admin-licenses-table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>Expira</th>
+                    <th>Criada</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-licenses-tbody">
+                  <tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar para carregar</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="adminLoadStats()">Atualizar Stats</button>
+            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Abrir Supabase</a>
           </div>
         </div>
 
@@ -490,7 +568,7 @@
       if (pageEl) pageEl.style.display = 'block';
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
-      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
+      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
       document.getElementById('page-title').textContent = titles[page] || page;
     }
 
@@ -515,6 +593,141 @@
       t.innerHTML = `<span class="toast-dot"></span>${msg}`;
       c.appendChild(t);
       setTimeout(() => t.remove(), 3500);
+    }
+
+    // ── GERAR KEY (admin) ──
+    function generateRandomKey() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const seg = () => Array.from({length:6}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+      return `SYNCX-${seg()}-${seg()}-${seg()}`;
+    }
+
+    async function adminGenerateKeys() {
+      const duration = parseInt(document.getElementById('gen-duration').value);
+      const amount = Math.min(parseInt(document.getElementById('gen-amount').value) || 1, 50);
+      const user = (await getSession()).user;
+
+      const keys = [];
+      for (let i = 0; i < amount; i++) {
+        const key = generateRandomKey();
+        const expiresAt = duration >= 36500 ? null : new Date(Date.now() + duration * 86400000).toISOString();
+        keys.push({ key, duration_days: duration, expires_at: expiresAt, active: true, created_by: user.id });
+      }
+
+      const { error } = await sb.from('licenses').insert(keys);
+      if (error) { toast('Erro ao gerar keys: ' + error.message, 'error'); return; }
+
+      // Mostrar keys geradas
+      const wrap = document.getElementById('generated-keys-wrap');
+      const list = document.getElementById('generated-keys-list');
+      list.innerHTML = keys.map(k => `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);">${k.key}</span>
+          <button onclick="navigator.clipboard.writeText('${k.key}').then(()=>toast('Copiado!'))" class="btn btn-ghost btn-sm" style="flex-shrink:0;">Copiar</button>
+        </div>
+      `).join('');
+      wrap.style.display = 'block';
+      toast(`${amount} key(s) gerada(s) com sucesso!`);
+      adminLoadStats();
+      adminLoadLicenses();
+    }
+
+    function copyAllKeys() {
+      const keys = [...document.querySelectorAll('#generated-keys-list span')].map(s => s.textContent).join('
+');
+      navigator.clipboard.writeText(keys).then(() => toast('Todas as keys copiadas!'));
+    }
+
+    async function adminLoadLicenses() {
+      const tbody = document.getElementById('admin-licenses-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      const { data, error } = await sb.from('licenses').select('*').order('created_at', { ascending: false }).limit(100);
+      if (error || !data) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--accent-2);padding:16px;">Erro ao carregar</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma licença cadastrada</td></tr>'; return; }
+
+      tbody.innerHTML = data.map(l => {
+        const isActive = l.active && (!l.expires_at || new Date(l.expires_at) > new Date());
+        const expiry = l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício';
+        const created = new Date(l.created_at).toLocaleDateString('pt-BR');
+        const keyShort = l.key.substring(0, 20) + '...';
+        return `<tr>
+          <td style="font-family:var(--font-mono);font-size:11px;" title="${l.key}">${keyShort}</td>
+          <td style="font-size:12px;">${l.username || '<span style="color:var(--text-4);">—</span>'}</td>
+          <td><span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">${isActive ? 'Ativa' : (l.active ? 'Expirada' : 'Revogada')}</span></td>
+          <td style="font-size:12px;color:var(--text-2);">${expiry}</td>
+          <td style="font-size:12px;color:var(--text-2);">${created}</td>
+          <td>
+            <button onclick="adminRevokeKey('${l.id}')" class="btn btn-ghost btn-sm" style="font-size:11px;padding:4px 8px;color:var(--accent);">Revogar</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function adminRevokeKey(id) {
+      if (!confirm('Revogar esta key?')) return;
+      const { error } = await sb.from('licenses').update({ active: false }).eq('id', id);
+      if (error) { toast('Erro ao revogar', 'error'); return; }
+      toast('Key revogada.');
+      adminLoadLicenses();
+      adminLoadStats();
+    }
+
+    // ── ATIVAR LICENÇA ──
+    async function activateLicense() {
+      const key = document.getElementById('activate-key').value.trim().toUpperCase();
+      const username = document.getElementById('activate-username').value.trim();
+      const password = document.getElementById('activate-password').value;
+      const errEl = document.getElementById('activate-error');
+      const okEl = document.getElementById('activate-success');
+      errEl.style.display = 'none'; okEl.style.display = 'none';
+
+      if (!key || !username || !password) { errEl.textContent = 'Preencha todos os campos.'; errEl.style.display = 'block'; return; }
+      if (password.length < 6) { errEl.textContent = 'Senha deve ter no mínimo 6 caracteres.'; errEl.style.display = 'block'; return; }
+      if (username.length < 3) { errEl.textContent = 'Username deve ter no mínimo 3 caracteres.'; errEl.style.display = 'block'; return; }
+
+      const session = await getSession();
+      const userId = session.user.id;
+
+      // Verifica se key existe, está ativa e não foi usada
+      const { data: lic, error: licErr } = await sb.from('licenses')
+        .select('*').eq('key', key).eq('active', true).is('user_id', null).single();
+
+      if (licErr || !lic) { errEl.textContent = 'Key inválida, já utilizada ou inexistente.'; errEl.style.display = 'block'; return; }
+      if (lic.expires_at && new Date(lic.expires_at) < new Date()) { errEl.textContent = 'Esta key já expirou.'; errEl.style.display = 'block'; return; }
+
+      // Verifica se username já existe
+      const { data: existingUser } = await sb.from('licenses').select('id').eq('username', username).single();
+      if (existingUser) { errEl.textContent = 'Este username já está em uso.'; errEl.style.display = 'block'; return; }
+
+      // Verifica se usuário já tem licença
+      const { data: existingLic } = await sb.from('licenses').select('id').eq('user_id', userId).single();
+      if (existingLic) { errEl.textContent = 'Sua conta já possui uma licença ativa.'; errEl.style.display = 'block'; return; }
+
+      // Hash da senha (simples via btoa — não ideal mas funciona sem backend)
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password + userId);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const passwordHash = hashArray.map(b => b.toString(16).padStart(2,'0')).join('');
+
+      // Ativa a key
+      const { error: updateErr } = await sb.from('licenses').update({
+        user_id: userId,
+        username: username,
+        password_hash: passwordHash,
+        used_at: new Date().toISOString()
+      }).eq('id', lic.id);
+
+      if (updateErr) { errEl.textContent = 'Erro ao ativar: ' + updateErr.message; errEl.style.display = 'block'; return; }
+
+      okEl.textContent = '✓ Licença ativada! Username: ' + username + ' — Acesse o ZeroHour e faça login.';
+      okEl.style.display = 'block';
+      document.getElementById('activate-key').value = '';
+      document.getElementById('activate-username').value = '';
+      document.getElementById('activate-password').value = '';
+
+      // Atualiza overview
+      setTimeout(() => loadDashboard(), 1000);
     }
 
     // ── COPY ──
@@ -566,8 +779,6 @@
     async function detectDiscordRole(session) {
       const user = session.user;
       const storageKey = 'syncx_role_' + user.id;
-
-      // 1. Tenta via provider_token (disponível logo após login Discord)
       if (session.provider_token) {
         const roleIds = await fetchDiscordRoles(session.provider_token);
         if (roleIds.length > 0) {
@@ -576,13 +787,10 @@
           return role;
         }
       }
-
-      // 2. Fallback: role salvo no localStorage (persiste entre sessões)
       try {
         const saved = JSON.parse(localStorage.getItem(storageKey));
         if (saved && saved.label) return saved;
       } catch {}
-
       return { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
     }
 
@@ -619,18 +827,16 @@
     }
 
     async function adminLoadStats() {
-      // Busca stats básicos do Supabase
       try {
-        const { data: licenses } = await sb.from('licenses').select('id', { count: 'exact', head: true });
-        const { data: profiles } = await sb.from('profiles').select('id', { count: 'exact', head: true });
-        const licEl = document.getElementById('admin-licenses');
-        const usrEl = document.getElementById('admin-users');
-        const crtLicEl = document.getElementById('creator-licenses');
-        const crtUsrEl = document.getElementById('creator-users');
-        if (licEl) licEl.textContent = licenses?.length ?? '—';
-        if (usrEl) usrEl.textContent = profiles?.length ?? '—';
-        if (crtLicEl) crtLicEl.textContent = licenses?.length ?? '—';
-        if (crtUsrEl) crtUsrEl.textContent = profiles?.length ?? '—';
+        const { count: totalLic } = await sb.from('licenses').select('*', { count: 'exact', head: true });
+        const { count: activeLic } = await sb.from('licenses').select('*', { count: 'exact', head: true }).eq('active', true).not('user_id', 'is', null);
+        const { count: totalUsers } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? '—'; };
+        set('admin-licenses', totalLic ?? 0);
+        set('admin-licenses-active', activeLic ?? 0);
+        set('admin-users', totalUsers ?? 0);
+        set('creator-licenses', totalLic ?? 0);
+        set('creator-users', totalUsers ?? 0);
       } catch (e) { console.warn('Admin stats error:', e); }
     }
 
@@ -672,17 +878,24 @@
       // Load license
       const license = await getUserLicense(user.id);
       if (license) {
-        document.getElementById('stat-status').innerHTML = '<span class="badge badge-green"><span class="dot"></span>Ativo</span>';
-        document.getElementById('stat-products').textContent = '1';
-        document.getElementById('license-key-text').textContent = license.key || 'N/A';
-        document.getElementById('license-product').textContent = license.product || 'Royal Hub';
-        document.getElementById('license-expiry').textContent = license.expires_at
-          ? new Date(license.expires_at).toLocaleDateString('pt-BR')
-          : 'Vitalício';
+        const isActive = license.active && (!license.expires_at || new Date(license.expires_at) > new Date());
+        document.getElementById('stat-status').innerHTML = isActive
+          ? '<span class="badge badge-green"><span class="dot"></span>Ativo</span>'
+          : '<span class="badge badge-gray">Expirado</span>';
+        document.getElementById('stat-products').textContent = isActive ? '1' : '0';
+        // Página de licença
+        const keyEl = document.getElementById('license-key-text');
+        if (keyEl) keyEl.textContent = license.key || 'N/A';
+        const expEl = document.getElementById('license-expiry');
+        if (expEl) expEl.textContent = license.expires_at ? new Date(license.expires_at).toLocaleDateString('pt-BR') : 'Vitalício';
+        const usrEl = document.getElementById('license-username');
+        if (usrEl) usrEl.textContent = license.username || '—';
+        const durEl = document.getElementById('license-duration');
+        if (durEl) durEl.textContent = license.duration_days >= 36500 ? 'Vitalício' : (license.duration_days + ' dias');
         const statusBadge = document.getElementById('license-status-badge');
-        const isActive = !license.expires_at || new Date(license.expires_at) > new Date();
-        statusBadge.textContent = isActive ? 'Ativo' : 'Expirado';
-        statusBadge.className = `license-status ${isActive ? 'status-active' : 'status-expired'}`;
+        if (statusBadge) { statusBadge.textContent = isActive ? 'Ativo' : 'Expirado'; statusBadge.className = `license-status ${isActive ? 'status-active' : 'status-expired'}`; }
+        const noKey = document.getElementById('license-no-key');
+        if (noKey) noKey.style.display = 'none';
       } else {
         document.getElementById('stat-status').innerHTML = '<span class="badge badge-gray">Sem licença</span>';
         document.getElementById('stat-products').textContent = '0';
