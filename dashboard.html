@@ -55,6 +55,36 @@
           Downloads
         </a>
 
+        <!-- Seções exclusivas por cargo — aparecem via JS -->
+        <a href="#" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Staff
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="developer" data-min-tier="70" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          Dev Tools
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="admin" data-min-tier="80" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          Admin
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="creator" data-min-tier="90" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          Creator
+        </a>
+
         <div class="sidebar-section-label">Links</div>
         <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sidebar-link">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -118,7 +148,7 @@
               </div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Cargo no Discord</div>
+              <div class="stat-label">Cargo Discord</div>
               <div class="stat-value" style="font-size:15px;margin-top:4px;" id="stat-role">
                 <span class="badge badge-gray">—</span>
               </div>
@@ -302,6 +332,147 @@
           </div>
         </div>
 
+
+        <!-- ══ STAFF PAGE ══ -->
+        <div id="page-staff" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Painel de Staff</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Acesso exclusivo para membros com cargo
+            STAFF ou superior.</p>
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card">
+              <div class="stat-label">Usuários no servidor</div>
+              <div class="stat-value">—</div>
+              <div class="stat-sub">Total de membros Discord</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tickets abertos</div>
+              <div class="stat-value">—</div>
+              <div class="stat-sub">Suporte pendente</div>
+            </div>
+          </div>
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div class="heading-sm" style="margin-bottom:12px;">Ações de Staff</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+              <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-ghost btn-sm"
+                style="width:fit-content;">Abrir Discord (Staff)</a>
+              <p style="font-size:12px;color:var(--text-3);">Ações avançadas de staff requerem integração com o bot
+                Discord. Configure o bot para habilitar funcionalidades adicionais aqui.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DEVELOPER PAGE ══ -->
+        <div id="page-developer" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Dev Tools</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Ferramentas exclusivas para o cargo
+            DEVELOPER.</p>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
+              Repositório Privado</div>
+            <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Acesse o repositório privado de
+              desenvolvimento dos produtos SyncX.</p>
+            <a href="https://github.com/BadOctop4s" target="_blank" class="btn btn-primary btn-sm">Acessar GitHub
+              Privado</a>
+          </div>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
+              Build Info</div>
+            <div
+              style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:6px;">
+              <div><span style="color:var(--text-3);">Supabase URL:</span> gdaiirmnqdypikeugdij.supabase.co</div>
+              <div><span style="color:var(--text-3);">Versão site:</span> 2.0.0</div>
+              <div><span style="color:var(--text-3);">Última build:</span> <span id="dev-build-date">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ ADMIN PAGE ══ -->
+        <div id="page-admin" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Painel Admin</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a
+            ADMIN e superior.</p>
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card">
+              <div class="stat-label">Total de licenças</div>
+              <div class="stat-value" id="admin-licenses">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Usuários cadastrados</div>
+              <div class="stat-value" id="admin-users">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Nível de acesso</div>
+              <div class="stat-value" style="font-size:15px;" id="admin-access-level">—</div>
+            </div>
+          </div>
+          <div
+            style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;">
+            <div class="heading-sm" style="margin-bottom:16px;">Gerenciar Licenças</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <button class="btn btn-primary btn-sm" onclick="adminLoadStats()">Atualizar Stats</button>
+              <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+                class="btn btn-ghost btn-sm">Abrir Supabase</a>
+            </div>
+            <div class="notice" style="margin-top:16px;">
+              <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              Operações destrutivas (deletar usuários, revogar licenças) são feitas diretamente no Supabase Dashboard
+              por segurança.
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ CREATOR PAGE ══ -->
+        <div id="page-creator" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Creator / Programmer</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle total do projeto. Acesso máximo.
+          </p>
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card" style="border-color:rgba(224,32,32,0.2);">
+              <div class="stat-label">Nível de acesso</div>
+              <div class="stat-value" style="font-size:15px;"><span class="badge badge-red">Creator</span></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Licenças totais</div>
+              <div class="stat-value" id="creator-licenses">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Usuários totais</div>
+              <div class="stat-value" id="creator-users">—</div>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+            <div
+              style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+              <div class="heading-sm" style="margin-bottom:12px;font-size:13px;">Controles do Projeto</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <a href="https://github.com/BadOctop4s/SyncX-Site" target="_blank"
+                  class="btn btn-ghost btn-sm">Repositório do Site</a>
+                <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel Deploy</a>
+                <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+                  class="btn btn-ghost btn-sm">Supabase DB</a>
+              </div>
+            </div>
+            <div
+              style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+              <div class="heading-sm" style="margin-bottom:12px;font-size:13px;">Produtos</div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <a href="https://github.com/BadOctop4s/SyncX---ZeroHour" target="_blank"
+                  class="btn btn-ghost btn-sm">SyncX Zero Hour</a>
+                <a href="https://github.com/BadOctop4s/RoyalHub" target="_blank" class="btn btn-ghost btn-sm">Royal
+                  Hub</a>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
@@ -319,13 +490,19 @@
       if (pageEl) pageEl.style.display = 'block';
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
-      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads' };
+      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
       document.getElementById('page-title').textContent = titles[page] || page;
     }
 
     document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
       link.addEventListener('click', e => {
         e.preventDefault();
+        // Verifica tier para páginas exclusivas
+        const minTier = parseInt(link.dataset.minTier || '0');
+        if (minTier > 0 && (window.__userTier || 0) < minTier) {
+          toast('Acesso restrito ao cargo ' + (link.textContent.trim()) + '.', 'error');
+          return;
+        }
         showPage(link.dataset.page);
       });
     });
@@ -358,14 +535,14 @@
       navigator.clipboard.writeText(key).then(() => toast('Chave copiada!'));
     }
 
-    // ── DISCORD ROLE CONFIG ──
-    // Coloque aqui os IDs dos cargos do seu servidor.
-    // Para descobrir os IDs: no Discord, ative modo desenvolvedor,
-    // clique com botão direito no cargo → Copiar ID.
-    const GUILD_ID = '1441668291918561424'; // ID do servidor SyncX
+    // ══════════════════════════════════════════════
+    // DISCORD ROLE CONFIG
+    // Substitua os IDs pelos cargos reais do seu servidor.
+    // Para descobrir: Discord → modo dev → botão direito no cargo → Copiar ID
+    // ══════════════════════════════════════════════
+    const GUILD_ID = '1441668291918561424';
 
     const ROLE_DEFINITIONS = [
-      // { id, label, badgeClass, tier } — tier maior = mais alto
       { id: '1447093178007162983', label: 'Creator/Programmer', badgeClass: 'badge-purple', tier: 100 },
       { id: '1443034423829467269', label: 'ADMIN', badgeClass: 'badge-red', tier: 80 },
       { id: '1443329537927544872', label: 'DEVELOPER', badgeClass: 'badge-blue', tier: 70 },
@@ -373,11 +550,8 @@
       { id: '1450894744669655325', label: 'Server Booster', badgeClass: 'badge-pink', tier: 30 },
       { id: '1443339614835179672', label: 'Membros', badgeClass: 'badge-gray', tier: 10 },
     ];
-    // Nota: Se o usuário for o Owner do servidor (dono), ele aparece como Creator/Programmer
-    // automaticamente se tiver o cargo correspondente.
 
-    // Tenta buscar os cargos do membro via provider_token do Supabase (Discord OAuth)
-    async function fetchDiscordRoles(providerToken, userId) {
+    async function fetchDiscordRoles(providerToken) {
       if (!providerToken || !GUILD_ID || GUILD_ID === '1441668291918561424') return [];
       try {
         const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
@@ -390,34 +564,51 @@
     }
 
     function resolveTopRole(roleIds) {
-      let best = null;
+      let best = { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
       for (const def of ROLE_DEFINITIONS) {
-        if (roleIds.includes(def.id)) {
-          if (!best || def.tier > best.tier) best = def;
-        }
+        if (roleIds.includes(def.id) && def.tier > best.tier) best = def;
       }
-      return best || { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
+      return best;
     }
 
-    function applyRoleUI(role) {
-      // Sidebar
-      document.getElementById('user-role').textContent = role.label;
+    function applyRoleUI(role, userId) {
+      // Sidebar role label
+      const roleEl = document.getElementById('user-role');
+      if (roleEl) roleEl.textContent = role.label;
+
       // Stat card
-      document.getElementById('stat-role').innerHTML =
-        `<span class="badge ${role.badgeClass}">${role.label}</span>`;
-      // Features exclusivas por tier
-      if (role.tier >= 80) {
-        // ADMIN+: mostra painel admin (poderia redirecionar para admin page)
-        const adminNotice = document.createElement('div');
-        adminNotice.className = 'notice';
-        adminNotice.style.marginTop = '16px';
-        adminNotice.innerHTML = `<svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> <div>Acesso elevado: <strong>${role.label}</strong> — você tem acesso a recursos exclusivos de staff.</div>`;
-        const overview = document.getElementById('page-overview');
-        if (overview && !document.getElementById('admin-notice')) {
-          adminNotice.id = 'admin-notice';
-          overview.appendChild(adminNotice);
-        }
-      }
+      const statRole = document.getElementById('stat-role');
+      if (statRole) statRole.innerHTML = `<span class="badge ${role.badgeClass}">${role.label}</span>`;
+
+      // Admin access level card
+      const adminLevel = document.getElementById('admin-access-level');
+      if (adminLevel) adminLevel.innerHTML = `<span class="badge ${role.badgeClass}">${role.label}</span>`;
+      const creatorLevel = document.getElementById('creator-licenses');
+
+      // Mostra/esconde itens da sidebar baseado no tier
+      document.querySelectorAll('.role-only').forEach(link => {
+        const minTier = parseInt(link.dataset.minTier || '0');
+        link.style.display = role.tier >= minTier ? 'flex' : 'none';
+      });
+
+      // Registra tier atual para a sidebar de routing
+      window.__userTier = role.tier;
+    }
+
+    async function adminLoadStats() {
+      // Busca stats básicos do Supabase
+      try {
+        const { data: licenses } = await sb.from('licenses').select('id', { count: 'exact', head: true });
+        const { data: profiles } = await sb.from('profiles').select('id', { count: 'exact', head: true });
+        const licEl = document.getElementById('admin-licenses');
+        const usrEl = document.getElementById('admin-users');
+        const crtLicEl = document.getElementById('creator-licenses');
+        const crtUsrEl = document.getElementById('creator-users');
+        if (licEl) licEl.textContent = licenses?.length ?? '—';
+        if (usrEl) usrEl.textContent = profiles?.length ?? '—';
+        if (crtLicEl) crtLicEl.textContent = licenses?.length ?? '—';
+        if (crtUsrEl) crtUsrEl.textContent = profiles?.length ?? '—';
+      } catch (e) { console.warn('Admin stats error:', e); }
     }
 
     // ── LOAD USER ──
@@ -444,22 +635,28 @@
       document.getElementById('stat-email').textContent = user.email || '—';
       document.getElementById('stat-email-confirmed').textContent = user.email_confirmed_at ? '✓ Verificado' : 'Não verificado';
 
-      // Discord role detection
-      const providerToken = session.provider_token; // disponível em logins via Discord OAuth
-      const discordId = user.user_metadata?.provider_id || user.user_metadata?.sub;
+      // Dev build date
+      const devDate = document.getElementById('dev-build-date');
+      if (devDate) devDate.textContent = new Date().toLocaleDateString('pt-BR');
+
+      // Discord role detection via provider_token
+      const providerToken = session.provider_token;
+      let topRole = { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
       if (providerToken) {
-        const roleIds = await fetchDiscordRoles(providerToken, discordId);
-        const topRole = resolveTopRole(roleIds);
-        applyRoleUI(topRole);
-        // Salva role na sessão para uso rápido
+        const roleIds = await fetchDiscordRoles(providerToken);
+        topRole = resolveTopRole(roleIds);
         try { sessionStorage.setItem('syncx_role', JSON.stringify(topRole)); } catch { }
       } else {
-        // Login por email — tenta usar role salva ou mostra Membro
+        // Login por email — tenta usar role salva
         try {
           const saved = JSON.parse(sessionStorage.getItem('syncx_role'));
-          if (saved) applyRoleUI(saved);
+          if (saved) topRole = saved;
         } catch { }
       }
+      applyRoleUI(topRole, user.id);
+
+      // Se admin+, carrega stats automaticamente
+      if (topRole.tier >= 80) adminLoadStats();
 
       // Load license
       const license = await getUserLicense(user.id);
