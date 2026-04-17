@@ -1,0 +1,149 @@
+/* ═══════════════════════════════════════════════
+   SyncX — animations.css
+   All keyframes and animation utilities
+═══════════════════════════════════════════════ */
+
+/* ── KEYFRAMES ── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes fade-down {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes slide-right {
+  from { opacity: 0; transform: translateX(-24px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 20px rgba(224,32,32,0.2); }
+  50%      { box-shadow: 0 0 50px rgba(224,32,32,0.5), 0 0 100px rgba(224,32,32,0.15); }
+}
+@keyframes border-spin {
+  from { --angle: 0deg; }
+  to   { --angle: 360deg; }
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%     { transform: translateY(-8px); }
+}
+@keyframes shimmer {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+@keyframes line-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes counter-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+@keyframes badge-appear {
+  0%   { opacity: 0; transform: scale(0.8) translateY(8px); }
+  60%  { transform: scale(1.04) translateY(-2px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ── SCROLL REVEAL ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+}
+[data-reveal="fade"] {
+  transform: none;
+}
+[data-reveal="slide-right"] {
+  transform: translateX(-28px);
+}
+[data-reveal="scale"] {
+  transform: scale(0.94);
+}
+[data-reveal].revealed {
+  opacity: 1;
+  transform: none !important;
+}
+[data-delay="1"] { transition-delay: 0.1s; }
+[data-delay="2"] { transition-delay: 0.2s; }
+[data-delay="3"] { transition-delay: 0.3s; }
+[data-delay="4"] { transition-delay: 0.4s; }
+[data-delay="5"] { transition-delay: 0.5s; }
+[data-delay="6"] { transition-delay: 0.6s; }
+
+/* ── HERO ENTRANCE (CSS-driven, no JS needed) ── */
+.hero-badge    { animation: badge-appear 0.7s var(--ease) both; }
+.hero-title    { animation: fade-up 0.9s 0.08s var(--ease) both; }
+.hero-sub      { animation: fade-up 0.9s 0.18s var(--ease) both; }
+.hero-actions  { animation: fade-up 0.9s 0.28s var(--ease) both; }
+.hero-stats    { animation: fade-up 0.9s 0.38s var(--ease) both; }
+.hero-scroll   { animation: fade-up 0.9s 0.5s var(--ease) both; }
+
+/* ── GLOW LINE ── */
+.glow-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  transform-origin: left;
+  animation: line-grow 1.2s 0.5s var(--ease) both;
+}
+
+/* ── SHIMMER TEXT ── */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--text) 0%,
+    var(--accent-2) 30%,
+    var(--text) 60%,
+    var(--text) 100%
+  );
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 4s linear infinite;
+}
+
+/* ── STAT COUNTER ── */
+.stat-wrap { overflow: hidden; display: inline-block; }
+.stat-inner { display: block; }
+.stat-inner.counting { animation: counter-up 0.6s var(--ease) both; }
+
+/* ── FLOATING CARD ── */
+.float-slow { animation: float 6s ease-in-out infinite; }
+.float-med  { animation: float 4s ease-in-out infinite; }
+
+/* ── GLOW PULSE BUTTON ── */
+.btn-glow { animation: glow-pulse 3s ease infinite; }
+
+/* ── SPINNING RING (for logo/decorative) ── */
+.spin-ring {
+  position: absolute;
+  border: 1px solid transparent;
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin-slow 8s linear infinite;
+}
+
+/* ── STAGGER GRID ── */
+.stagger > *:nth-child(1) { transition-delay: 0s; }
+.stagger > *:nth-child(2) { transition-delay: 0.07s; }
+.stagger > *:nth-child(3) { transition-delay: 0.14s; }
+.stagger > *:nth-child(4) { transition-delay: 0.21s; }
+.stagger > *:nth-child(5) { transition-delay: 0.28s; }
+.stagger > *:nth-child(6) { transition-delay: 0.35s; }
+.stagger > *:nth-child(7) { transition-delay: 0.42s; }
+.stagger > *:nth-child(8) { transition-delay: 0.49s; }
+.stagger > *:nth-child(9) { transition-delay: 0.56s; }
