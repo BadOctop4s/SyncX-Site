@@ -366,8 +366,11 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
   .compat-grid { grid-template-columns:repeat(2,1fr); }
   /* Always hide links on mobile — pill only shows logo + hamburger */
   .nav-links { display:none !important; }
-  .nav-actions .btn { display:none !important; }
-  .nav-mobile-btn { display:flex; }
+  .nav-actions { display:none !important; }
+  .nav-mobile-btn { display:flex !important; cursor:pointer; }
+  /* Smaller logo text on mobile inside pill */
+  .nav-logo { font-size:17px; }
+  .nav-logo-img { width:20px !important; height:20px !important; }
   .hero { padding:100px 20px 80px; }
   .hero-stats { gap:28px; }
   .hero-title { letter-spacing:-2px; }
@@ -406,8 +409,8 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
 <!-- ══ NAV ══ -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-logo">
-      <img src="logo.png" alt="SyncX" style="width:24px;height:24px;border-radius:6px;object-fit:cover;margin-right:7px;vertical-align:middle;position:relative;top:-1px;">
+    <a href="#" class="nav-logo" id="nav-logo">
+      <img src="logo.png" alt="SyncX" class="nav-logo-img" style="width:24px;height:24px;border-radius:6px;object-fit:cover;margin-right:7px;vertical-align:middle;position:relative;top:-1px;">
       Sync<span>X</span>
     </a>
     <ul class="nav-links">
@@ -436,14 +439,14 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
 
 <!-- Mobile Menu -->
 <div id="mobile-menu">
-  <button id="mobile-menu-close" style="position:absolute;top:24px;right:24px;background:none;border:none;color:var(--text-2);font-size:28px;cursor:none;">×</button>
+  <button id="mobile-menu-close" style="position:absolute;top:24px;right:24px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;color:var(--text-2);font-size:20px;cursor:pointer;transition:background 0.2s;">×</button>
   <a href="#products">Produtos</a>
   <a href="proximos.html">Próximos</a>
   <a href="#features">Features</a>
   <a href="#community">Comunidade</a>
   <a href="#howto">Como Usar</a>
   <a href="dashboard.html">Dashboard</a>
-  <a href="login.html">Entrar</a>
+  <a href="login.html" style="color:var(--accent);">Entrar</a>
 </div>
 
 <!-- ══ HERO ══ -->
