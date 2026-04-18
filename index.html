@@ -13,8 +13,9 @@
 <style>
 /* ══ HERO NAV OVERRIDE — static → pill on scroll ══ */
 #nav {
-  top: 0;
+  /* Override base style.css which uses left:0 right:0 */
   left: 50%;
+  right: auto;
   transform: translateX(-50%);
   height: 68px;
   width: 100%;
@@ -36,7 +37,7 @@
     border-color 0.45s ease,
     box-shadow 0.45s ease;
 }
-#nav .nav-inner { padding: 0 48px; }
+#nav .nav-inner { padding: 0 32px; }
 #nav.scrolled {
   top: 10px;
   width: calc(100% - 56px);
@@ -49,7 +50,7 @@
   border-color: rgba(255,255,255,0.09);
   box-shadow: 0 8px 40px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.06);
 }
-#nav.scrolled .nav-inner { padding: 0 24px; }
+#nav.scrolled .nav-inner { padding: 0 20px; }
 
 /* ══ HERO ══ */
 .hero {
@@ -335,17 +336,37 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
 .reveal.visible { opacity:1;transform:translateY(0); }
 .reveal-delay-1{transition-delay:0.10s}.reveal-delay-2{transition-delay:0.20s}.reveal-delay-3{transition-delay:0.30s}.reveal-delay-4{transition-delay:0.40s}
 .nav-links a.spy-active { color:var(--text); }
-.nav-links a.spy-active::after { content:'';display:block;width:4px;height:4px;background:var(--accent);border-radius:50%;margin:3px auto 0;box-shadow:0 0 6px rgba(224,32,32,0.8); }
-/* Fix: links em coluna p/ bolinha ficar abaixo do texto */
-.nav-links li a { display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1; }
+.nav-links a.spy-active::after { content:'';display:block;width:4px;height:4px;background:var(--accent);border-radius:50%;margin:2px auto 0;box-shadow:0 0 6px rgba(224,32,32,0.8); }
 
 /* ══ MOBILE ══ */
 @media (max-width:900px) { .features-grid{grid-template-columns:repeat(2,1fr);} }
 @media (max-width:768px) {
-  #nav .nav-inner { padding:0 20px; }
-  #nav.scrolled { width:calc(100% - 24px); }
+  /* Nav pill on mobile: smaller margins, hide links, show hamburger */
+  #nav {
+    height: 56px;
+    width: calc(100% - 32px);
+    top: 8px;
+    left: 50%;
+    right: auto;
+    transform: translateX(-50%);
+    border-radius: 100px;
+    background: rgba(10,10,18,0.82);
+    backdrop-filter: blur(24px) saturate(180%);
+    -webkit-backdrop-filter: blur(24px) saturate(180%);
+    border-color: rgba(255,255,255,0.08);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  #nav .nav-inner { padding:0 16px; }
+  #nav.scrolled {
+    width: calc(100% - 24px);
+    top: 8px;
+    height: 52px;
+  }
+  #nav.scrolled .nav-inner { padding: 0 16px; }
   .compat-grid { grid-template-columns:repeat(2,1fr); }
-  .nav-links,.nav-actions .btn { display:none; }
+  /* Always hide links on mobile — pill only shows logo + hamburger */
+  .nav-links { display:none !important; }
+  .nav-actions .btn { display:none !important; }
   .nav-mobile-btn { display:flex; }
   .hero { padding:100px 20px 80px; }
   .hero-stats { gap:28px; }
@@ -385,8 +406,8 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
 <!-- ══ NAV ══ -->
 <nav id="nav">
   <div class="nav-inner">
-    <a href="#" class="nav-logo" style="display:flex;align-items:center;gap:8px;">
-      <img src="logo.png" alt="SyncX" style="width:26px;height:26px;border-radius:7px;object-fit:cover;flex-shrink:0;">
+    <a href="#" class="nav-logo">
+      <img src="logo.png" alt="SyncX" style="width:24px;height:24px;border-radius:6px;object-fit:cover;margin-right:7px;vertical-align:middle;position:relative;top:-1px;">
       Sync<span>X</span>
     </a>
     <ul class="nav-links">
