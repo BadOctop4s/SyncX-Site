@@ -5,201 +5,81 @@
 
 'use strict';
 
-/* ── EVIL EYE — Perlin flame canvas ── */
-(function initEvilEye() {
+/* ── CANVAS PARTICLES ── */
+(function initCanvas() {
   const canvas = document.getElementById('x-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, animId;
-  let mx = window.innerWidth/2, my = window.innerHeight/2;
+  const COUNT = 70;
+  const MAX_DIST = 130;
+  const particles = [];
 
-  // ── Perlin noise (Ken Perlin improved) ──
-  const P = new Uint8Array(512);
-  (function seedPerm(){
-    const p = [...Array(256)].map((_,i)=>i);
-    for(let i=255;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
-    for(let i=0;i<512;i++) P[i]=p[i&255];
-  })();
-  function fade(t){return t*t*t*(t*(t*6-15)+10);}
-  function lerp(a,b,t){return a+(b-a)*t;}
-  function grad(h,x,y,z){
-    const u=h<8?x:y, v=h<4?y:h===12||h===14?x:z;
-    return ((h&1)?-u:u)+((h&2)?-v:v);
-  }
-  function perlin(x,y,z){
-    const X=Math.floor(x)&255, Y=Math.floor(y)&255, Z=Math.floor(z)&255;
-    x-=Math.floor(x); y-=Math.floor(y); z-=Math.floor(z);
-    const u=fade(x),v=fade(y),w=fade(z);
-    const A=P[X]+Y,AA=P[A]+Z,AB=P[A+1]+Z,B=P[X+1]+Y,BA=P[B]+Z,BB=P[B+1]+Z;
-    return lerp(
-      lerp(lerp(grad(P[AA],x,y,z),grad(P[BA],x-1,y,z),u),
-           lerp(grad(P[AB],x,y-1,z),grad(P[BB],x-1,y-1,z),u),v),
-      lerp(lerp(grad(P[AA+1],x,y,z-1),grad(P[BA+1],x-1,y,z-1),u),
-           lerp(grad(P[AB+1],x,y-1,z-1),grad(P[BB+1],x-1,y-1,z-1),u),v),w
-    );
-  }
-  function fbm(x,y,z,oct){
-    let v=0,a=0.5,f=1;
-    for(let i=0;i<oct;i++){v+=a*perlin(x*f,y*f,z*f);a*=0.5;f*=2.1;}
-    return v;
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
   }
 
-  function resize(){
-    W=canvas.width=window.innerWidth;
-    H=canvas.height=window.innerHeight;
+  function mkParticle() {
+    return {
+      x:  Math.random() * W,
+      y:  Math.random() * H,
+      vx: (Math.random() - 0.5) * 0.28,
+      vy: (Math.random() - 0.5) * 0.28,
+      r:  Math.random() * 1.4 + 0.4,
+    };
   }
-  window.addEventListener('resize',resize);
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  document.addEventListener('touchmove',e=>{mx=e.touches[0].clientX;my=e.touches[0].clientY;},{passive:true});
 
-  // Off-screen flame texture
-  let flameCanvas, flamCtx;
-  function buildFlameTexture(t){
-    const size=512;
-    if(!flameCanvas){flameCanvas=document.createElement('canvas');flameCanvas.width=flameCanvas.height=size;}
-    flamCtx=flamCtx||flameCanvas.getContext('2d');
-    const id=flamCtx.createImageData(size,size);
-    const d=id.data;
-    for(let y=0;y<size;y++){
-      for(let x=0;x<size;x++){
-        const nx=(x/size)*2-1, ny=(y/size)*2-1;
-        const dist=Math.sqrt(nx*nx+ny*ny);
-        // Flame fbm distortion
-        const warp=fbm(nx*1.2+t*0.3, ny*1.2+t*0.25, t*0.1, 4)*0.55;
-        const warp2=fbm(nx*2.1-t*0.2, ny*2.1+t*0.15, t*0.08+5, 3)*0.3;
-        const d2=dist+warp+warp2;
-        // Flame shape: ellipse-ish, brighter at centre
-        const raw=fbm(nx*1.6+warp*1.4, ny*1.6+warp2*1.4, t*0.18, 5);
-        let v=raw*(1-Math.pow(Math.max(0,d2-0.05),0.7)*1.4);
-        v=Math.max(0,v);
-        const i=(y*size+x)*4;
-        // Colour ramp: black→dark red→orange→yellow→white
-        const c=Math.min(1,v*2.2);
-        d[i]  =Math.floor(Math.min(255, Math.pow(c,0.55)*255));
-        d[i+1]=Math.floor(Math.min(255, Math.pow(Math.max(0,c-0.25),0.7)*200));
-        d[i+2]=Math.floor(Math.min(255, Math.pow(Math.max(0,c-0.6),1.2)*120));
-        d[i+3]=Math.floor(Math.min(255, Math.pow(c,0.45)*255));
+  function init() {
+    resize();
+    particles.length = 0;
+    for (let i = 0; i < COUNT; i++) particles.push(mkParticle());
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -10) p.x = W + 10;
+      if (p.x > W + 10) p.x = -10;
+      if (p.y < -10) p.y = H + 10;
+      if (p.y > H + 10) p.y = -10;
+
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = 'rgba(224,32,32,0.5)';
+      ctx.fill();
+
+      for (let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < MAX_DIST) {
+          const a = (1 - d / MAX_DIST) * 0.1;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(224,32,32,${a})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
       }
     }
-    flamCtx.putImageData(id,0,0);
-    return flameCanvas;
+    animId = requestAnimationFrame(draw);
   }
 
-  let time=0;
-  function draw(){
-    time+=0.008;
-    ctx.clearRect(0,0,W,H);
-
-    const eyeX=W/2, eyeY=H/2;
-    const eyeR=Math.min(W,H)*0.32;
-    const irisR=eyeR*0.55;
-    const pupilR=irisR*0.38;
-
-    // ── Flame texture (drawn with screen blend) ──
-    const flameTex=buildFlameTexture(time);
-    const fSize=eyeR*3.2;
-    ctx.save();
-    ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=0.82;
-    ctx.drawImage(flameTex, eyeX-fSize/2, eyeY-fSize/2, fSize, fSize);
-    ctx.globalCompositeOperation='source-over';
-    ctx.globalAlpha=1;
-    ctx.restore();
-
-    // ── Dark sclera over flame ──
-    ctx.save();
-    ctx.globalCompositeOperation='source-over';
-    const scl=ctx.createRadialGradient(eyeX,eyeY,irisR*0.1,eyeX,eyeY,eyeR*1.05);
-    scl.addColorStop(0,  'rgba(6,2,2,0)');
-    scl.addColorStop(0.45,'rgba(6,2,2,0)');
-    scl.addColorStop(0.72,'rgba(4,1,1,0.55)');
-    scl.addColorStop(0.88,'rgba(3,0,0,0.82)');
-    scl.addColorStop(1,  'rgba(0,0,0,0.95)');
-    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR*1.05,0,Math.PI*2);
-    ctx.fillStyle=scl; ctx.fill();
-    ctx.restore();
-
-    // ── Clip to eye circle ──
-    ctx.save();
-    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR,0,Math.PI*2); ctx.clip();
-
-    // Second flame layer inside eye (more intense)
-    const fTex2=buildFlameTexture(time*1.15+3.5);
-    const f2=eyeR*2.1;
-    ctx.globalCompositeOperation='screen';
-    ctx.globalAlpha=0.65;
-    ctx.drawImage(fTex2, eyeX-f2/2, eyeY-f2/2, f2, f2);
-    ctx.globalCompositeOperation='source-over';
-    ctx.globalAlpha=1;
-
-    // Iris darkening ring
-    const iRing=ctx.createRadialGradient(eyeX,eyeY,irisR*0.05,eyeX,eyeY,irisR);
-    iRing.addColorStop(0,  'rgba(5,1,1,0.15)');
-    iRing.addColorStop(0.7,'rgba(5,1,1,0.1)');
-    iRing.addColorStop(1,  'rgba(0,0,0,0.35)');
-    ctx.beginPath(); ctx.arc(eyeX,eyeY,irisR,0,Math.PI*2);
-    ctx.fillStyle=iRing; ctx.fill();
-
-    ctx.restore(); // end clip
-
-    // ── Pupil tracking ──
-    const dx=mx-eyeX, dy=my-eyeY;
-    const dist=Math.sqrt(dx*dx+dy*dy)||1;
-    const maxOff=irisR*0.25;
-    const str=Math.min(dist/(eyeR*1.2),1)*1.5;
-    const px=eyeX+(dx/dist)*Math.min(dist*str*0.3,maxOff);
-    const py=eyeY+(dy/dist)*Math.min(dist*str*0.3,maxOff);
-
-    // Pupil distorted with noise
-    ctx.save();
-    ctx.beginPath();
-    const SEGS=80;
-    for(let i=0;i<=SEGS;i++){
-      const ang=(i/SEGS)*Math.PI*2;
-      const n=fbm(Math.cos(ang)*0.8+time*0.4, Math.sin(ang)*0.8+time*0.3, time*0.15, 3);
-      const r=pupilR*(1+n*0.08);
-      const x=px+Math.cos(ang)*r, y=py+Math.sin(ang)*r;
-      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-    }
-    ctx.closePath();
-    const pGrad=ctx.createRadialGradient(px-pupilR*0.2,py-pupilR*0.2,0,px,py,pupilR);
-    pGrad.addColorStop(0,'#0c0303');
-    pGrad.addColorStop(0.6,'#050101');
-    pGrad.addColorStop(1,'#000000');
-    ctx.fillStyle=pGrad; ctx.fill();
-    ctx.restore();
-
-    // Pupil inner shine
-    const sh=ctx.createRadialGradient(px-pupilR*0.25,py-pupilR*0.3,0,px-pupilR*0.25,py-pupilR*0.3,pupilR*0.22);
-    sh.addColorStop(0,'rgba(255,90,30,0.28)'); sh.addColorStop(1,'rgba(255,50,0,0)');
-    ctx.beginPath(); ctx.arc(px-pupilR*0.25,py-pupilR*0.3,pupilR*0.22,0,Math.PI*2);
-    ctx.fillStyle=sh; ctx.fill();
-
-    // ── Outer vignette ──
-    const vig=ctx.createRadialGradient(eyeX,eyeY,eyeR*0.75,eyeX,eyeY,eyeR*1.6);
-    vig.addColorStop(0,'rgba(0,0,0,0)');
-    vig.addColorStop(0.5,'rgba(0,0,0,0.3)');
-    vig.addColorStop(1,'rgba(0,0,0,0.85)');
-    ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
-
-    // ── Pulsing glow rim ──
-    const p2=0.18+Math.sin(time*1.3)*0.07;
-    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR+1,0,Math.PI*2);
-    ctx.strokeStyle=`rgba(230,60,10,${p2})`;
-    ctx.lineWidth=2+Math.sin(time*0.9)*1;
-    ctx.shadowBlur=24+Math.sin(time*1.1)*8;
-    ctx.shadowColor='rgba(220,40,5,0.5)';
-    ctx.stroke(); ctx.shadowBlur=0;
-
-    animId=requestAnimationFrame(draw);
-  }
-
-  document.addEventListener('visibilitychange',()=>{
-    if(document.hidden) cancelAnimationFrame(animId);
-    else { animId=requestAnimationFrame(draw); }
+  // Pause when tab not visible for performance
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) cancelAnimationFrame(animId);
+    else draw();
   });
-  resize(); draw();
+
+  window.addEventListener('resize', resize);
+  init();
+  draw();
 })();
+
 /* ── CUSTOM CURSOR ── */
 (function initCursor() {
   const dot  = document.getElementById('x-cursor');
