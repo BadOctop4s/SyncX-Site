@@ -5,78 +5,203 @@
 
 'use strict';
 
-/* ── CANVAS PARTICLES ── */
-(function initCanvas() {
+/* ── EVIL EYE CANVAS ── */
+(function initEvilEye() {
   const canvas = document.getElementById('x-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, animId;
-  const COUNT = 70;
-  const MAX_DIST = 130;
-  const particles = [];
+  let mouseX = -9999, mouseY = -9999;
+  let eyeX, eyeY, eyeR;
+
+  // Vein seeds
+  const veins = Array.from({length: 70}, () => ({
+    angle:  Math.random() * Math.PI * 2,
+    speed:  0.003 + Math.random() * 0.006,
+    r:      0.5 + Math.random() * 0.6,
+    amp:    0.3 + Math.random() * 0.7,
+    phase:  Math.random() * Math.PI * 2,
+  }));
 
   function resize() {
     W = canvas.width  = window.innerWidth;
     H = canvas.height = window.innerHeight;
+    eyeX = W / 2;
+    eyeY = H / 2;
+    eyeR = Math.min(W, H) * 0.28;
   }
 
-  function mkParticle() {
-    return {
-      x:  Math.random() * W,
-      y:  Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.28,
-      vy: (Math.random() - 0.5) * 0.28,
-      r:  Math.random() * 1.4 + 0.4,
-    };
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  document.addEventListener('touchmove', e => {
+    mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY;
+  }, { passive: true });
+
+  // Layered noise
+  function noise(x, y, t) {
+    return (
+      Math.sin(x * 2.1 + t)         * Math.cos(y * 1.7 + t * 0.8)  * 0.5 +
+      Math.sin(x * 3.7 + t * 1.3)   * Math.cos(y * 2.9 + t * 0.6)  * 0.3 +
+      Math.sin(x * 1.1 + y * 1.3 + t * 0.5) * 0.2
+    );
   }
 
-  function init() {
-    resize();
-    particles.length = 0;
-    for (let i = 0; i < COUNT; i++) particles.push(mkParticle());
-  }
+  let time = 0;
 
   function draw() {
+    time += 0.011;
     ctx.clearRect(0, 0, W, H);
-    for (let i = 0; i < particles.length; i++) {
-      const p = particles[i];
-      p.x += p.vx; p.y += p.vy;
-      if (p.x < -10) p.x = W + 10;
-      if (p.x > W + 10) p.x = -10;
-      if (p.y < -10) p.y = H + 10;
-      if (p.y > H + 10) p.y = -10;
 
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(224,32,32,0.5)';
-      ctx.fill();
+    const irisR  = eyeR * 0.60;
+    const pupilR = irisR * 0.40;
+    const SEGS   = 120;
 
-      for (let j = i + 1; j < particles.length; j++) {
-        const q = particles[j];
-        const dx = p.x - q.x, dy = p.y - q.y;
-        const d  = Math.sqrt(dx * dx + dy * dy);
-        if (d < MAX_DIST) {
-          const a = (1 - d / MAX_DIST) * 0.1;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.strokeStyle = `rgba(224,32,32,${a})`;
-          ctx.lineWidth = 0.7;
-          ctx.stroke();
-        }
-      }
+    // ── ambient red glow ──
+    const bg = ctx.createRadialGradient(eyeX, eyeY, 0, eyeX, eyeY, eyeR * 2.2);
+    bg.addColorStop(0,   'rgba(180,8,8,0.13)');
+    bg.addColorStop(0.45,'rgba(140,4,4,0.05)');
+    bg.addColorStop(1,   'rgba(0,0,0,0)');
+    ctx.fillStyle = bg;
+    ctx.fillRect(0, 0, W, H);
+
+    // ── sclera ──
+    const scl = ctx.createRadialGradient(eyeX, eyeY - eyeR*0.05, eyeR*0.04, eyeX, eyeY, eyeR);
+    scl.addColorStop(0,   '#161010');
+    scl.addColorStop(0.55,'#0d0808');
+    scl.addColorStop(1,   '#060303');
+    ctx.beginPath();
+    ctx.arc(eyeX, eyeY, eyeR, 0, Math.PI*2);
+    ctx.fillStyle = scl;
+    ctx.fill();
+
+    // ── iris (distorted edge) ──
+    const irisGrad = ctx.createRadialGradient(eyeX, eyeY, 0, eyeX, eyeY, irisR * 1.05);
+    irisGrad.addColorStop(0,    'rgba(245,35,10,0.97)');
+    irisGrad.addColorStop(0.28, 'rgba(210,18,5,0.93)');
+    irisGrad.addColorStop(0.60, 'rgba(145,6,2,0.88)');
+    irisGrad.addColorStop(0.82, 'rgba(70,2,0,0.65)');
+    irisGrad.addColorStop(1,    'rgba(10,0,0,0)');
+
+    ctx.beginPath();
+    for (let i = 0; i <= SEGS; i++) {
+      const ang = (i / SEGS) * Math.PI * 2;
+      const nx = Math.cos(ang) * 1.2, ny = Math.sin(ang) * 1.2;
+      const n  = noise(nx, ny, time * 0.75);
+      const fl = noise(nx * 0.9, ny * 0.9 + time * 0.45, time * 1.1);
+      const r  = irisR * (1 + n * 0.055 + Math.max(0, fl) * 0.11);
+      const x  = eyeX + Math.cos(ang) * r;
+      const y  = eyeY + Math.sin(ang) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
     }
+    ctx.closePath();
+    ctx.fillStyle = irisGrad;
+    ctx.fill();
+
+    // ── iris radial lines ──
+    ctx.save();
+    ctx.globalAlpha = 0.16;
+    for (let i = 0; i < 40; i++) {
+      const ang = (i / 40) * Math.PI * 2 + time * 0.04;
+      const n   = noise(Math.cos(ang), Math.sin(ang), time);
+      ctx.beginPath();
+      ctx.moveTo(eyeX + Math.cos(ang)*irisR*0.20, eyeY + Math.sin(ang)*irisR*0.20);
+      ctx.lineTo(eyeX + Math.cos(ang)*irisR*(0.85 + n*0.07), eyeY + Math.sin(ang)*irisR*(0.85 + n*0.07));
+      ctx.strokeStyle = `rgba(255,${55+Math.floor(n*35)},0,0.55)`;
+      ctx.lineWidth = 0.75;
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // ── pupil follow cursor ──
+    const dx   = mouseX - eyeX, dy = mouseY - eyeY;
+    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
+    const maxO = irisR * 0.26;
+    const str  = Math.min(dist / (eyeR * 1.4), 1) * 1.6;
+    const px   = eyeX + (dx/dist) * Math.min(dist * str * 0.33, maxO);
+    const py   = eyeY + (dy/dist) * Math.min(dist * str * 0.33, maxO);
+
+    const pupGrad = ctx.createRadialGradient(px-pupilR*0.18, py-pupilR*0.18, 0, px, py, pupilR);
+    pupGrad.addColorStop(0, '#0a0202');
+    pupGrad.addColorStop(1, '#000000');
+
+    ctx.beginPath();
+    for (let i = 0; i <= SEGS; i++) {
+      const ang = (i / SEGS) * Math.PI * 2;
+      const n   = noise(Math.cos(ang)*1.4, Math.sin(ang)*1.4, time*1.05 + 8);
+      const r   = pupilR * (1 + n * 0.035);
+      const x   = px + Math.cos(ang) * r;
+      const y   = py + Math.sin(ang) * r;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    }
+    ctx.closePath();
+    ctx.fillStyle = pupGrad;
+    ctx.fill();
+
+    // ── pupil shine ──
+    const shGrad = ctx.createRadialGradient(
+      px-pupilR*0.28, py-pupilR*0.32, 0,
+      px-pupilR*0.28, py-pupilR*0.32, pupilR*0.26
+    );
+    shGrad.addColorStop(0, 'rgba(255,110,70,0.32)');
+    shGrad.addColorStop(1, 'rgba(255,70,30,0)');
+    ctx.beginPath();
+    ctx.arc(px-pupilR*0.28, py-pupilR*0.32, pupilR*0.26, 0, Math.PI*2);
+    ctx.fillStyle = shGrad;
+    ctx.fill();
+
+    // ── sclera veins ──
+    ctx.save();
+    ctx.globalAlpha = 0.11;
+    for (const v of veins) {
+      v.angle += v.speed;
+      const ang    = v.angle;
+      const inner  = irisR * 1.06;
+      const outer  = eyeR  * (0.86 + v.amp * 0.1);
+      const mid    = inner + (outer - inner) * 0.5;
+      const perp   = ang + Math.PI/2;
+      const bend   = v.amp * 5;
+      ctx.beginPath();
+      ctx.moveTo(eyeX + Math.cos(ang)*inner, eyeY + Math.sin(ang)*inner);
+      ctx.quadraticCurveTo(
+        eyeX + Math.cos(perp)*bend + Math.cos(ang)*mid,
+        eyeY + Math.sin(perp)*bend + Math.sin(ang)*mid,
+        eyeX + Math.cos(ang)*outer, eyeY + Math.sin(ang)*outer
+      );
+      ctx.strokeStyle = `rgba(210,18,18,${0.28 + v.amp * 0.28})`;
+      ctx.lineWidth = v.r * 0.65;
+      ctx.stroke();
+    }
+    ctx.restore();
+
+    // ── outer ring / limbus gradient ──
+    const ring = ctx.createRadialGradient(eyeX, eyeY, eyeR*0.86, eyeX, eyeY, eyeR);
+    ring.addColorStop(0, 'rgba(170,8,4,0)');
+    ring.addColorStop(0.55,'rgba(150,6,3,0.32)');
+    ring.addColorStop(1,   'rgba(90,3,1,0.55)');
+    ctx.beginPath();
+    ctx.arc(eyeX, eyeY, eyeR, 0, Math.PI*2);
+    ctx.fillStyle = ring;
+    ctx.fill();
+
+    // ── pulsing outer glow ──
+    const pulse = 0.14 + Math.sin(time * 1.4) * 0.06;
+    ctx.beginPath();
+    ctx.arc(eyeX, eyeY, eyeR + 1.5, 0, Math.PI*2);
+    ctx.strokeStyle = `rgba(220,18,8,${pulse})`;
+    ctx.lineWidth = 2.5 + Math.sin(time*0.9) * 1.2;
+    ctx.shadowBlur   = 28 + Math.sin(time) * 10;
+    ctx.shadowColor  = 'rgba(210,10,10,0.55)';
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
     animId = requestAnimationFrame(draw);
   }
 
-  // Pause when tab not visible for performance
   document.addEventListener('visibilitychange', () => {
     if (document.hidden) cancelAnimationFrame(animId);
-    else draw();
+    else { animId = requestAnimationFrame(draw); }
   });
-
   window.addEventListener('resize', resize);
-  init();
+  resize();
   draw();
 })();
 
