@@ -5,206 +5,201 @@
 
 'use strict';
 
-/* ── EVIL EYE CANVAS ── */
+/* ── EVIL EYE — Perlin flame canvas ── */
 (function initEvilEye() {
   const canvas = document.getElementById('x-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
   let W, H, animId;
-  let mouseX = -9999, mouseY = -9999;
-  let eyeX, eyeY, eyeR;
+  let mx = window.innerWidth/2, my = window.innerHeight/2;
 
-  // Vein seeds
-  const veins = Array.from({length: 70}, () => ({
-    angle:  Math.random() * Math.PI * 2,
-    speed:  0.003 + Math.random() * 0.006,
-    r:      0.5 + Math.random() * 0.6,
-    amp:    0.3 + Math.random() * 0.7,
-    phase:  Math.random() * Math.PI * 2,
-  }));
-
-  function resize() {
-    W = canvas.width  = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-    eyeX = W / 2;
-    eyeY = H / 2;
-    eyeR = Math.min(W, H) * 0.28;
+  // ── Perlin noise (Ken Perlin improved) ──
+  const P = new Uint8Array(512);
+  (function seedPerm(){
+    const p = [...Array(256)].map((_,i)=>i);
+    for(let i=255;i>0;i--){const j=Math.floor(Math.random()*(i+1));[p[i],p[j]]=[p[j],p[i]];}
+    for(let i=0;i<512;i++) P[i]=p[i&255];
+  })();
+  function fade(t){return t*t*t*(t*(t*6-15)+10);}
+  function lerp(a,b,t){return a+(b-a)*t;}
+  function grad(h,x,y,z){
+    const u=h<8?x:y, v=h<4?y:h===12||h===14?x:z;
+    return ((h&1)?-u:u)+((h&2)?-v:v);
   }
-
-  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-  document.addEventListener('touchmove', e => {
-    mouseX = e.touches[0].clientX; mouseY = e.touches[0].clientY;
-  }, { passive: true });
-
-  // Layered noise
-  function noise(x, y, t) {
-    return (
-      Math.sin(x * 2.1 + t)         * Math.cos(y * 1.7 + t * 0.8)  * 0.5 +
-      Math.sin(x * 3.7 + t * 1.3)   * Math.cos(y * 2.9 + t * 0.6)  * 0.3 +
-      Math.sin(x * 1.1 + y * 1.3 + t * 0.5) * 0.2
+  function perlin(x,y,z){
+    const X=Math.floor(x)&255, Y=Math.floor(y)&255, Z=Math.floor(z)&255;
+    x-=Math.floor(x); y-=Math.floor(y); z-=Math.floor(z);
+    const u=fade(x),v=fade(y),w=fade(z);
+    const A=P[X]+Y,AA=P[A]+Z,AB=P[A+1]+Z,B=P[X+1]+Y,BA=P[B]+Z,BB=P[B+1]+Z;
+    return lerp(
+      lerp(lerp(grad(P[AA],x,y,z),grad(P[BA],x-1,y,z),u),
+           lerp(grad(P[AB],x,y-1,z),grad(P[BB],x-1,y-1,z),u),v),
+      lerp(lerp(grad(P[AA+1],x,y,z-1),grad(P[BA+1],x-1,y,z-1),u),
+           lerp(grad(P[AB+1],x,y-1,z-1),grad(P[BB+1],x-1,y-1,z-1),u),v),w
     );
   }
-
-  let time = 0;
-
-  function draw() {
-    time += 0.011;
-    ctx.clearRect(0, 0, W, H);
-
-    const irisR  = eyeR * 0.60;
-    const pupilR = irisR * 0.40;
-    const SEGS   = 120;
-
-    // ── ambient red glow ──
-    const bg = ctx.createRadialGradient(eyeX, eyeY, 0, eyeX, eyeY, eyeR * 2.2);
-    bg.addColorStop(0,   'rgba(180,8,8,0.13)');
-    bg.addColorStop(0.45,'rgba(140,4,4,0.05)');
-    bg.addColorStop(1,   'rgba(0,0,0,0)');
-    ctx.fillStyle = bg;
-    ctx.fillRect(0, 0, W, H);
-
-    // ── sclera ──
-    const scl = ctx.createRadialGradient(eyeX, eyeY - eyeR*0.05, eyeR*0.04, eyeX, eyeY, eyeR);
-    scl.addColorStop(0,   '#161010');
-    scl.addColorStop(0.55,'#0d0808');
-    scl.addColorStop(1,   '#060303');
-    ctx.beginPath();
-    ctx.arc(eyeX, eyeY, eyeR, 0, Math.PI*2);
-    ctx.fillStyle = scl;
-    ctx.fill();
-
-    // ── iris (distorted edge) ──
-    const irisGrad = ctx.createRadialGradient(eyeX, eyeY, 0, eyeX, eyeY, irisR * 1.05);
-    irisGrad.addColorStop(0,    'rgba(245,35,10,0.97)');
-    irisGrad.addColorStop(0.28, 'rgba(210,18,5,0.93)');
-    irisGrad.addColorStop(0.60, 'rgba(145,6,2,0.88)');
-    irisGrad.addColorStop(0.82, 'rgba(70,2,0,0.65)');
-    irisGrad.addColorStop(1,    'rgba(10,0,0,0)');
-
-    ctx.beginPath();
-    for (let i = 0; i <= SEGS; i++) {
-      const ang = (i / SEGS) * Math.PI * 2;
-      const nx = Math.cos(ang) * 1.2, ny = Math.sin(ang) * 1.2;
-      const n  = noise(nx, ny, time * 0.75);
-      const fl = noise(nx * 0.9, ny * 0.9 + time * 0.45, time * 1.1);
-      const r  = irisR * (1 + n * 0.055 + Math.max(0, fl) * 0.11);
-      const x  = eyeX + Math.cos(ang) * r;
-      const y  = eyeY + Math.sin(ang) * r;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-    ctx.fillStyle = irisGrad;
-    ctx.fill();
-
-    // ── iris radial lines ──
-    ctx.save();
-    ctx.globalAlpha = 0.16;
-    for (let i = 0; i < 40; i++) {
-      const ang = (i / 40) * Math.PI * 2 + time * 0.04;
-      const n   = noise(Math.cos(ang), Math.sin(ang), time);
-      ctx.beginPath();
-      ctx.moveTo(eyeX + Math.cos(ang)*irisR*0.20, eyeY + Math.sin(ang)*irisR*0.20);
-      ctx.lineTo(eyeX + Math.cos(ang)*irisR*(0.85 + n*0.07), eyeY + Math.sin(ang)*irisR*(0.85 + n*0.07));
-      ctx.strokeStyle = `rgba(255,${55+Math.floor(n*35)},0,0.55)`;
-      ctx.lineWidth = 0.75;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // ── pupil follow cursor ──
-    const dx   = mouseX - eyeX, dy = mouseY - eyeY;
-    const dist = Math.sqrt(dx*dx + dy*dy) || 1;
-    const maxO = irisR * 0.26;
-    const str  = Math.min(dist / (eyeR * 1.4), 1) * 1.6;
-    const px   = eyeX + (dx/dist) * Math.min(dist * str * 0.33, maxO);
-    const py   = eyeY + (dy/dist) * Math.min(dist * str * 0.33, maxO);
-
-    const pupGrad = ctx.createRadialGradient(px-pupilR*0.18, py-pupilR*0.18, 0, px, py, pupilR);
-    pupGrad.addColorStop(0, '#0a0202');
-    pupGrad.addColorStop(1, '#000000');
-
-    ctx.beginPath();
-    for (let i = 0; i <= SEGS; i++) {
-      const ang = (i / SEGS) * Math.PI * 2;
-      const n   = noise(Math.cos(ang)*1.4, Math.sin(ang)*1.4, time*1.05 + 8);
-      const r   = pupilR * (1 + n * 0.035);
-      const x   = px + Math.cos(ang) * r;
-      const y   = py + Math.sin(ang) * r;
-      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-    }
-    ctx.closePath();
-    ctx.fillStyle = pupGrad;
-    ctx.fill();
-
-    // ── pupil shine ──
-    const shGrad = ctx.createRadialGradient(
-      px-pupilR*0.28, py-pupilR*0.32, 0,
-      px-pupilR*0.28, py-pupilR*0.32, pupilR*0.26
-    );
-    shGrad.addColorStop(0, 'rgba(255,110,70,0.32)');
-    shGrad.addColorStop(1, 'rgba(255,70,30,0)');
-    ctx.beginPath();
-    ctx.arc(px-pupilR*0.28, py-pupilR*0.32, pupilR*0.26, 0, Math.PI*2);
-    ctx.fillStyle = shGrad;
-    ctx.fill();
-
-    // ── sclera veins ──
-    ctx.save();
-    ctx.globalAlpha = 0.11;
-    for (const v of veins) {
-      v.angle += v.speed;
-      const ang    = v.angle;
-      const inner  = irisR * 1.06;
-      const outer  = eyeR  * (0.86 + v.amp * 0.1);
-      const mid    = inner + (outer - inner) * 0.5;
-      const perp   = ang + Math.PI/2;
-      const bend   = v.amp * 5;
-      ctx.beginPath();
-      ctx.moveTo(eyeX + Math.cos(ang)*inner, eyeY + Math.sin(ang)*inner);
-      ctx.quadraticCurveTo(
-        eyeX + Math.cos(perp)*bend + Math.cos(ang)*mid,
-        eyeY + Math.sin(perp)*bend + Math.sin(ang)*mid,
-        eyeX + Math.cos(ang)*outer, eyeY + Math.sin(ang)*outer
-      );
-      ctx.strokeStyle = `rgba(210,18,18,${0.28 + v.amp * 0.28})`;
-      ctx.lineWidth = v.r * 0.65;
-      ctx.stroke();
-    }
-    ctx.restore();
-
-    // ── outer ring / limbus gradient ──
-    const ring = ctx.createRadialGradient(eyeX, eyeY, eyeR*0.86, eyeX, eyeY, eyeR);
-    ring.addColorStop(0, 'rgba(170,8,4,0)');
-    ring.addColorStop(0.55,'rgba(150,6,3,0.32)');
-    ring.addColorStop(1,   'rgba(90,3,1,0.55)');
-    ctx.beginPath();
-    ctx.arc(eyeX, eyeY, eyeR, 0, Math.PI*2);
-    ctx.fillStyle = ring;
-    ctx.fill();
-
-    // ── pulsing outer glow ──
-    const pulse = 0.14 + Math.sin(time * 1.4) * 0.06;
-    ctx.beginPath();
-    ctx.arc(eyeX, eyeY, eyeR + 1.5, 0, Math.PI*2);
-    ctx.strokeStyle = `rgba(220,18,8,${pulse})`;
-    ctx.lineWidth = 2.5 + Math.sin(time*0.9) * 1.2;
-    ctx.shadowBlur   = 28 + Math.sin(time) * 10;
-    ctx.shadowColor  = 'rgba(210,10,10,0.55)';
-    ctx.stroke();
-    ctx.shadowBlur = 0;
-
-    animId = requestAnimationFrame(draw);
+  function fbm(x,y,z,oct){
+    let v=0,a=0.5,f=1;
+    for(let i=0;i<oct;i++){v+=a*perlin(x*f,y*f,z*f);a*=0.5;f*=2.1;}
+    return v;
   }
 
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(animId);
-    else { animId = requestAnimationFrame(draw); }
+  function resize(){
+    W=canvas.width=window.innerWidth;
+    H=canvas.height=window.innerHeight;
+  }
+  window.addEventListener('resize',resize);
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
+  document.addEventListener('touchmove',e=>{mx=e.touches[0].clientX;my=e.touches[0].clientY;},{passive:true});
+
+  // Off-screen flame texture
+  let flameCanvas, flamCtx;
+  function buildFlameTexture(t){
+    const size=512;
+    if(!flameCanvas){flameCanvas=document.createElement('canvas');flameCanvas.width=flameCanvas.height=size;}
+    flamCtx=flamCtx||flameCanvas.getContext('2d');
+    const id=flamCtx.createImageData(size,size);
+    const d=id.data;
+    for(let y=0;y<size;y++){
+      for(let x=0;x<size;x++){
+        const nx=(x/size)*2-1, ny=(y/size)*2-1;
+        const dist=Math.sqrt(nx*nx+ny*ny);
+        // Flame fbm distortion
+        const warp=fbm(nx*1.2+t*0.3, ny*1.2+t*0.25, t*0.1, 4)*0.55;
+        const warp2=fbm(nx*2.1-t*0.2, ny*2.1+t*0.15, t*0.08+5, 3)*0.3;
+        const d2=dist+warp+warp2;
+        // Flame shape: ellipse-ish, brighter at centre
+        const raw=fbm(nx*1.6+warp*1.4, ny*1.6+warp2*1.4, t*0.18, 5);
+        let v=raw*(1-Math.pow(Math.max(0,d2-0.05),0.7)*1.4);
+        v=Math.max(0,v);
+        const i=(y*size+x)*4;
+        // Colour ramp: black→dark red→orange→yellow→white
+        const c=Math.min(1,v*2.2);
+        d[i]  =Math.floor(Math.min(255, Math.pow(c,0.55)*255));
+        d[i+1]=Math.floor(Math.min(255, Math.pow(Math.max(0,c-0.25),0.7)*200));
+        d[i+2]=Math.floor(Math.min(255, Math.pow(Math.max(0,c-0.6),1.2)*120));
+        d[i+3]=Math.floor(Math.min(255, Math.pow(c,0.45)*255));
+      }
+    }
+    flamCtx.putImageData(id,0,0);
+    return flameCanvas;
+  }
+
+  let time=0;
+  function draw(){
+    time+=0.008;
+    ctx.clearRect(0,0,W,H);
+
+    const eyeX=W/2, eyeY=H/2;
+    const eyeR=Math.min(W,H)*0.32;
+    const irisR=eyeR*0.55;
+    const pupilR=irisR*0.38;
+
+    // ── Flame texture (drawn with screen blend) ──
+    const flameTex=buildFlameTexture(time);
+    const fSize=eyeR*3.2;
+    ctx.save();
+    ctx.globalCompositeOperation='screen';
+    ctx.globalAlpha=0.82;
+    ctx.drawImage(flameTex, eyeX-fSize/2, eyeY-fSize/2, fSize, fSize);
+    ctx.globalCompositeOperation='source-over';
+    ctx.globalAlpha=1;
+    ctx.restore();
+
+    // ── Dark sclera over flame ──
+    ctx.save();
+    ctx.globalCompositeOperation='source-over';
+    const scl=ctx.createRadialGradient(eyeX,eyeY,irisR*0.1,eyeX,eyeY,eyeR*1.05);
+    scl.addColorStop(0,  'rgba(6,2,2,0)');
+    scl.addColorStop(0.45,'rgba(6,2,2,0)');
+    scl.addColorStop(0.72,'rgba(4,1,1,0.55)');
+    scl.addColorStop(0.88,'rgba(3,0,0,0.82)');
+    scl.addColorStop(1,  'rgba(0,0,0,0.95)');
+    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR*1.05,0,Math.PI*2);
+    ctx.fillStyle=scl; ctx.fill();
+    ctx.restore();
+
+    // ── Clip to eye circle ──
+    ctx.save();
+    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR,0,Math.PI*2); ctx.clip();
+
+    // Second flame layer inside eye (more intense)
+    const fTex2=buildFlameTexture(time*1.15+3.5);
+    const f2=eyeR*2.1;
+    ctx.globalCompositeOperation='screen';
+    ctx.globalAlpha=0.65;
+    ctx.drawImage(fTex2, eyeX-f2/2, eyeY-f2/2, f2, f2);
+    ctx.globalCompositeOperation='source-over';
+    ctx.globalAlpha=1;
+
+    // Iris darkening ring
+    const iRing=ctx.createRadialGradient(eyeX,eyeY,irisR*0.05,eyeX,eyeY,irisR);
+    iRing.addColorStop(0,  'rgba(5,1,1,0.15)');
+    iRing.addColorStop(0.7,'rgba(5,1,1,0.1)');
+    iRing.addColorStop(1,  'rgba(0,0,0,0.35)');
+    ctx.beginPath(); ctx.arc(eyeX,eyeY,irisR,0,Math.PI*2);
+    ctx.fillStyle=iRing; ctx.fill();
+
+    ctx.restore(); // end clip
+
+    // ── Pupil tracking ──
+    const dx=mx-eyeX, dy=my-eyeY;
+    const dist=Math.sqrt(dx*dx+dy*dy)||1;
+    const maxOff=irisR*0.25;
+    const str=Math.min(dist/(eyeR*1.2),1)*1.5;
+    const px=eyeX+(dx/dist)*Math.min(dist*str*0.3,maxOff);
+    const py=eyeY+(dy/dist)*Math.min(dist*str*0.3,maxOff);
+
+    // Pupil distorted with noise
+    ctx.save();
+    ctx.beginPath();
+    const SEGS=80;
+    for(let i=0;i<=SEGS;i++){
+      const ang=(i/SEGS)*Math.PI*2;
+      const n=fbm(Math.cos(ang)*0.8+time*0.4, Math.sin(ang)*0.8+time*0.3, time*0.15, 3);
+      const r=pupilR*(1+n*0.08);
+      const x=px+Math.cos(ang)*r, y=py+Math.sin(ang)*r;
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    }
+    ctx.closePath();
+    const pGrad=ctx.createRadialGradient(px-pupilR*0.2,py-pupilR*0.2,0,px,py,pupilR);
+    pGrad.addColorStop(0,'#0c0303');
+    pGrad.addColorStop(0.6,'#050101');
+    pGrad.addColorStop(1,'#000000');
+    ctx.fillStyle=pGrad; ctx.fill();
+    ctx.restore();
+
+    // Pupil inner shine
+    const sh=ctx.createRadialGradient(px-pupilR*0.25,py-pupilR*0.3,0,px-pupilR*0.25,py-pupilR*0.3,pupilR*0.22);
+    sh.addColorStop(0,'rgba(255,90,30,0.28)'); sh.addColorStop(1,'rgba(255,50,0,0)');
+    ctx.beginPath(); ctx.arc(px-pupilR*0.25,py-pupilR*0.3,pupilR*0.22,0,Math.PI*2);
+    ctx.fillStyle=sh; ctx.fill();
+
+    // ── Outer vignette ──
+    const vig=ctx.createRadialGradient(eyeX,eyeY,eyeR*0.75,eyeX,eyeY,eyeR*1.6);
+    vig.addColorStop(0,'rgba(0,0,0,0)');
+    vig.addColorStop(0.5,'rgba(0,0,0,0.3)');
+    vig.addColorStop(1,'rgba(0,0,0,0.85)');
+    ctx.fillStyle=vig; ctx.fillRect(0,0,W,H);
+
+    // ── Pulsing glow rim ──
+    const p2=0.18+Math.sin(time*1.3)*0.07;
+    ctx.beginPath(); ctx.arc(eyeX,eyeY,eyeR+1,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(230,60,10,${p2})`;
+    ctx.lineWidth=2+Math.sin(time*0.9)*1;
+    ctx.shadowBlur=24+Math.sin(time*1.1)*8;
+    ctx.shadowColor='rgba(220,40,5,0.5)';
+    ctx.stroke(); ctx.shadowBlur=0;
+
+    animId=requestAnimationFrame(draw);
+  }
+
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden) cancelAnimationFrame(animId);
+    else { animId=requestAnimationFrame(draw); }
   });
-  window.addEventListener('resize', resize);
-  resize();
-  draw();
+  resize(); draw();
 })();
-
 /* ── CUSTOM CURSOR ── */
 (function initCursor() {
   const dot  = document.getElementById('x-cursor');
