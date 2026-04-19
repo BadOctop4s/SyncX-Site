@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — SyncX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+</head>
+
+<body>
+  <div id="x-cursor"></div>
+  <div id="x-cursor-ring"></div>
+  <canvas id="x-canvas"></canvas>
+  <div id="toast-container"></div>
+
+  <div class="dash-layout" style="position:relative;z-index:2;">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span style="font-family:var(--font-display);font-size:18px;font-weight:800;">Sync<span
+            style="color:var(--accent);">X</span></span>
+        <span class="badge badge-red" style="margin-left:auto;font-size:9px;">Dashboard</span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#overview" class="sidebar-link active" data-page="overview">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+          </svg>
+          Overview
+        </a>
+        <a href="#license" class="sidebar-link" data-page="license">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="11" width="18" height="11" rx="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+          Licença
+        </a>
+        <a href="#downloads" class="sidebar-link" data-page="downloads">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Downloads
+        </a>
+        <a href="#activate" class="sidebar-link" data-page="activate">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Ativar Licença
+        </a>
+
+        <!-- Seções exclusivas por cargo — aparecem via JS -->
+        <a href="#" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+          </svg>
+          Staff
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="developer" data-min-tier="70" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="16 18 22 12 16 6" />
+            <polyline points="8 6 2 12 8 18" />
+          </svg>
+          Dev Tools
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="admin" data-min-tier="80" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="3" />
+            <path
+              d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+          </svg>
+          Admin
+        </a>
+        <a href="#" class="sidebar-link role-only" data-page="creator" data-min-tier="90" style="display:none;">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polygon
+              points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+          </svg>
+          Creator
+        </a>
+
+        <div class="sidebar-section-label">Links</div>
+        <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+          Discord
+        </a>
+        <a href="https://github.com/BadOctop4s" target="_blank" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path
+              d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" />
+          </svg>
+          GitHub
+        </a>
+        <a href="index.html" class="sidebar-link">
+          <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+            <polyline points="9 22 9 12 15 12 15 22" />
+          </svg>
+          Início
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="user-avatar">?</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="user-name">Carregando...</div>
+            <div class="sidebar-user-role" id="user-role">Membro</div>
+          </div>
+          <button onclick="signOut()" title="Sair"
+            style="background:none;border:none;color:var(--text-3);padding:4px;border-radius:4px;flex-shrink:0;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+              <polyline points="16 17 21 12 16 7" />
+              <line x1="21" y1="12" x2="9" y2="12" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="dash-main">
+      <div class="dash-topbar">
+        <div class="dash-topbar-title" id="page-title">Overview</div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span class="badge badge-green"><span class="dot dot-pulse"></span>Online</span>
+        </div>
+      </div>
+
+      <div class="dash-content">
+
+        <!-- OVERVIEW PAGE -->
+        <div id="page-overview" class="dash-page">
+          <div class="stat-grid">
+            <div class="stat-card">
+              <div class="stat-label">Status da Conta</div>
+              <div class="stat-value" style="font-size:18px;" id="stat-status">
+                <span class="badge badge-gray">Verificando...</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Cargo Discord</div>
+              <div class="stat-value" style="font-size:15px;margin-top:4px;" id="stat-role">
+                <span class="badge badge-gray">—</span>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Produtos Ativos</div>
+              <div class="stat-value" id="stat-products">—</div>
+              <div class="stat-sub">licenças ativas</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Membro desde</div>
+              <div class="stat-value" style="font-size:16px;" id="stat-since">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Email</div>
+              <div class="stat-value" style="font-size:13px;letter-spacing:0;" id="stat-email">—</div>
+              <div class="stat-sub" id="stat-email-confirmed"></div>
+            </div>
+          </div>
+
+          <!-- Quick actions -->
+          <div style="margin-top:8px;">
+            <div class="heading-sm" style="margin-bottom:16px;">Acesso Rápido</div>
+            <div class="download-grid">
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                    <polyline points="7 10 12 15 17 10" />
+                    <line x1="12" y1="15" x2="12" y2="3" />
+                  </svg>
+                </div>
+                <h3>SyncX Zero Hour</h3>
+                <p>Versão mais recente do cheat externo.</p>
+                <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe"
+                  class="btn btn-primary btn-sm">
+                  Baixar .exe
+                </a>
+              </div>
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <polyline points="16 18 22 12 16 6" />
+                    <polyline points="8 6 2 12 8 18" />
+                  </svg>
+                </div>
+                <h3>Royal Hub</h3>
+                <p>Loadstring pronto para executar.</p>
+                <button onclick="copyLoadstringDash(this)" class="btn btn-primary btn-sm" style="border:none;">
+                  Copiar Loadstring
+                </button>
+              </div>
+              <div class="download-card">
+                <div class="download-card-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                  </svg>
+                </div>
+                <h3>Suporte</h3>
+                <p>Precisa de ajuda? Acesse o Discord.</p>
+                <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-discord btn-sm">Abrir Discord</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LICENSE PAGE -->
+        <div id="page-license" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:20px;">Sua Licença</div>
+          <div id="license-card" class="license-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;">
+                  SyncX Zero Hour</div>
+                <div style="font-family:var(--font-display);font-size:18px;font-weight:800;">Chave de Produto</div>
+              </div>
+              <span id="license-status-badge" class="license-status status-inactive">Sem licença</span>
+            </div>
+            <div class="license-key-wrap">
+              <div class="license-key" id="license-key-text">Nenhuma chave encontrada</div>
+              <button onclick="copyLicenseKey()" class="btn btn-ghost btn-sm">Copiar</button>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px;">
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Válida até</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-expiry">—</div>
+              </div>
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Username</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-username">—</div>
+              </div>
+              <div>
+                <div
+                  style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">
+                  Duração</div>
+                <div style="font-size:13px;color:var(--text-2);" id="license-duration">—</div>
+              </div>
+            </div>
+          </div>
+          <div id="license-no-key" class="notice" style="margin-top:16px;">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <line x1="12" y1="8" x2="12" y2="12" />
+              <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            Não tem uma chave? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> ou
+            <a href="#activate" onclick="showPage('activate')">ative sua licença</a> se já tem uma key.
+          </div>
+        </div>
+
+        <!-- ACTIVATE PAGE -->
+        <div id="page-activate" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Ativar Licença</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Insira a key que você recebeu para ativar o
+            SyncX Zero Hour na sua conta.</p>
+          <div style="max-width:480px;">
+            <div id="activate-error"
+              style="display:none;background:rgba(224,32,32,0.08);border:1px solid rgba(224,32,32,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:var(--accent-2);margin-bottom:16px;">
+            </div>
+            <div id="activate-success"
+              style="display:none;background:rgba(34,197,94,0.08);border:1px solid rgba(34,197,94,0.2);border-radius:var(--radius);padding:12px 16px;font-size:13px;color:#4ade80;margin-bottom:16px;">
+            </div>
+            <div style="margin-bottom:14px;">
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">KEY
+                DO ZEROHOUR</label>
+              <input id="activate-key" type="text" placeholder="SYNCX-XXXX-XXXX-XXXX"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:13px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <div style="margin-bottom:14px;">
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">USERNAME
+                (para login no cheat)</label>
+              <input id="activate-username" type="text" placeholder="SeuNome"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <div style="margin-bottom:20px;">
+              <label
+                style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;color:var(--text-2);margin-bottom:7px;letter-spacing:0.5px;">SENHA
+                (para login no cheat)</label>
+              <input id="activate-password" type="password" placeholder="Mínimo 6 caracteres"
+                style="width:100%;padding:11px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:14px;outline:none;transition:border-color 0.2s;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
+            </div>
+            <button onclick="activateLicense()" class="btn btn-primary"
+              style="width:100%;justify-content:center;padding:13px;">
+              Ativar Licença
+            </button>
+            <p style="font-size:12px;color:var(--text-3);margin-top:12px;text-align:center;">
+              Recebeu sua key no Discord após a compra. Problemas? <a href="https://discord.gg/faUyqCdd3P"
+                target="_blank" style="color:var(--accent);">Suporte</a>
+            </p>
+          </div>
+        </div>
+
+        <!-- DOWNLOADS PAGE -->
+        <div id="page-downloads" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:20px;">Downloads</div>
+
+          <!-- Zero Hour -->
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                  <div class="heading-sm">SyncX Zero Hour</div>
+                  <span class="badge badge-red">v2.0</span>
+                </div>
+                <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Cheat externo para Zero Hour.
+                  Windows 10/11.</div>
+                <div style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);">SHA256: <span
+                    style="color:var(--text-2);">Em breve</span></div>
+              </div>
+              <a href="https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe"
+                class="btn btn-primary">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+                Download .exe
+              </a>
+            </div>
+          </div>
+
+          <!-- Royal Hub -->
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;">
+              <div>
+                <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+                  <div class="heading-sm">Royal Hub</div>
+                  <span class="badge badge-blue">Teste gratis</span>
+                </div>
+                <div style="font-size:13px;color:var(--text-3);margin-bottom:12px;">Script Lua para Roblox. Execute via
+                  executor.</div>
+              </div>
+              <button onclick="copyLoadstringDash(this)" class="btn btn-primary" style="border:none;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+                Copiar Loadstring
+              </button>
+            </div>
+            <div
+              style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 16px;margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--text-3);word-break:break-all;">
+              loadstring(game:HttpGet(<span
+                style="color:#7ec891;">"https://raw.githubusercontent.com/BadOctop4s/RoyalHub/main/Source.lua"</span>))()
+            </div>
+          </div>
+
+          <!-- Drivers note -->
+          <div class="notice">
+            <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <div>Alguns produtos podem requerer drivers adicionais (VC++ Redistributable, .NET 6+). Se houver problemas
+              ao abrir, instale o <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe" target="_blank">Visual C++
+                Redistributable</a> e o <a href="https://dotnet.microsoft.com/en-us/download/dotnet/6.0"
+                target="_blank">.NET 6</a>.</div>
+          </div>
+        </div>
+
+
+        <!-- ══ STAFF PAGE ══ -->
+        <div id="page-staff" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Painel de Staff</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Acesso exclusivo para membros com cargo
+            STAFF ou superior.</p>
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card">
+              <div class="stat-label">Usuários no servidor</div>
+              <div class="stat-value">—</div>
+              <div class="stat-sub">Total de membros Discord</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Tickets abertos</div>
+              <div class="stat-value">—</div>
+              <div class="stat-sub">Suporte pendente</div>
+            </div>
+          </div>
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div class="heading-sm" style="margin-bottom:12px;">Ações de Staff</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
+              <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-ghost btn-sm"
+                style="width:fit-content;">Abrir Discord (Staff)</a>
+              <p style="font-size:12px;color:var(--text-3);">Ações avançadas de staff requerem integração com o bot
+                Discord. Configure o bot para habilitar funcionalidades adicionais aqui.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ DEVELOPER PAGE ══ -->
+        <div id="page-developer" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Dev Tools</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Ferramentas exclusivas para o cargo
+            DEVELOPER.</p>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
+              Repositório Privado</div>
+            <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Acesse o repositório privado de
+              desenvolvimento dos produtos SyncX.</p>
+            <a href="https://github.com/BadOctop4s" target="_blank" class="btn btn-primary btn-sm">Acessar GitHub
+              Privado</a>
+          </div>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
+              Build Info</div>
+            <div
+              style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:6px;">
+              <div><span style="color:var(--text-3);">Supabase URL:</span> gdaiirmnqdypikeugdij.supabase.co</div>
+              <div><span style="color:var(--text-3);">Versão site:</span> 2.0.0</div>
+              <div><span style="color:var(--text-3);">Última build:</span> <span id="dev-build-date">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ══ ADMIN PAGE ══ -->
+        <div id="page-admin" class="dash-page" style="display:none;">
+          <div class="heading-sm" style="margin-bottom:8px;">Painel Admin</div>
+          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Controle administrativo. Acesso restrito a
+            ADMIN e superior.</p>
+
+          <!-- Stats -->
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card">
+              <div class="stat-label">Total de licenças</div>
+              <div class="stat-value" id="admin-licenses">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Licenças ativas</div>
+              <div class="stat-value" id="admin-licenses-active">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Usuários cadastrados</div>
+              <div class="stat-value" id="admin-users">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Nível de acesso</div>
+              <div class="stat-value" style="font-size:15px;" id="admin-access-level">—</div>
+            </div>
+          </div>
+
+          <!-- Gerar Key -->
+          <div
+            style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Gerar Nova Key</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:12px;align-items:end;">
+              <div>
+                <label
+                  style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Duração</label>
+                <select id="gen-duration"
+                  style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;">
+                  <option value="7">7 dias</option>
+                  <option value="30" selected>30 dias</option>
+                  <option value="90">90 dias</option>
+                  <option value="180">180 dias</option>
+                  <option value="365">1 ano</option>
+                  <option value="36500">Vitalício</option>
+                </select>
+              </div>
+              <div>
+                <label
+                  style="display:block;font-family:var(--font-mono);font-size:10px;color:var(--text-3);margin-bottom:6px;letter-spacing:1px;text-transform:uppercase;">Quantidade</label>
+                <input id="gen-amount" type="number" value="1" min="1" max="50"
+                  style="width:100%;padding:10px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;" />
+              </div>
+              <button onclick="adminGenerateKeys()" class="btn btn-primary" style="white-space:nowrap;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                  <line x1="12" y1="5" x2="12" y2="19" />
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                </svg>
+                Gerar
+              </button>
+            </div>
+            <!-- Keys geradas -->
+            <div id="generated-keys-wrap" style="display:none;margin-top:16px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+                <div
+                  style="font-family:var(--font-mono);font-size:11px;color:var(--text-3);letter-spacing:1px;text-transform:uppercase;">
+                  Keys Geradas</div>
+                <button onclick="copyAllKeys()" class="btn btn-ghost btn-sm">Copiar todas</button>
+              </div>
+              <div id="generated-keys-list"
+                style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:14px;display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto;">
+              </div>
+            </div>
+          </div>
+
+          <!-- Lista de licenças -->
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+              <div class="heading-sm" style="font-size:15px;">Licenças Cadastradas</div>
+              <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="dash-table" id="admin-licenses-table">
+                <thead>
+                  <tr>
+                    <th>Key</th>
+                    <th>Username</th>
+                    <th>Status</th>
+                    <th>Expira</th>
+                    <th>Criada</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-licenses-tbody">
+                  <tr>
+                    <td colspan="6" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar para
+                      carregar</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="display:flex;gap:10px;flex-wrap:wrap;">
+            <button class="btn btn-ghost btn-sm" onclick="adminLoadStats()">Atualizar Stats</button>
+            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+              class="btn btn-ghost btn-sm">Abrir Supabase</a>
+          </div>
+        </div>
+
+        <!-- ══ CREATOR PAGE ══ -->
+        <div id="page-creator" class="dash-page" style="display:none;">
+          <!-- Header stats -->
+          <div class="stat-grid" style="margin-bottom:28px;">
+            <div class="stat-card" style="border-color:rgba(224,32,32,0.25);">
+              <div class="stat-label">Nível de acesso</div>
+              <div class="stat-value" style="font-size:15px;"><span class="badge badge-red">Creator</span></div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Licenças totais</div>
+              <div class="stat-value" id="creator-licenses">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Usuários totais</div>
+              <div class="stat-value" id="creator-users">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Produtos cadastrados</div>
+              <div class="stat-value" id="creator-products-count">—</div>
+            </div>
+          </div>
+
+          <!-- Quick links -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:32px;">
+            <a href="https://github.com/BadOctop4s/SyncX-Site" target="_blank" class="btn btn-ghost btn-sm">Repositório do Site</a>
+            <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel Deploy</a>
+            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Supabase DB</a>
+          </div>
+
+          <!-- ── PRODUCT MANAGER ── -->
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <div style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.2px;">Gerenciar Produtos</div>
+            <button onclick="openProductModal()" class="btn btn-primary btn-sm">
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Novo Produto
+            </button>
+          </div>
+
+          <!-- Filter tabs -->
+          <div style="display:flex;gap:4px;margin-bottom:16px;background:var(--bg-2);border-radius:var(--radius);padding:4px;width:fit-content;">
+            <button class="pm-tab-btn active" data-pm-filter="all">Todos</button>
+            <button class="pm-tab-btn" data-pm-filter="main">Principal</button>
+            <button class="pm-tab-btn" data-pm-filter="proximos">Próximos</button>
+            <button class="pm-tab-btn" data-pm-filter="outros">Outros</button>
+          </div>
+
+          <!-- Products list -->
+          <div id="pm-products-list" style="display:flex;flex-direction:column;gap:8px;">
+            <div style="text-align:center;padding:32px;color:var(--text-3);font-size:13px;">
+              <div class="loader-ring" style="margin:0 auto 12px;"></div>
+              Carregando produtos...
+            </div>
+          </div>
+        </div>
+
+        <!-- ── PRODUCT MODAL ── -->
+        <div id="pm-modal" style="display:none;position:fixed;inset:0;z-index:9000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);">
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
+            <button onclick="closeProductModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-3);font-size:20px;line-height:1;">✕</button>
+            <div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:24px;" id="pm-modal-title">Novo Produto</div>
+
+            <input type="hidden" id="pm-id"/>
+            <div style="display:grid;gap:14px;">
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">Nome do produto *</div>
+                <input id="pm-name" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;" placeholder="Ex: SyncX Zero Hour"/>
+              </div>
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">Descrição</div>
+                <textarea id="pm-desc" rows="3" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;resize:vertical;" placeholder="Descrição curta do produto..."></textarea>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <div class="stat-label" style="margin-bottom:6px;">Status *</div>
+                  <select id="pm-status" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                    <option value="live">🟢 Live</option>
+                    <option value="dev">🔴 Em desenvolvimento</option>
+                    <option value="soon">⚫ Em breve</option>
+                  </select>
+                </div>
+                <div>
+                  <div class="stat-label" style="margin-bottom:6px;">Página *</div>
+                  <select id="pm-page" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                    <option value="main">Principal (index)</option>
+                    <option value="proximos">Próximos</option>
+                    <option value="outros">Outros Projetos</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div>
+                  <div class="stat-label" style="margin-bottom:6px;">Badge label</div>
+                  <input id="pm-badge-label" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="Ex: Destaque"/>
+                </div>
+                <div>
+                  <div class="stat-label" style="margin-bottom:6px;">Badge cor</div>
+                  <select id="pm-badge-color" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                    <option value="gray">Cinza</option>
+                    <option value="red">Vermelho</option>
+                    <option value="green">Verde</option>
+                    <option value="blue">Azul</option>
+                    <option value="orange">Laranja</option>
+                    <option value="purple">Roxo</option>
+                    <option value="cyan">Ciano</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">Ícone do projeto</div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                  <div>
+                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">ÍCONE PREDEFINIDO</div>
+                    <select id="pm-icon-type" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onchange="document.getElementById('pm-icon-url').value=''">
+                      <option value="layers">📦 Padrão (layers)</option>
+                      <option value="github">🐙 GitHub</option>
+                      <option value="discord">💬 Discord</option>
+                      <option value="roblox">🎮 Roblox</option>
+                      <option value="code">💻 Código</option>
+                      <option value="terminal">⌨️ Terminal</option>
+                      <option value="bot">🤖 Bot</option>
+                      <option value="game">🕹️ Game</option>
+                      <option value="shield">🛡️ Shield</option>
+                      <option value="download">⬇️ Download</option>
+                      <option value="star">⭐ Star</option>
+                      <option value="zap">⚡ Zap</option>
+                      <option value="lua">🌙 Lua</option>
+                      <option value="web">🌐 Web</option>
+                      <option value="lock">🔒 Lock</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">OU URL DE IMAGEM</div>
+                    <input id="pm-icon-url" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://..." oninput="if(this.value)document.getElementById('pm-icon-type').value='layers'"/>
+                  </div>
+                </div>
+                <div id="pm-icon-preview" style="margin-top:10px;display:flex;align-items:center;gap:8px;">
+                  <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;" id="pm-icon-preview-box"></div>
+                  <span style="font-size:11px;color:var(--text-4);">Prévia do ícone</span>
+                </div>
+              </div>
+
+              <div>
+                <input id="pm-tags" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="roblox, lua, open-source"/>
+              </div>
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">GitHub URL</div>
+                <input id="pm-github" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://github.com/..."/>
+              </div>
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">Download URL <span style="color:var(--text-4)">(opcional)</span></div>
+                <input id="pm-download" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://..."/>
+              </div>
+
+              <div>
+                <div class="stat-label" style="margin-bottom:6px;">Loadstring <span style="color:var(--text-4)">(para scripts Lua)</span></div>
+                <input id="pm-loadstring" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:12px;outline:none;" placeholder='loadstring(game:HttpGet("..."))()' />
+              </div>
+
+              <div style="display:flex;align-items:center;gap:10px;">
+                <input type="checkbox" id="pm-visible" checked style="width:16px;height:16px;accent-color:var(--accent);"/>
+                <label for="pm-visible" style="font-size:13px;color:var(--text-2);">Visível no site</label>
+              </div>
+
+              <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border);">
+                <button onclick="closeProductModal()" class="btn btn-ghost btn-sm">Cancelar</button>
+                <button onclick="saveProduct()" class="btn btn-primary btn-sm" id="pm-save-btn">Salvar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // ── PAGE ROUTING ──
+    function showPage(page) {
+      document.querySelectorAll('.dash-page').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
+      const pageEl = document.getElementById('page-' + page);
+      if (pageEl) pageEl.style.display = 'block';
+      const link = document.querySelector(`[data-page="${page}"]`);
+      if (link) link.classList.add('active');
+      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
+      document.getElementById('page-title').textContent = titles[page] || page;
+    }
+
+    document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        // Verifica tier para páginas exclusivas
+        const minTier = parseInt(link.dataset.minTier || '0');
+        if (minTier > 0 && (window.__userTier || 0) < minTier) {
+          toast('Acesso restrito ao cargo ' + (link.textContent.trim()) + '.', 'error');
+          return;
+        }
+        showPage(link.dataset.page);
+      });
+    });
+
+    // ── TOAST ──
+    function toast(msg, type = 'success') {
+      const c = document.getElementById('toast-container');
+      const t = document.createElement('div');
+      t.className = `toast ${type}`;
+      t.innerHTML = `<span class="toast-dot"></span>${msg}`;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    // ── GERAR KEY (admin) ──
+    function generateRandomKey() {
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+      const seg = () => Array.from({ length: 6 }, () => chars[Math.floor(Math.random() * chars.length)]).join('');
+      return `SYNCX-${seg()}-${seg()}-${seg()}`;
+    }
+
+    async function adminGenerateKeys() {
+      const duration = parseInt(document.getElementById('gen-duration').value);
+      const amount = Math.min(parseInt(document.getElementById('gen-amount').value) || 1, 50);
+      const user = (await getSession()).user;
+
+      const keys = [];
+      for (let i = 0; i < amount; i++) {
+        const key = generateRandomKey();
+        const expiresAt = duration >= 36500 ? null : new Date(Date.now() + duration * 86400000).toISOString();
+        keys.push({ key, duration_days: duration, expires_at: expiresAt, active: true, created_by: user.id });
+      }
+
+      const { error } = await sb.from('licenses').insert(keys);
+      if (error) { toast('Erro ao gerar keys: ' + error.message, 'error'); return; }
+
+      // Mostrar keys geradas
+      const wrap = document.getElementById('generated-keys-wrap');
+      const list = document.getElementById('generated-keys-list');
+      list.innerHTML = keys.map(k => `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);">${k.key}</span>
+          <button onclick="navigator.clipboard.writeText('${k.key}').then(()=>toast('Copiado!'))" class="btn btn-ghost btn-sm" style="flex-shrink:0;">Copiar</button>
+        </div>
+      `).join('');
+      wrap.style.display = 'block';
+      toast(`${amount} key(s) gerada(s) com sucesso!`);
+      adminLoadStats();
+      adminLoadLicenses();
+    }
+
+    function copyAllKeys() {
+      const keys = [...document.querySelectorAll('#generated-keys-list span')].map(s => s.textContent).join('');
+      navigator.clipboard.writeText(keys).then(() => toast('Todas as keys copiadas!'));
+    }
+
+    async function adminLoadLicenses() {
+      const tbody = document.getElementById('admin-licenses-tbody');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      const { data, error } = await sb.from('licenses').select('*').order('created_at', { ascending: false }).limit(100);
+      if (error || !data) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--accent-2);padding:16px;">Erro ao carregar</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma licença cadastrada</td></tr>'; return; }
+
+      tbody.innerHTML = data.map(l => {
+        const isActive = l.active && (!l.expires_at || new Date(l.expires_at) > new Date());
+        const expiry = l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício';
+        const created = new Date(l.created_at).toLocaleDateString('pt-BR');
+        const keyShort = l.key.substring(0, 20) + '...';
+        return `<tr>
+          <td style="font-family:var(--font-mono);font-size:11px;" title="${l.key}">${keyShort}</td>
+          <td style="font-size:12px;">${l.username || '<span style="color:var(--text-4);">—</span>'}</td>
+          <td><span class="badge ${isActive ? 'badge-green' : 'badge-gray'}">${isActive ? 'Ativa' : (l.active ? 'Expirada' : 'Revogada')}</span></td>
+          <td style="font-size:12px;color:var(--text-2);">${expiry}</td>
+          <td style="font-size:12px;color:var(--text-2);">${created}</td>
+          <td>
+            <button onclick="adminRevokeKey('${l.id}')" class="btn btn-ghost btn-sm" style="font-size:11px;padding:4px 8px;color:var(--accent);">Revogar</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+
+    async function adminRevokeKey(id) {
+      if (!confirm('Revogar esta key?')) return;
+      const { error } = await sb.from('licenses').update({ active: false }).eq('id', id);
+      if (error) { toast('Erro ao revogar', 'error'); return; }
+      toast('Key revogada.');
+      adminLoadLicenses();
+      adminLoadStats();
+    }
+
+    // ── ATIVAR LICENÇA ──
+    async function activateLicense() {
+      const key = document.getElementById('activate-key').value.trim().toUpperCase();
+      const username = document.getElementById('activate-username').value.trim();
+      const password = document.getElementById('activate-password').value;
+      const errEl = document.getElementById('activate-error');
+      const okEl = document.getElementById('activate-success');
+      errEl.style.display = 'none'; okEl.style.display = 'none';
+
+      if (!key || !username || !password) { errEl.textContent = 'Preencha todos os campos.'; errEl.style.display = 'block'; return; }
+      if (password.length < 6) { errEl.textContent = 'Senha deve ter no mínimo 6 caracteres.'; errEl.style.display = 'block'; return; }
+      if (username.length < 3) { errEl.textContent = 'Username deve ter no mínimo 3 caracteres.'; errEl.style.display = 'block'; return; }
+
+      const session = await getSession();
+      const userId = session.user.id;
+
+      // Verifica se key existe, está ativa e não foi usada
+      const { data: lic, error: licErr } = await sb.from('licenses')
+        .select('*').eq('key', key).eq('active', true).is('user_id', null).single();
+
+      if (licErr || !lic) { errEl.textContent = 'Key inválida, já utilizada ou inexistente.'; errEl.style.display = 'block'; return; }
+      if (lic.expires_at && new Date(lic.expires_at) < new Date()) { errEl.textContent = 'Esta key já expirou.'; errEl.style.display = 'block'; return; }
+
+      // Verifica se username já existe
+      const { data: existingUser } = await sb.from('licenses').select('id').eq('username', username).single();
+      if (existingUser) { errEl.textContent = 'Este username já está em uso.'; errEl.style.display = 'block'; return; }
+
+      // Verifica se usuário já tem licença
+      const { data: existingLic } = await sb.from('licenses').select('id').eq('user_id', userId).single();
+      if (existingLic) { errEl.textContent = 'Sua conta já possui uma licença ativa.'; errEl.style.display = 'block'; return; }
+
+      // Hash da senha (simples via btoa — não ideal mas funciona sem backend)
+      const encoder = new TextEncoder();
+      const data = encoder.encode(password + userId);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const passwordHash = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+
+      // Ativa a key
+      const { error: updateErr } = await sb.from('licenses').update({
+        user_id: userId,
+        username: username,
+        password_hash: passwordHash,
+        used_at: new Date().toISOString()
+      }).eq('id', lic.id);
+
+      if (updateErr) { errEl.textContent = 'Erro ao ativar: ' + updateErr.message; errEl.style.display = 'block'; return; }
+
+      okEl.textContent = '✓ Licença ativada! Username: ' + username + ' — Acesse o ZeroHour e faça login.';
+      okEl.style.display = 'block';
+      document.getElementById('activate-key').value = '';
+      document.getElementById('activate-username').value = '';
+      document.getElementById('activate-password').value = '';
+
+      // Atualiza overview
+      setTimeout(() => loadDashboard(), 1000);
+    }
+
+    // ── COPY ──
+    function copyLoadstringDash(btn) {
+      const code = SYNCX_CONFIG.downloads.royalhub_loadstring;
+      navigator.clipboard.writeText(code).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = btn.innerHTML.replace(/Copiar Loadstring/, '✓ Copiado!');
+        btn.style.background = '#16a34a';
+        toast('Loadstring copiado!');
+        setTimeout(() => { btn.innerHTML = orig; btn.style.background = ''; }, 2200);
+      });
+    }
+
+    function copyLicenseKey() {
+      const key = document.getElementById('license-key-text').textContent;
+      if (key === 'Nenhuma chave encontrada') return;
+      navigator.clipboard.writeText(key).then(() => toast('Chave copiada!'));
+    }
+
+    // ══════════════════════════════════════════════
+    // DISCORD ROLE CONFIG
+    // Substitua os IDs pelos cargos reais do seu servidor.
+    // Para descobrir: Discord → modo dev → botão direito no cargo → Copiar ID
+    // ══════════════════════════════════════════════
+    const GUILD_ID = '1441668291918561424';
+
+    const ROLE_DEFINITIONS = [
+      { id: '1447093178007162983', label: 'Creator/Programmer', badgeClass: 'badge-purple', tier: 100 },
+      { id: '1443034423829467269', label: 'ADMIN', badgeClass: 'badge-red', tier: 80 },
+      { id: '1443329537927544872', label: 'DEVELOPER', badgeClass: 'badge-blue', tier: 70 },
+      { id: '1449539967444582412', label: 'STAFF', badgeClass: 'badge-green', tier: 50 },
+      { id: '1450894744669655325', label: 'Server Booster', badgeClass: 'badge-pink', tier: 30 },
+      { id: '1443339614835179672', label: 'Membros', badgeClass: 'badge-gray', tier: 10 },
+    ];
+
+    async function fetchDiscordRoles(providerToken) {
+      if (!providerToken || !GUILD_ID) return [];
+      try {
+        const res = await fetch(`https://discord.com/api/users/@me/guilds/${GUILD_ID}/member`, {
+          headers: { 'Authorization': `Bearer ${providerToken}` }
+        });
+        const body = await res.json();
+        if (!res.ok) return [];
+        return body.roles || [];
+      } catch { return []; }
+    }
+
+    async function detectDiscordRole(session) {
+      const user = session.user;
+      const storageKey = 'syncx_role_' + user.id;
+      if (session.provider_token) {
+        const roleIds = await fetchDiscordRoles(session.provider_token);
+        if (roleIds.length > 0) {
+          const role = resolveTopRole(roleIds);
+          try { localStorage.setItem(storageKey, JSON.stringify(role)); } catch { }
+          return role;
+        }
+      }
+      try {
+        const saved = JSON.parse(localStorage.getItem(storageKey));
+        if (saved && saved.label) return saved;
+      } catch { }
+      return { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
+    }
+
+    function resolveTopRole(roleIds) {
+      let best = { label: 'Membro', badgeClass: 'badge-gray', tier: 0 };
+      for (const def of ROLE_DEFINITIONS) {
+        if (roleIds.includes(def.id) && def.tier > best.tier) best = def;
+      }
+      return best;
+    }
+
+    function applyRoleUI(role, userId) {
+      // Sidebar role label
+      const roleEl = document.getElementById('user-role');
+      if (roleEl) roleEl.textContent = role.label;
+
+      // Stat card
+      const statRole = document.getElementById('stat-role');
+      if (statRole) statRole.innerHTML = `<span class="badge ${role.badgeClass}">${role.label}</span>`;
+
+      // Admin access level card
+      const adminLevel = document.getElementById('admin-access-level');
+      if (adminLevel) adminLevel.innerHTML = `<span class="badge ${role.badgeClass}">${role.label}</span>`;
+      const creatorLevel = document.getElementById('creator-licenses');
+
+      // Mostra/esconde itens da sidebar baseado no tier
+      document.querySelectorAll('.role-only').forEach(link => {
+        const minTier = parseInt(link.dataset.minTier || '0');
+        link.style.display = role.tier >= minTier ? 'flex' : 'none';
+      });
+
+      // Registra tier atual para a sidebar de routing
+      window.__userTier = role.tier;
+    }
+
+    async function adminLoadStats() {
+      try {
+        const { count: totalLic } = await sb.from('licenses').select('*', { count: 'exact', head: true });
+        const { count: activeLic } = await sb.from('licenses').select('*', { count: 'exact', head: true }).eq('active', true).not('user_id', 'is', null);
+        const { count: totalUsers } = await sb.from('profiles').select('*', { count: 'exact', head: true });
+        const set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val ?? '—'; };
+        set('admin-licenses', totalLic ?? 0);
+        set('admin-licenses-active', activeLic ?? 0);
+        set('admin-users', totalUsers ?? 0);
+        set('creator-licenses', totalLic ?? 0);
+        set('creator-users', totalUsers ?? 0);
+      } catch (e) { console.warn('Admin stats error:', e); }
+    }
+
+    // ── LOAD USER ──
+    async function loadDashboard() {
+      const session = await requireAuth();
+      if (!session) return;
+
+      const user = session.user;
+
+      // Set user info
+      const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Usuário';
+      const avatar = user.user_metadata?.avatar_url;
+      document.getElementById('user-name').textContent = name;
+      const avatarEl = document.getElementById('user-avatar');
+      if (avatar) {
+        avatarEl.innerHTML = `<img src="${avatar}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;" alt="avatar"/>`;
+      } else {
+        avatarEl.textContent = name[0].toUpperCase();
+      }
+
+      // Stats
+      const since = new Date(user.created_at).toLocaleDateString('pt-BR', { year: 'numeric', month: 'short', day: 'numeric' });
+      document.getElementById('stat-since').textContent = since;
+      document.getElementById('stat-email').textContent = user.email || '—';
+      document.getElementById('stat-email-confirmed').textContent = user.email_confirmed_at ? '✓ Verificado' : 'Não verificado';
+
+      // Dev build date
+      const devDate = document.getElementById('dev-build-date');
+      if (devDate) devDate.textContent = new Date().toLocaleDateString('pt-BR');
+
+      // Discord role detection — persiste via localStorage
+      const topRole = await detectDiscordRole(session);
+      applyRoleUI(topRole, user.id);
+
+      // Se admin+, carrega stats automaticamente
+      if (topRole.tier >= 80) adminLoadStats();
+
+      // Load license
+      const license = await getUserLicense(user.id);
+      if (license) {
+        const isActive = license.active && (!license.expires_at || new Date(license.expires_at) > new Date());
+        document.getElementById('stat-status').innerHTML = isActive
+          ? '<span class="badge badge-green"><span class="dot"></span>Ativo</span>'
+          : '<span class="badge badge-gray">Expirado</span>';
+        document.getElementById('stat-products').textContent = isActive ? '1' : '0';
+        // Página de licença
+        const keyEl = document.getElementById('license-key-text');
+        if (keyEl) keyEl.textContent = license.key || 'N/A';
+        const expEl = document.getElementById('license-expiry');
+        if (expEl) expEl.textContent = license.expires_at ? new Date(license.expires_at).toLocaleDateString('pt-BR') : 'Vitalício';
+        const usrEl = document.getElementById('license-username');
+        if (usrEl) usrEl.textContent = license.username || '—';
+        const durEl = document.getElementById('license-duration');
+        if (durEl) durEl.textContent = license.duration_days >= 36500 ? 'Vitalício' : (license.duration_days + ' dias');
+        const statusBadge = document.getElementById('license-status-badge');
+        if (statusBadge) { statusBadge.textContent = isActive ? 'Ativo' : 'Expirado'; statusBadge.className = `license-status ${isActive ? 'status-active' : 'status-expired'}`; }
+        const noKey = document.getElementById('license-no-key');
+        if (noKey) noKey.style.display = 'none';
+      } else {
+        document.getElementById('stat-status').innerHTML = '<span class="badge badge-gray">Sem licença</span>';
+        document.getElementById('stat-products').textContent = '0';
+      }
+
+      // Listen for auth changes
+      onAuthChange((event) => {
+        if (event === 'SIGNED_OUT') window.location.href = 'login.html';
+      });
+    }
+
+    loadDashboard();
+  
+    /* ══ PRODUCT MANAGER ══ */
+    const pmSb = window._pmSb || (window._pmSb = (() => {
+      const { createClient } = supabase;
+      return createClient(SYNCX_CONFIG.supabase.url, SYNCX_CONFIG.supabase.anonKey);
+    })());
+
+    let pmCurrentFilter = 'all';
+    let pmProducts = [];
+
+    /* ── ICON PREVIEW ── */
+    const ICON_SVGS_DASH = {
+      layers:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+      github:   `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`,
+      discord:  `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>`,
+      roblox:   `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.686 0L0 15.314 19.314 20 24 4.686zm9.5 13.343l-5.53-1.48 1.48-5.529 5.53 1.48z"/></svg>`,
+      code:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+      terminal: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`,
+      bot:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="9" cy="16" r="1.5"/><circle cx="15" cy="16" r="1.5"/><path d="M12 11V7"/><path d="M8 7h8"/></svg>`,
+      game:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>`,
+      shield:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
+      star:     `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      zap:      `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      lua:      `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="17" cy="7" r="3" fill="#1a1a2e"/></svg>`,
+      web:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      lock:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+    };
+
+    function updateIconPreview() {
+      const box   = document.getElementById('pm-icon-preview-box');
+      const url   = document.getElementById('pm-icon-url')?.value?.trim();
+      const type  = document.getElementById('pm-icon-type')?.value;
+      if (!box) return;
+      box.style.color = 'var(--text-2)';
+      if (url) {
+        box.innerHTML = `<img src="${url}" style="width:22px;height:22px;object-fit:contain;border-radius:4px;" onerror="this.outerHTML='<span style=\\'color:var(--accent-2);font-size:10px;\\'>erro</span>'">`;
+      } else {
+        box.innerHTML = `<div style="width:18px;height:18px;">${ICON_SVGS_DASH[type] || ICON_SVGS_DASH.layers}</div>`;
+      }
+    }
+
+    document.addEventListener('change', e => {
+      if (e.target.id === 'pm-icon-type') updateIconPreview();
+    });
+    document.addEventListener('input', e => {
+      if (e.target.id === 'pm-icon-url') updateIconPreview();
+    });
+
+    // Style pm-tab-btn (inject once)
+    if (!document.getElementById('pm-styles')) {
+      const st = document.createElement('style');
+      st.id = 'pm-styles';
+      st.textContent = `
+        .pm-tab-btn {
+          padding:6px 14px;background:none;border:none;
+          color:var(--text-3);font-family:var(--font-display);
+          font-size:12px;font-weight:600;border-radius:calc(var(--radius) - 4px);
+          transition:background .2s,color .2s;cursor:pointer;
+        }
+        .pm-tab-btn.active{background:var(--surface-h);color:var(--text);}
+        .loader-ring{width:24px;height:24px;border:2px solid var(--border);
+          border-top-color:var(--accent);border-radius:50%;
+          animation:spin-slow .8s linear infinite;display:inline-block;}
+        .pm-status-live{color:#4ade80;}.pm-status-dev{color:var(--accent-2);}.pm-status-soon{color:var(--text-3);}
+      `;
+      document.head.appendChild(st);
+    }
+
+    async function loadProducts() {
+      const el = document.getElementById('pm-products-list');
+      if (!el) return;
+      const { data, error } = await pmSb.from('products').select('*').order('page').order('sort_order');
+      if (error) { el.innerHTML = `<div style="color:var(--accent-2);font-size:13px;padding:16px;">Erro: ${error.message}</div>`; return; }
+      pmProducts = data || [];
+      const count = document.getElementById('creator-products-count');
+      if (count) count.textContent = pmProducts.length;
+      renderProductList();
+    }
+
+    function renderProductList() {
+      const el = document.getElementById('pm-products-list');
+      if (!el) return;
+      const filtered = pmCurrentFilter === 'all' ? pmProducts : pmProducts.filter(p => p.page === pmCurrentFilter);
+      if (!filtered.length) {
+        el.innerHTML = `<div style="text-align:center;padding:32px;color:var(--text-3);font-size:13px;">Nenhum produto nesta página.</div>`;
+        return;
+      }
+      el.innerHTML = filtered.map(p => `
+        <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;display:flex;align-items:center;gap:16px;transition:border-color .2s;" onmouseover="this.style.borderColor='rgba(224,32,32,0.25)'" onmouseout="this.style.borderColor='var(--border)'">
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
+              <span style="font-family:var(--font-display);font-size:14px;font-weight:700;">${p.name}</span>
+              <span class="badge badge-${p.badge_color||'gray'}" style="font-size:9px;">${p.badge_label||''}</span>
+              <span class="pm-status-${p.status}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;">● ${p.status}</span>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);text-transform:uppercase;">${p.page}</span>
+              ${!p.visible ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);">[oculto]</span>' : ''}
+            </div>
+            <div style="font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">${p.description||'—'}</div>
+            ${p.tags&&p.tags.length ? `<div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">${p.tags.map(t=>`<span style="font-family:var(--font-mono);font-size:9px;padding:2px 7px;border:1px solid var(--border);border-radius:100px;color:var(--text-4);">${t}</span>`).join('')}</div>` : ''}
+          </div>
+          <div style="display:flex;gap:6px;flex-shrink:0;">
+            <button onclick="editProduct('${p.id}')" class="btn btn-ghost btn-sm" style="font-size:11px;">Editar</button>
+            <button onclick="deleteProduct('${p.id}','${p.name.replace(/'/g,"\\'")}'')" class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--accent-2);border-color:rgba(224,32,32,0.2);">Excluir</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Tab filter
+    document.addEventListener('click', e => {
+      const btn = e.target.closest('.pm-tab-btn');
+      if (!btn) return;
+      document.querySelectorAll('.pm-tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      pmCurrentFilter = btn.dataset.pmFilter;
+      renderProductList();
+    });
+
+    function openProductModal(product = null) {
+      const modal = document.getElementById('pm-modal');
+      const title = document.getElementById('pm-modal-title');
+      modal.style.display = 'flex';
+      if (product) {
+        title.textContent = 'Editar Produto';
+        document.getElementById('pm-id').value          = product.id;
+        document.getElementById('pm-name').value        = product.name;
+        document.getElementById('pm-desc').value        = product.description || '';
+        document.getElementById('pm-status').value      = product.status;
+        document.getElementById('pm-page').value        = product.page;
+        document.getElementById('pm-badge-label').value = product.badge_label || '';
+        document.getElementById('pm-badge-color').value = product.badge_color || 'gray';
+        document.getElementById('pm-tags').value        = (product.tags || []).join(', ');
+        document.getElementById('pm-github').value      = product.github_url || '';
+        document.getElementById('pm-download').value    = product.download_url || '';
+        document.getElementById('pm-loadstring').value  = product.loadstring || '';
+        document.getElementById('pm-visible').checked   = product.visible !== false;
+        document.getElementById('pm-icon-type').value   = product.icon_type || 'layers';
+        document.getElementById('pm-icon-url').value    = product.icon_url || '';
+      } else {
+        title.textContent = 'Novo Produto';
+        ['pm-id','pm-name','pm-desc','pm-badge-label','pm-tags','pm-github','pm-download','pm-loadstring','pm-icon-url'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.value = '';
+        });
+        document.getElementById('pm-status').value      = 'soon';
+        document.getElementById('pm-page').value        = 'main';
+        document.getElementById('pm-badge-color').value = 'gray';
+        document.getElementById('pm-icon-type').value   = 'layers';
+        document.getElementById('pm-visible').checked   = true;
+      }
+      updateIconPreview();
+    }
+
+    function closeProductModal() {
+      document.getElementById('pm-modal').style.display = 'none';
+    }
+
+    function editProduct(id) {
+      const p = pmProducts.find(x => x.id === id);
+      if (p) openProductModal(p);
+    }
+
+    async function deleteProduct(id, name) {
+      if (!confirm(`Excluir "${name}"? Isso não pode ser desfeito.`)) return;
+      const { error } = await pmSb.from('products').delete().eq('id', id);
+      if (error) { toast('Erro ao excluir: ' + error.message, 'error'); return; }
+      toast(`"${name}" excluído.`);
+      await loadProducts();
+    }
+
+    async function saveProduct() {
+      const id     = document.getElementById('pm-id').value;
+      const name   = document.getElementById('pm-name').value.trim();
+      if (!name) { toast('Nome é obrigatório.', 'error'); return; }
+
+      const tagsRaw = document.getElementById('pm-tags').value;
+      const tags    = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+
+      const payload = {
+        name,
+        description:  document.getElementById('pm-desc').value.trim() || null,
+        status:       document.getElementById('pm-status').value,
+        page:         document.getElementById('pm-page').value,
+        badge_label:  document.getElementById('pm-badge-label').value.trim() || null,
+        badge_color:  document.getElementById('pm-badge-color').value,
+        tags,
+        github_url:   document.getElementById('pm-github').value.trim() || null,
+        download_url: document.getElementById('pm-download').value.trim() || null,
+        loadstring:   document.getElementById('pm-loadstring').value.trim() || null,
+        visible:      document.getElementById('pm-visible').checked,
+        icon_type:    document.getElementById('pm-icon-url').value.trim() ? null : (document.getElementById('pm-icon-type').value || 'layers'),
+        icon_url:     document.getElementById('pm-icon-url').value.trim() || null,
+      };
+
+      const btn = document.getElementById('pm-save-btn');
+      btn.textContent = 'Salvando...'; btn.disabled = true;
+
+      let error;
+      if (id) {
+        ({ error } = await pmSb.from('products').update(payload).eq('id', id));
+      } else {
+        ({ error } = await pmSb.from('products').insert(payload));
+      }
+
+      btn.textContent = 'Salvar'; btn.disabled = false;
+
+      if (error) { toast('Erro: ' + error.message, 'error'); return; }
+      toast(id ? 'Produto atualizado!' : 'Produto criado!');
+      closeProductModal();
+      await loadProducts();
+    }
+
+    // Close modal on backdrop click
+    document.getElementById('pm-modal').addEventListener('click', e => {
+      if (e.target === document.getElementById('pm-modal')) closeProductModal();
+    });
+
+    // Auto-load products when creator page is shown
+    const origShowPage = window.showPage;
+    window.showPage = function(page) {
+      origShowPage(page);
+      if (page === 'creator') loadProducts();
+    };
+
+  </script>
