@@ -933,6 +933,7 @@ const revealIO = new IntersectionObserver(entries => {
 }, {threshold:0.10});
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
 </script>
+<script src="js/gradualblur.js"></script>
 <script src="js/evileye.js"></script>
 <script>
 SyncXEye.init('eye-canvas', {
@@ -946,6 +947,35 @@ SyncXEye.init('eye-canvas', {
   noiseScale:    1.0,
   pupilFollow:   1.2,
   flameSpeed:    0.9
+});
+
+// ── GRADUAL BLUR ──
+// Hero bottom — suaviza a transição hero → marquee
+GradualBlur.create('.hero', {
+  position:   'bottom',
+  strength:   2.5,
+  height:     '140px',
+  divCount:   8,
+  curve:      'ease-in',
+  zIndex:     3,
+});
+
+// Marquee top e bottom — fade nas bordas da faixa de texto
+GradualBlur.create('.marquee-wrap', {
+  position:   'left',
+  strength:   3,
+  height:     '120px',
+  divCount:   6,
+  curve:      'ease-out',
+  zIndex:     5,
+});
+GradualBlur.create('.marquee-wrap', {
+  position:   'right',
+  strength:   3,
+  height:     '120px',
+  divCount:   6,
+  curve:      'ease-out',
+  zIndex:     5,
 });
 </script>
 </body>
