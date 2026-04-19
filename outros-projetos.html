@@ -1,743 +1,849 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Outros Projetos — SyncX</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"/>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="css/style.css"/>
-<link rel="stylesheet" href="css/animations.css"/>
-<style>
-/* ══ OUTROS PROJETOS — MINIMAL OVERRIDE ══ */
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Outros Projetos — SyncX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    /* ══ OUTROS PROJETOS — MINIMAL OVERRIDE ══ */
 
-/* Floating navbar (diferente da principal) */
-#nav-float {
-  position: fixed; top: 16px; left: 50%;
-  transform: translateX(-50%);
-  z-index: 900;
-  display: flex; align-items: center;
-  gap: 0;
-  background: rgba(10,10,14,0.82);
-  backdrop-filter: blur(28px) saturate(200%);
-  -webkit-backdrop-filter: blur(28px) saturate(200%);
-  border: 1px solid rgba(255,255,255,0.07);
-  border-radius: 100px;
-  padding: 6px 6px 6px 20px;
-  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
-  transition: box-shadow 0.4s, border-color 0.4s;
-  max-width: calc(100vw - 40px);
-}
-#nav-float:hover {
-  border-color: rgba(255,255,255,0.1);
-  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 24px rgba(224,32,32,0.06);
-}
-.float-logo {
-  font-family: var(--font-display);
-  font-size: 16px; font-weight: 800;
-  letter-spacing: -0.3px;
-  color: var(--text);
-  white-space: nowrap;
-}
-.float-logo span { color: var(--accent); }
-.float-sep {
-  width: 1px; height: 20px;
-  background: rgba(255,255,255,0.08);
-  margin: 0 14px;
-}
-.float-links {
-  display: flex; align-items: center; gap: 2px;
-  list-style: none;
-}
-.float-links a {
-  font-family: var(--font-display);
-  font-size: 12px; font-weight: 600;
-  color: var(--text-3);
-  padding: 6px 12px;
-  border-radius: 100px;
-  transition: color 0.2s, background 0.2s;
-  white-space: nowrap;
-}
-.float-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
-.float-links a.active { color: var(--accent); }
-.float-actions { margin-left: 8px; display: flex; gap: 6px; }
-.float-btn {
-  font-family: var(--font-display);
-  font-size: 12px; font-weight: 700;
-  padding: 7px 16px;
-  border-radius: 100px;
-  border: none; transition: all 0.2s;
-  white-space: nowrap;
-}
-.float-btn-ghost {
-  background: rgba(255,255,255,0.05);
-  color: var(--text-2);
-  border: 1px solid rgba(255,255,255,0.06);
-}
-.float-btn-ghost:hover { background: rgba(255,255,255,0.09); color: var(--text); }
-.float-btn-primary {
-  background: var(--accent);
-  color: #fff;
-}
-.float-btn-primary:hover {
-  background: var(--accent-2);
-  box-shadow: 0 0 20px rgba(224,32,32,0.4);
-}
+    /* Floating navbar (diferente da principal) */
+    #nav-float {
+      position: fixed;
+      top: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 900;
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: rgba(10, 10, 14, 0.82);
+      backdrop-filter: blur(28px) saturate(200%);
+      -webkit-backdrop-filter: blur(28px) saturate(200%);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 100px;
+      padding: 6px 6px 6px 20px;
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.03);
+      transition: box-shadow 0.4s, border-color 0.4s;
+      max-width: calc(100vw - 40px);
+    }
 
-/* Page hero */
-.page-hero {
-  padding: 140px 0 60px;
-  position: relative; z-index: 2;
-}
-.page-hero-inner {
-  max-width: 700px;
-}
-.page-kicker {
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--accent);
-  letter-spacing: 3px; text-transform: uppercase;
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px;
-}
-.page-kicker::before {
-  content: ''; width: 24px; height: 1px; background: var(--accent);
-}
-.page-hero h1 {
-  font-family: var(--font-display);
-  font-size: clamp(40px, 6vw, 72px);
-  font-weight: 800; letter-spacing: -2.5px;
-  line-height: 0.95;
-  margin-bottom: 20px;
-}
-.page-hero p {
-  font-size: 16px; color: var(--text-2);
-  line-height: 1.7; max-width: 480px;
-}
+    #nav-float:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6), 0 0 24px rgba(224, 32, 32, 0.06);
+    }
 
-/* Filters */
-.filter-row {
-  display: flex; align-items: center; gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 48px;
-  position: relative; z-index: 2;
-}
-.filter-btn {
-  font-family: var(--font-mono);
-  font-size: 11px; font-weight: 500;
-  letter-spacing: 1px; text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 100px;
-  border: 1px solid var(--border);
-  background: none;
-  color: var(--text-3);
-  transition: all 0.2s;
-}
-.filter-btn:hover { color: var(--text); border-color: var(--border-strong); }
-.filter-btn.active {
-  background: var(--accent-dim);
-  border-color: rgba(224,32,32,0.3);
-  color: var(--accent-2);
-}
+    .float-logo {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text);
+      white-space: nowrap;
+    }
 
-/* Search */
-.search-wrap {
-  position: relative; margin-left: auto;
-}
-.search-input {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  padding: 7px 14px 7px 36px;
-  font-family: var(--font-mono);
-  font-size: 12px; color: var(--text);
-  outline: none; width: 200px;
-  transition: border-color 0.2s, width 0.3s var(--ease);
-}
-.search-input:focus { border-color: var(--border-h); width: 260px; }
-.search-input::placeholder { color: var(--text-4); }
-.search-icon {
-  position: absolute; left: 12px; top: 50%;
-  transform: translateY(-50%);
-  width: 14px; height: 14px; stroke: var(--text-4); fill: none;
-  pointer-events: none;
-}
+    .float-logo span {
+      color: var(--accent);
+    }
 
-/* Projects grid */
-.projects-section { position: relative; z-index: 2; padding-bottom: 120px; }
-.projects-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: 16px;
-}
+    .float-sep {
+      width: 1px;
+      height: 20px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 0 14px;
+    }
 
-/* Project card */
-.project-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-lg);
-  padding: 26px 24px;
-  display: flex; flex-direction: column;
-  gap: 14px;
-  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease), box-shadow 0.3s;
-  position: relative; overflow: hidden;
-  cursor: default;
-}
-.project-card::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(
-    180px circle at var(--glow-x, 50%) var(--glow-y, 50%),
-    rgba(224,32,32,0.08),
-    transparent 70%
-  );
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.project-card:hover::before { opacity: 1; }
-.project-card::after {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(224,32,32,0.5), transparent);
-  opacity: 0; transition: opacity 0.4s;
-  border-radius: inherit;
-}
-.project-card:hover {
-  border-color: rgba(255,255,255,0.1);
-  background: var(--surface-h);
-  transform: translateY(-3px);
-  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
-}
-.project-card:hover::after { opacity: 0.6; }
+    .float-links {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+      list-style: none;
+    }
 
-.project-card-top {
-  display: flex; align-items: flex-start; justify-content: space-between;
-  gap: 12px;
-}
-.project-icon {
-  width: 40px; height: 40px; flex-shrink: 0;
-  border-radius: var(--radius-sm);
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  display: flex; align-items: center; justify-content: center;
-}
-.project-icon svg { width: 18px; height: 18px; fill: none; stroke: var(--text-2); stroke-width: 1.5; }
-.project-lang-dot {
-  width: 10px; height: 10px; border-radius: 50%;
-  flex-shrink: 0; margin-top: 4px;
-}
-.project-meta {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-}
-.project-stat {
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--text-3);
-  display: flex; align-items: center; gap: 4px;
-}
-.project-stat svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
-.project-name {
-  font-family: var(--font-display);
-  font-size: 16px; font-weight: 700;
-  letter-spacing: -0.2px;
-  color: var(--text);
-}
-.project-desc {
-  font-size: 13px; color: var(--text-3);
-  line-height: 1.6;
-  flex: 1;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.project-tags {
-  display: flex; gap: 6px; flex-wrap: wrap;
-}
-.project-tag {
-  font-family: var(--font-mono);
-  font-size: 10px; color: var(--text-3);
-  padding: 3px 9px;
-  border: 1px solid var(--border);
-  border-radius: 100px;
-  background: var(--bg-2);
-}
-.project-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding-top: 12px;
-  border-top: 1px solid var(--border);
-}
-.project-updated {
-  font-family: var(--font-mono);
-  font-size: 10px; color: var(--text-4);
-}
-.project-link {
-  font-family: var(--font-mono);
-  font-size: 11px; color: var(--text-3);
-  display: flex; align-items: center; gap: 5px;
-  transition: color 0.2s;
-}
-.project-link:hover { color: var(--text); }
-.project-link svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+    .float-links a {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-3);
+      padding: 6px 12px;
+      border-radius: 100px;
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
 
-/* Empty / loading */
-.grid-loading {
-  grid-column: 1/-1;
-  display: flex; flex-direction: column; align-items: center;
-  gap: 16px; padding: 60px;
-  color: var(--text-3); font-size: 13px;
-}
-.loader-ring {
-  width: 32px; height: 32px;
-  border: 2px solid var(--border);
-  border-top-color: var(--accent);
-  border-radius: 50%;
-  animation: spin-slow 0.8s linear infinite;
-}
-.grid-empty {
-  grid-column: 1/-1;
-  text-align: center; padding: 60px;
-  color: var(--text-3); font-size: 14px;
-}
+    .float-links a:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.06);
+    }
 
-/* Scroll line decoration */
-.scroll-indicator {
-  position: fixed; top: 0; left: 0;
-  height: 2px; background: var(--accent);
-  z-index: 9999; width: 0%;
-  transition: width 0.1s;
-  box-shadow: 0 0 8px var(--accent-glow);
-}
+    .float-links a.active {
+      color: var(--accent);
+    }
 
-/* Lang colors */
-.lang-lua         { background: #000080; }
-.lang-csharp      { background: #239120; }
-.lang-javascript  { background: #f1e05a; }
-.lang-typescript  { background: #3178c6; }
-.lang-html        { background: #e34c26; }
-.lang-css         { background: #563d7c; }
-.lang-python      { background: #3572A5; }
-.lang-default     { background: var(--text-4); }
+    .float-actions {
+      margin-left: 8px;
+      display: flex;
+      gap: 6px;
+    }
 
-/* Responsive */
-@media (max-width: 768px) {
-  #nav-float { top: 10px; padding: 5px 5px 5px 14px; }
-  .float-links { display: none; }
-  .float-sep { display: none; }
-  .page-hero { padding: 110px 0 40px; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .search-wrap { margin-left: 0; }
-  .search-input { width: 100%; }
-  .filter-row { gap: 6px; }
-}
-</style>
+    .float-btn {
+      font-family: var(--font-display);
+      font-size: 12px;
+      font-weight: 700;
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .float-btn-ghost {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-2);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .float-btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.09);
+      color: var(--text);
+    }
+
+    .float-btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .float-btn-primary:hover {
+      background: var(--accent-2);
+      box-shadow: 0 0 20px rgba(224, 32, 32, 0.4);
+    }
+
+    /* Page hero */
+    .page-hero {
+      padding: 140px 0 60px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-hero-inner {
+      max-width: 700px;
+    }
+
+    .page-kicker {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .page-kicker::before {
+      content: '';
+      width: 24px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .page-hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 800;
+      letter-spacing: -2.5px;
+      line-height: 0.95;
+      margin-bottom: 20px;
+    }
+
+    .page-hero p {
+      font-size: 16px;
+      color: var(--text-2);
+      line-height: 1.7;
+      max-width: 480px;
+    }
+
+    /* Filters */
+    .filter-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .filter-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: none;
+      color: var(--text-3);
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover {
+      color: var(--text);
+      border-color: var(--border-strong);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-dim);
+      border-color: rgba(224, 32, 32, 0.3);
+      color: var(--accent-2);
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      margin-left: auto;
+    }
+
+    .search-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 7px 14px 7px 36px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text);
+      outline: none;
+      width: 200px;
+      transition: border-color 0.2s, width 0.3s var(--ease);
+    }
+
+    .search-input:focus {
+      border-color: var(--border-h);
+      width: 260px;
+    }
+
+    .search-input::placeholder {
+      color: var(--text-4);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      stroke: var(--text-4);
+      fill: none;
+      pointer-events: none;
+    }
+
+    /* Projects grid */
+    .projects-section {
+      position: relative;
+      z-index: 2;
+      padding-bottom: 120px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 16px;
+    }
+
+    /* Project card */
+    .project-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease), box-shadow 0.3s;
+      position: relative;
+      overflow: hidden;
+      cursor: default;
+    }
+
+    .project-card::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    .project-card:hover {
+      border-color: rgba(255, 255, 255, 0.1);
+      background: var(--surface-h);
+      transform: translateY(-3px);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.3);
+    }
+
+    .project-card:hover::after {
+      opacity: 0.6;
+    }
+
+    .project-card-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .project-icon {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+      border-radius: var(--radius-sm);
+      background: var(--bg-3);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: none;
+      stroke: var(--text-2);
+      stroke-width: 1.5;
+    }
+
+    .project-lang-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 4px;
+    }
+
+    .project-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .project-stat {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .project-stat svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    .project-name {
+      font-family: var(--font-display);
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.2px;
+      color: var(--text);
+    }
+
+    .project-desc {
+      font-size: 13px;
+      color: var(--text-3);
+      line-height: 1.6;
+      flex: 1;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .project-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .project-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-3);
+      padding: 3px 9px;
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      background: var(--bg-2);
+    }
+
+    .project-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .project-updated {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-4);
+    }
+
+    .project-link {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-3);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .project-link:hover {
+      color: var(--text);
+    }
+
+    .project-link svg {
+      width: 12px;
+      height: 12px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+    }
+
+    /* Empty / loading */
+    .grid-loading {
+      grid-column: 1/-1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      padding: 60px;
+      color: var(--text-3);
+      font-size: 13px;
+    }
+
+    .loader-ring {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin-slow 0.8s linear infinite;
+    }
+
+    .grid-empty {
+      grid-column: 1/-1;
+      text-align: center;
+      padding: 60px;
+      color: var(--text-3);
+      font-size: 14px;
+    }
+
+    /* Scroll line decoration */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 9999;
+      width: 0%;
+      transition: width 0.1s;
+      box-shadow: 0 0 8px var(--accent-glow);
+    }
+
+    /* Lang colors */
+    .lang-lua {
+      background: #000080;
+    }
+
+    .lang-csharp {
+      background: #239120;
+    }
+
+    .lang-javascript {
+      background: #f1e05a;
+    }
+
+    .lang-typescript {
+      background: #3178c6;
+    }
+
+    .lang-html {
+      background: #e34c26;
+    }
+
+    .lang-css {
+      background: #563d7c;
+    }
+
+    .lang-python {
+      background: #3572A5;
+    }
+
+    .lang-default {
+      background: var(--text-4);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      #nav-float {
+        top: 10px;
+        padding: 5px 5px 5px 14px;
+      }
+
+      .float-links {
+        display: none;
+      }
+
+      .float-sep {
+        display: none;
+      }
+
+      .page-hero {
+        padding: 110px 0 40px;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .search-wrap {
+        margin-left: 0;
+      }
+
+      .search-input {
+        width: 100%;
+      }
+
+      .filter-row {
+        gap: 6px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div id="x-cursor"></div>
-<div id="x-cursor-ring"></div>
-<canvas id="x-canvas"></canvas>
-<div class="scroll-indicator" id="scroll-indicator"></div>
+  <div id="x-cursor"></div>
+  <div id="x-cursor-ring"></div>
+  <canvas id="x-canvas"></canvas>
+  <div class="scroll-indicator" id="scroll-indicator"></div>
 
-<!-- FLOATING NAV -->
-<nav id="nav-float">
-  <a href="index.html" class="float-logo">Sync<span>X</span></a>
-  <div class="float-sep"></div>
-  <ul class="float-links">
-    <li><a href="index.html#products">Produtos</a></li>
-    <li><a href="proximos.html">Próximos</a></li>
-    <li><a href="outros-projetos.html" class="active">Outros</a></li>
-    <li><a href="index.html#community">Comunidade</a></li>
-  </ul>
-  <div class="float-actions">
-    <a href="dashboard.html" class="float-btn float-btn-primary">Dashboard</a>
-  </div>
-</nav>
-
-<!-- HERO -->
-<section class="page-hero">
-  <div class="container">
-    <div class="page-hero-inner">
-      <div class="page-kicker" data-reveal>Outros Projetos</div>
-      <h1 data-reveal data-delay="1">
-        Código que<br/>não para.
-      </h1>
-      <p data-reveal data-delay="2">
-        Projetos open source, experimentos e trabalhos pessoais. Tudo que está sendo construído fora da marca SyncX.
-      </p>
+  <!-- FLOATING NAV -->
+  <nav id="nav-float">
+    <a href="index.html" class="float-logo">Sync<span>X</span></a>
+    <div class="float-sep"></div>
+    <ul class="float-links">
+      <li><a href="index.html#products">Produtos</a></li>
+      <li><a href="proximos.html">Próximos</a></li>
+      <li><a href="outros-projetos.html" class="active">Outros</a></li>
+      <li><a href="index.html#community">Comunidade</a></li>
+    </ul>
+    <div class="float-actions">
+      <a href="dashboard.html" class="float-btn float-btn-primary">Dashboard</a>
     </div>
-  </div>
-</section>
+  </nav>
 
-<!-- PROJECTS -->
-<section class="projects-section">
-  <div class="container">
-
-    <!-- Filters + Search -->
-    <div class="filter-row" data-reveal>
-      <button class="filter-btn active" data-filter="all">Todos</button>
-      <button class="filter-btn" data-filter="Lua">Lua</button>
-      <button class="filter-btn" data-filter="C#">C#</button>
-      <button class="filter-btn" data-filter="JavaScript">JavaScript</button>
-      <button class="filter-btn" data-filter="HTML">HTML</button>
-      <div class="search-wrap">
-        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" class="search-input" id="search-input" placeholder="Buscar projeto..."/>
+  <!-- HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div class="page-kicker" data-reveal>Outros Projetos</div>
+        <h1 data-reveal data-delay="1">
+          Código que<br />não para.
+        </h1>
+        <p data-reveal data-delay="2">
+          Projetos open source, experimentos e trabalhos pessoais. Tudo que está sendo construído por fora da marca
+          SyncX.
+        </p>
       </div>
     </div>
+  </section>
 
-    <!-- Grid -->
-    <div class="projects-grid stagger" id="projects-grid">
-      <div class="grid-loading">
-        <div class="loader-ring"></div>
-        <span>Carregando projetos...</span>
+  <!-- PROJECTS -->
+  <section class="projects-section">
+    <div class="container">
+
+      <!-- Filters + Search -->
+      <div class="filter-row" data-reveal>
+        <button class="filter-btn active" data-filter="all">Todos</button>
+        <button class="filter-btn" data-filter="Lua">Lua</button>
+        <button class="filter-btn" data-filter="C#">C#</button>
+        <button class="filter-btn" data-filter="JavaScript">JavaScript</button>
+        <button class="filter-btn" data-filter="HTML">HTML</button>
+        <div class="search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input type="text" class="search-input" id="search-input" placeholder="Buscar projeto..." />
+        </div>
+      </div>
+
+      <!-- Grid -->
+      <div class="projects-grid stagger" id="projects-grid">
+        <div class="grid-loading">
+          <div class="loader-ring"></div>
+          <span>Carregando projetos do GitHub...</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer" style="position:relative;z-index:2;">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Sync<span>X</span></h3>
+          <p>Scripts e ferramentas de alta performance. Construído com precisão, distribuído com responsabilidade.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Páginas</h4>
+          <ul>
+            <li><a href="index.html">Início</a></li>
+            <li><a href="proximos.html">Próximos</a></li>
+            <li><a href="outros-projetos.html">Outros Projetos</a></li>
+            <li><a href="dashboard.html">Dashboard</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Links</h4>
+          <ul>
+            <li><a href="https://github.com/BadOctop4s" target="_blank">GitHub</a></li>
+            <li><a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Termos</a></li>
+            <li><a href="#">Privacidade</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>SyncX © 2026 — Não afiliado à Roblox Corporation.</span>
+        <div class="footer-links">
+          <a href="#">Termos</a>
+          <a href="#">Privacidade</a>
+        </div>
       </div>
     </div>
+  </footer>
 
-  </div>
-</section>
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    'use strict';
 
-<!-- FOOTER -->
-<footer id="footer" style="position:relative;z-index:2;">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <h3>Sync<span>X</span></h3>
-        <p>Scripts e ferramentas de alta performance. Construído com precisão, distribuído com responsabilidade.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Páginas</h4>
-        <ul>
-          <li><a href="index.html">Início</a></li>
-          <li><a href="proximos.html">Próximos</a></li>
-          <li><a href="outros-projetos.html">Outros Projetos</a></li>
-          <li><a href="dashboard.html">Dashboard</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Links</h4>
-        <ul>
-          <li><a href="https://github.com/BadOctop4s" target="_blank">GitHub</a></li>
-          <li><a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <ul>
-          <li><a href="#">Termos</a></li>
-          <li><a href="#">Privacidade</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>SyncX © 2025 — Não afiliado à Roblox Corporation.</span>
-      <div class="footer-links">
-        <a href="#">Termos</a>
-        <a href="#">Privacidade</a>
-      </div>
-    </div>
-  </div>
-</footer>
+    /* ── SCROLL PROGRESS ── */
+    window.addEventListener('scroll', () => {
+      const el = document.getElementById('scroll-indicator');
+      const max = document.body.scrollHeight - window.innerHeight;
+      el.style.width = (window.scrollY / max * 100) + '%';
+    }, { passive: true });
 
-<script src="js/config.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/main.js"></script>
-<script>
-'use strict';
+    /* ── LANGUAGE CONFIG ── */
+    const LANG_COLORS = {
+      'Lua': '#000080', 'C#': '#239120', 'JavaScript': '#f1e05a',
+      'TypeScript': '#3178c6', 'HTML': '#e34c26', 'CSS': '#563d7c',
+      'Python': '#3572A5',
+    };
+    const LANG_SHORT = {
+      'C#': 'csharp', 'JavaScript': 'javascript', 'TypeScript': 'typescript',
+      'HTML': 'html', 'CSS': 'css', 'Lua': 'lua', 'Python': 'python',
+    };
 
-/* ── ICON LIBRARY ── */
-const ICON_SVGS = {
-  layers:     `<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
-  github:     `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`,
-  discord:    `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>`,
-  roblox:     `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.686 0L0 15.314 19.314 20 24 4.686zm9.5 13.343l-5.53-1.48 1.48-5.529 5.53 1.48z"/></svg>`,
-  code:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
-  terminal:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`,
-  bot:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="9" cy="16" r="1.5"/><circle cx="15" cy="16" r="1.5"/><path d="M12 11V7"/><path d="M8 7h8"/></svg>`,
-  game:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>`,
-  shield:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
-  download:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
-  star:       `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-  zap:        `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-  lua:        `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="17" cy="7" r="3" fill="var(--bg-2)"/></svg>`,
-  web:        `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-  lock:       `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
-};
+    /* ── GITHUB API ── */
+    const GITHUB_USER = 'BadOctop4s';
+    // Repos to exclude from display
+    const EXCLUDE = ['BadOctop4s'];
 
-function getIconSVG(type) {
-  return ICON_SVGS[type] || ICON_SVGS.layers;
-}
+    async function fetchRepos() {
+      try {
+        const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=50&type=public`);
+        if (!res.ok) throw new Error('GitHub API ' + res.status);
+        const data = await res.json();
+        return data.filter(r => !EXCLUDE.includes(r.name) && !r.fork);
+      } catch (e) {
+        console.error('GitHub fetch failed:', e);
+        return null;
+      }
+    }
 
+    function relativeTime(iso) {
+      const diff = Date.now() - new Date(iso).getTime();
+      const d = Math.floor(diff / 86400000);
+      if (d === 0) return 'hoje';
+      if (d === 1) return 'ontem';
+      if (d < 30) return `${d}d atrás`;
+      if (d < 365) return `${Math.floor(d / 30)}m atrás`;
+      return `${Math.floor(d / 365)}a atrás`;
+    }
 
-const { createClient } = supabase;
-const sb = createClient(SYNCX_CONFIG.supabase.url, SYNCX_CONFIG.supabase.anonKey);
+    function langClass(lang) {
+      return 'lang-' + (LANG_SHORT[lang] || 'default');
+    }
 
-/* ── SCROLL PROGRESS ── */
-window.addEventListener('scroll', () => {
-  const el  = document.getElementById('scroll-indicator');
-  const max = document.body.scrollHeight - window.innerHeight;
-  el.style.width = (window.scrollY / max * 100) + '%';
-}, { passive: true });
+    function makeCard(repo) {
+      const lang = repo.language || '';
+      const color = LANG_COLORS[lang] || '#555';
+      const topics = (repo.topics || []).slice(0, 4);
+      const updated = relativeTime(repo.pushed_at);
+      const desc = repo.description || 'Sem descrição.';
 
-/* ── STATUS CONFIG ── */
-const STATUS_COLORS = {
-  live: { dot: '#22c55e', label: 'Live' },
-  dev:  { dot: '#e02020', label: 'Em dev' },
-  soon: { dot: '#6b7280', label: 'Em breve' },
-};
-
-const BADGE_COLORS = {
-  red:    'background:rgba(224,32,32,0.12);color:#ff6b6b;border:1px solid rgba(224,32,32,0.2);',
-  green:  'background:rgba(34,197,94,0.08);color:#4ade80;border:1px solid rgba(34,197,94,0.2);',
-  blue:   'background:rgba(32,120,224,0.1);color:#5ba3ff;border:1px solid rgba(32,120,224,0.2);',
-  orange: 'background:rgba(234,88,12,0.1);color:#f97316;border:1px solid rgba(234,88,12,0.2);',
-  purple: 'background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);',
-  cyan:   'background:rgba(6,182,212,0.1);color:#22d3ee;border:1px solid rgba(6,182,212,0.2);',
-  gray:   'background:rgba(255,255,255,0.04);color:#9ca3af;border:1px solid rgba(255,255,255,0.06);',
-};
-
-/* ── SUPABASE FETCH ── */
-async function fetchProjects() {
-  try {
-    const { data, error } = await sb
-      .from('products')
-      .select('*')
-      .eq('page', 'outros')
-      .eq('visible', true)
-      .order('sort_order', { ascending: true, nullsFirst: false })
-      .order('created_at', { ascending: false });
-    if (error) throw error;
-    return data || [];
-  } catch(e) {
-    console.error('Supabase fetch failed:', e);
-    return null;
-  }
-}
-
-function makeCard(p) {
-  const status    = STATUS_COLORS[p.status] || STATUS_COLORS.soon;
-  const tags      = (p.tags || []).slice(0, 5);
-  const badgeStyle = BADGE_COLORS[p.badge_color] || BADGE_COLORS.gray;
-
-  const links = [];
-  if (p.download_url) links.push(`<a href="${p.download_url}" target="_blank" class="project-link">Download<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>`);
-  if (p.github_url)   links.push(`<a href="${p.github_url}" target="_blank" class="project-link">GitHub<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>`);
-
-  return `
-    <div class="project-card"
-         data-status="${p.status}"
-         data-name="${(p.name||'').toLowerCase()}"
-         data-desc="${(p.description||'').toLowerCase()}">
-
+      return `
+    <div class="project-card" data-lang="${lang}" data-name="${repo.name.toLowerCase()}" data-desc="${desc.toLowerCase()}">
       <div class="project-card-top">
         <div class="project-icon">
-          ${p.icon_url
-            ? `<img src="${p.icon_url}" alt="${p.name}" style="width:22px;height:22px;object-fit:contain;border-radius:4px;" onerror="this.outerHTML='<svg viewBox=\\'0 0 24 24\\'><path d=\\'M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\\'/></svg>'">`
-            : getIconSVG(p.icon_type || 'layers')
-          }
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
         </div>
         <div class="project-meta">
-          ${p.badge_label ? `<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 9px;border-radius:100px;${badgeStyle}">${p.badge_label}</span>` : ''}
+          ${lang ? `<span class="project-stat"><span class="project-lang-dot" style="background:${color};"></span>${lang}</span>` : ''}
           <span class="project-stat">
-            <span class="project-lang-dot" style="background:${status.dot};box-shadow:0 0 6px ${status.dot}66;"></span>
-            ${status.label}
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ${repo.stargazers_count}
+          </span>
+          <span class="project-stat">
+            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            ${repo.forks_count}
           </span>
         </div>
       </div>
 
-      <div class="project-name">${p.name}</div>
-      <div class="project-desc">${p.description || 'Sem descrição.'}</div>
+      <div class="project-name">${repo.name}</div>
+      <div class="project-desc">${desc}</div>
 
-      ${tags.length ? `
+      ${topics.length ? `
         <div class="project-tags">
-          ${tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
-        </div>
-      ` : ''}
-
-      ${p.loadstring ? `
-        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-mono);font-size:11px;color:var(--text-3);word-break:break-all;cursor:pointer;" onclick="copyProjectLoadstring(this,'${p.loadstring.replace(/'/g,"\\'")}')">
-          <span style="color:var(--text-4);display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">LOADSTRING — clique para copiar</span>
-          ${p.loadstring.substring(0,60)}${p.loadstring.length>60?'…':''}
+          ${topics.map(t => `<span class="project-tag">${t}</span>`).join('')}
         </div>
       ` : ''}
 
       <div class="project-footer">
-        <span class="project-updated">${p.updated_at ? 'Atualizado ' + relativeTime(p.updated_at) : ''}</span>
-        <div style="display:flex;gap:10px;">
-          ${links.join('')}
-        </div>
+        <span class="project-updated">Atualizado ${updated}</span>
+        <a href="${repo.html_url}" target="_blank" class="project-link">
+          Ver no GitHub
+          <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
       </div>
     </div>
   `;
-}
+    }
 
-function relativeTime(iso) {
-  const diff = Date.now() - new Date(iso).getTime();
-  const d = Math.floor(diff / 86400000);
-  if (d === 0) return 'hoje';
-  if (d === 1) return 'ontem';
-  if (d < 30) return `${d}d atrás`;
-  if (d < 365) return `${Math.floor(d/30)}m atrás`;
-  return `${Math.floor(d/365)}a atrás`;
-}
+    /* ── RENDER ── */
+    let allRepos = [];
+    let currentFilter = 'all';
+    let currentSearch = '';
 
-function copyProjectLoadstring(el, code) {
-  navigator.clipboard.writeText(code).then(() => {
-    const orig = el.style.borderColor;
-    el.style.borderColor = 'rgba(34,197,94,0.4)';
-    el.querySelector('span').textContent = '✓ COPIADO!';
-    setTimeout(() => {
-      el.style.borderColor = orig;
-      el.querySelector('span').textContent = 'LOADSTRING — clique para copiar';
-    }, 2000);
-  });
-}
+    function renderGrid() {
+      const grid = document.getElementById('projects-grid');
+      let filtered = allRepos;
 
-/* ── RENDER ── */
-let allProjects = [];
-let currentFilter = 'all';
-let currentSearch = '';
+      if (currentFilter !== 'all') {
+        filtered = filtered.filter(r => r.language === currentFilter);
+      }
+      if (currentSearch) {
+        const q = currentSearch.toLowerCase();
+        filtered = filtered.filter(r =>
+          r.name.toLowerCase().includes(q) ||
+          (r.description || '').toLowerCase().includes(q)
+        );
+      }
 
-function renderGrid() {
-  const grid = document.getElementById('projects-grid');
-  let filtered = allProjects;
+      if (!filtered.length) {
+        grid.innerHTML = `<div class="grid-empty">Nenhum projeto encontrado.</div>`;
+        return;
+      }
 
-  if (currentFilter !== 'all') {
-    filtered = filtered.filter(p => p.status === currentFilter);
-  }
-  if (currentSearch) {
-    const q = currentSearch.toLowerCase();
-    filtered = filtered.filter(p =>
-      (p.name||'').toLowerCase().includes(q) ||
-      (p.description||'').toLowerCase().includes(q) ||
-      (p.tags||[]).some(t => t.toLowerCase().includes(q))
-    );
-  }
+      grid.innerHTML = filtered.map(makeCard).join('');
 
-  if (!filtered.length) {
-    grid.innerHTML = `<div class="grid-empty">Nenhum projeto encontrado.</div>`;
-    return;
-  }
-
-  grid.innerHTML = filtered.map(makeCard).join('');
-
-  setTimeout(() => {
-    grid.querySelectorAll('.project-card').forEach((card, i) => {
-      card.style.opacity = '0';
-      card.style.transform = 'translateY(20px)';
+      // Trigger reveal on new cards
       setTimeout(() => {
-        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s';
-        card.style.opacity = '1';
-        card.style.transform = 'translateY(0)';
-      }, i * 50);
+        grid.querySelectorAll('.project-card').forEach((card, i) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(20px)';
+          setTimeout(() => {
+            card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, i * 40);
+        });
+      }, 10);
+    }
+
+    async function init() {
+      const repos = await fetchRepos();
+      const grid = document.getElementById('projects-grid');
+
+      if (!repos) {
+        grid.innerHTML = `<div class="grid-empty">
+      Falhou ao carregar projetos do GitHub.<br/>
+      <a href="https://github.com/BadOctop4s" target="_blank" style="color:var(--accent);">Ver direto no GitHub →</a>
+    </div>`;
+        return;
+      }
+
+      allRepos = repos;
+      renderGrid();
+
+      // Build filter buttons dynamically
+      const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
+      const filterRow = document.querySelector('.filter-row');
+      // Remove old lang filters
+      filterRow.querySelectorAll('[data-filter]:not([data-filter="all"])').forEach(b => b.remove());
+      langs.slice(0, 6).forEach(lang => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-btn';
+        btn.dataset.filter = lang;
+        btn.textContent = lang;
+        filterRow.insertBefore(btn, filterRow.querySelector('.search-wrap'));
+      });
+
+      // Filter events
+      filterRow.addEventListener('click', e => {
+        const btn = e.target.closest('.filter-btn');
+        if (!btn) return;
+        filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.dataset.filter;
+        renderGrid();
+      });
+    }
+
+    /* ── SEARCH ── */
+    let searchTimer;
+    document.getElementById('search-input').addEventListener('input', e => {
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        currentSearch = e.target.value.trim();
+        renderGrid();
+      }, 200);
     });
-  }, 10);
-}
 
-async function init() {
-  const grid = document.getElementById('projects-grid');
-  const projects = await fetchProjects();
-
-  if (projects === null) {
-    grid.innerHTML = `<div class="grid-empty">
-      Falhou ao carregar projetos.<br/>
-      <a href="https://discord.gg/faUyqCdd3P" target="_blank" style="color:var(--accent);">Ver no Discord →</a>
-    </div>`;
-    return;
-  }
-
-  if (!projects.length) {
-    grid.innerHTML = `<div class="grid-empty" style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:60px 20px;">
-      <svg width="40" height="40" fill="none" stroke="var(--text-4)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-      <span style="font-size:15px;font-weight:700;color:var(--text-2);">Nenhum projeto cadastrado ainda.</span>
-      <span style="font-size:13px;color:var(--text-3);">Em breve haverá projetos aqui.</span>
-    </div>`;
-    return;
-  }
-
-  allProjects = projects;
-  renderGrid();
-
-  // Build dynamic status filter buttons
-  const statuses = [...new Set(projects.map(p => p.status).filter(Boolean))];
-  const filterRow = document.querySelector('.filter-row');
-  filterRow.querySelectorAll('[data-filter]:not([data-filter="all"])').forEach(b => b.remove());
-  const statusLabels = { live: 'Live', dev: 'Em dev', soon: 'Em breve' };
-  statuses.forEach(s => {
-    const btn = document.createElement('button');
-    btn.className = 'filter-btn';
-    btn.dataset.filter = s;
-    btn.textContent = statusLabels[s] || s;
-    filterRow.insertBefore(btn, filterRow.querySelector('.search-wrap'));
-  });
-
-  filterRow.addEventListener('click', e => {
-    const btn = e.target.closest('.filter-btn');
-    if (!btn) return;
-    filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    renderGrid();
-  });
-}
-
-/* ── SEARCH ── */
-let searchTimer;
-document.getElementById('search-input').addEventListener('input', e => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    currentSearch = e.target.value.trim();
-    renderGrid();
-  }, 200);
-});
-
-init();
-
-/* ── 3D TILT ON CARDS ── */
-const TILT_MAX = 12;
-function applyTilt(card) {
-  card.style.transformStyle = 'preserve-3d';
-  card.style.willChange = 'transform';
-  card.addEventListener('mousemove', e => {
-    const r = card.getBoundingClientRect();
-    const x = e.clientX - r.left;
-    const y = e.clientY - r.top;
-    const cx = r.width / 2;
-    const cy = r.height / 2;
-    const rotY =  ((x - cx) / cx) * TILT_MAX;
-    const rotX = -((y - cy) / cy) * TILT_MAX;
-    const glowX = (x / r.width)  * 100;
-    const glowY = (y / r.height) * 100;
-    card.style.transform = `perspective(900px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.02)`;
-    card.style.boxShadow = `
-      0 24px 60px rgba(0,0,0,0.45),
-      0 0 0 1px rgba(224,32,32,0.15),
-      inset 0 1px 0 rgba(255,255,255,0.08)
-    `;
-    card.style.setProperty('--glow-x', glowX + '%');
-    card.style.setProperty('--glow-y', glowY + '%');
-  });
-  card.addEventListener('mouseleave', () => {
-    card.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) translateY(0) scale(1)';
-    card.style.transition = 'transform 0.6s cubic-bezier(0.22,1,0.36,1), box-shadow 0.6s ease';
-    card.style.boxShadow = '';
-    setTimeout(() => { card.style.transition = ''; }, 600);
-  });
-  card.addEventListener('mouseenter', () => {
-    card.style.transition = 'border-color 0.2s';
-  });
-}
-
-// Observe grid for new cards
-const tiltObserver = new MutationObserver(() => {
-  document.querySelectorAll('.project-card:not([data-tilt])').forEach(card => {
-    card.setAttribute('data-tilt', '1');
-    applyTilt(card);
-  });
-});
-tiltObserver.observe(document.getElementById('projects-grid'), { childList: true, subtree: true });
-
-</script>
+    init();
+  </script>
 </body>
+
 </html>
