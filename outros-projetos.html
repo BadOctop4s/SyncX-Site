@@ -376,7 +376,7 @@
     <div class="projects-grid stagger" id="projects-grid">
       <div class="grid-loading">
         <div class="loader-ring"></div>
-        <span>Carregando projetos do GitHub...</span>
+        <span>Carregando projetos...</span>
       </div>
     </div>
 
@@ -426,9 +426,14 @@
 </footer>
 
 <script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="js/main.js"></script>
 <script>
 'use strict';
+
+/* ── SUPABASE CLIENT ── */
+const { createClient } = supabase;
+const sb = createClient(SYNCX_CONFIG.supabase.url, SYNCX_CONFIG.supabase.anonKey);
 
 /* ── SCROLL PROGRESS ── */
 window.addEventListener('scroll', () => {
@@ -437,32 +442,93 @@ window.addEventListener('scroll', () => {
   el.style.width = (window.scrollY / max * 100) + '%';
 }, { passive: true });
 
-/* ── LANGUAGE CONFIG ── */
-const LANG_COLORS = {
-  'Lua': '#000080', 'C#': '#239120', 'JavaScript': '#f1e05a',
-  'TypeScript': '#3178c6', 'HTML': '#e34c26', 'CSS': '#563d7c',
-  'Python': '#3572A5',
-};
-const LANG_SHORT = {
-  'C#': 'csharp', 'JavaScript': 'javascript', 'TypeScript': 'typescript',
-  'HTML': 'html', 'CSS': 'css', 'Lua': 'lua', 'Python': 'python',
+/* ── STATUS CONFIG ── */
+const STATUS_COLORS = {
+  live: { dot: '#22c55e', label: 'Live' },
+  dev:  { dot: '#e02020', label: 'Em dev' },
+  soon: { dot: '#6b7280', label: 'Em breve' },
 };
 
-/* ── GITHUB API ── */
-const GITHUB_USER = 'BadOctop4s';
-// Repos to exclude from display
-const EXCLUDE = ['BadOctop4s'];
+const BADGE_COLORS = {
+  red:    'background:rgba(224,32,32,0.12);color:#ff6b6b;border:1px solid rgba(224,32,32,0.2);',
+  green:  'background:rgba(34,197,94,0.08);color:#4ade80;border:1px solid rgba(34,197,94,0.2);',
+  blue:   'background:rgba(32,120,224,0.1);color:#5ba3ff;border:1px solid rgba(32,120,224,0.2);',
+  orange: 'background:rgba(234,88,12,0.1);color:#f97316;border:1px solid rgba(234,88,12,0.2);',
+  purple: 'background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);',
+  cyan:   'background:rgba(6,182,212,0.1);color:#22d3ee;border:1px solid rgba(6,182,212,0.2);',
+  gray:   'background:rgba(255,255,255,0.04);color:#9ca3af;border:1px solid rgba(255,255,255,0.06);',
+};
 
-async function fetchRepos() {
+/* ── SUPABASE FETCH ── */
+async function fetchProjects() {
   try {
-    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=50&type=public`);
-    if (!res.ok) throw new Error('GitHub API ' + res.status);
-    const data = await res.json();
-    return data.filter(r => !EXCLUDE.includes(r.name) && !r.fork);
+    const { data, error } = await sb
+      .from('products')
+      .select('*')
+      .eq('page', 'outros')
+      .eq('visible', true)
+      .order('sort_order', { ascending: true, nullsFirst: false })
+      .order('created_at', { ascending: false });
+    if (error) throw error;
+    return data || [];
   } catch(e) {
-    console.error('GitHub fetch failed:', e);
+    console.error('Supabase fetch failed:', e);
     return null;
   }
+}
+
+function makeCard(p) {
+  const status    = STATUS_COLORS[p.status] || STATUS_COLORS.soon;
+  const tags      = (p.tags || []).slice(0, 5);
+  const badgeStyle = BADGE_COLORS[p.badge_color] || BADGE_COLORS.gray;
+
+  const links = [];
+  if (p.download_url) links.push(`<a href="${p.download_url}" target="_blank" class="project-link">Download<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>`);
+  if (p.github_url)   links.push(`<a href="${p.github_url}" target="_blank" class="project-link">GitHub<svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></a>`);
+
+  return `
+    <div class="project-card"
+         data-status="${p.status}"
+         data-name="${(p.name||'').toLowerCase()}"
+         data-desc="${(p.description||'').toLowerCase()}">
+
+      <div class="project-card-top">
+        <div class="project-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <div class="project-meta">
+          ${p.badge_label ? `<span style="font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 9px;border-radius:100px;${badgeStyle}">${p.badge_label}</span>` : ''}
+          <span class="project-stat">
+            <span class="project-lang-dot" style="background:${status.dot};box-shadow:0 0 6px ${status.dot}66;"></span>
+            ${status.label}
+          </span>
+        </div>
+      </div>
+
+      <div class="project-name">${p.name}</div>
+      <div class="project-desc">${p.description || 'Sem descrição.'}</div>
+
+      ${tags.length ? `
+        <div class="project-tags">
+          ${tags.map(t => `<span class="project-tag">${t}</span>`).join('')}
+        </div>
+      ` : ''}
+
+      ${p.loadstring ? `
+        <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px;font-family:var(--font-mono);font-size:11px;color:var(--text-3);word-break:break-all;cursor:pointer;" onclick="copyProjectLoadstring(this,'${p.loadstring.replace(/'/g,"\\'")}')">
+          <span style="color:var(--text-4);display:block;font-size:9px;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">LOADSTRING — clique para copiar</span>
+          ${p.loadstring.substring(0,60)}${p.loadstring.length>60?'…':''}
+        </div>
+      ` : ''}
+
+      <div class="project-footer">
+        <span class="project-updated">${p.updated_at ? 'Atualizado ' + relativeTime(p.updated_at) : ''}</span>
+        <div style="display:flex;gap:10px;">
+          ${links.join('')}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
 function relativeTime(iso) {
@@ -475,73 +541,36 @@ function relativeTime(iso) {
   return `${Math.floor(d/365)}a atrás`;
 }
 
-function langClass(lang) {
-  return 'lang-' + (LANG_SHORT[lang] || 'default');
-}
-
-function makeCard(repo) {
-  const lang    = repo.language || '';
-  const color   = LANG_COLORS[lang] || '#555';
-  const topics  = (repo.topics || []).slice(0, 4);
-  const updated = relativeTime(repo.pushed_at);
-  const desc    = repo.description || 'Sem descrição.';
-
-  return `
-    <div class="project-card" data-lang="${lang}" data-name="${repo.name.toLowerCase()}" data-desc="${desc.toLowerCase()}">
-      <div class="project-card-top">
-        <div class="project-icon">
-          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-        </div>
-        <div class="project-meta">
-          ${lang ? `<span class="project-stat"><span class="project-lang-dot" style="background:${color};"></span>${lang}</span>` : ''}
-          <span class="project-stat">
-            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-            ${repo.stargazers_count}
-          </span>
-          <span class="project-stat">
-            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
-            ${repo.forks_count}
-          </span>
-        </div>
-      </div>
-
-      <div class="project-name">${repo.name}</div>
-      <div class="project-desc">${desc}</div>
-
-      ${topics.length ? `
-        <div class="project-tags">
-          ${topics.map(t => `<span class="project-tag">${t}</span>`).join('')}
-        </div>
-      ` : ''}
-
-      <div class="project-footer">
-        <span class="project-updated">Atualizado ${updated}</span>
-        <a href="${repo.html_url}" target="_blank" class="project-link">
-          Ver no GitHub
-          <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-        </a>
-      </div>
-    </div>
-  `;
+function copyProjectLoadstring(el, code) {
+  navigator.clipboard.writeText(code).then(() => {
+    const orig = el.style.borderColor;
+    el.style.borderColor = 'rgba(34,197,94,0.4)';
+    el.querySelector('span').textContent = '✓ COPIADO!';
+    setTimeout(() => {
+      el.style.borderColor = orig;
+      el.querySelector('span').textContent = 'LOADSTRING — clique para copiar';
+    }, 2000);
+  });
 }
 
 /* ── RENDER ── */
-let allRepos = [];
+let allProjects = [];
 let currentFilter = 'all';
 let currentSearch = '';
 
 function renderGrid() {
   const grid = document.getElementById('projects-grid');
-  let filtered = allRepos;
+  let filtered = allProjects;
 
   if (currentFilter !== 'all') {
-    filtered = filtered.filter(r => r.language === currentFilter);
+    filtered = filtered.filter(p => p.status === currentFilter);
   }
   if (currentSearch) {
     const q = currentSearch.toLowerCase();
-    filtered = filtered.filter(r =>
-      r.name.toLowerCase().includes(q) ||
-      (r.description || '').toLowerCase().includes(q)
+    filtered = filtered.filter(p =>
+      (p.name||'').toLowerCase().includes(q) ||
+      (p.description||'').toLowerCase().includes(q) ||
+      (p.tags||[]).some(t => t.toLowerCase().includes(q))
     );
   }
 
@@ -552,7 +581,6 @@ function renderGrid() {
 
   grid.innerHTML = filtered.map(makeCard).join('');
 
-  // Trigger reveal on new cards
   setTimeout(() => {
     grid.querySelectorAll('.project-card').forEach((card, i) => {
       card.style.opacity = '0';
@@ -561,40 +589,48 @@ function renderGrid() {
         card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s';
         card.style.opacity = '1';
         card.style.transform = 'translateY(0)';
-      }, i * 40);
+      }, i * 50);
     });
   }, 10);
 }
 
 async function init() {
-  const repos = await fetchRepos();
-  const grid  = document.getElementById('projects-grid');
+  const grid = document.getElementById('projects-grid');
+  const projects = await fetchProjects();
 
-  if (!repos) {
+  if (projects === null) {
     grid.innerHTML = `<div class="grid-empty">
-      Falhou ao carregar projetos do GitHub.<br/>
-      <a href="https://github.com/BadOctop4s" target="_blank" style="color:var(--accent);">Ver direto no GitHub →</a>
+      Falhou ao carregar projetos.<br/>
+      <a href="https://discord.gg/faUyqCdd3P" target="_blank" style="color:var(--accent);">Ver no Discord →</a>
     </div>`;
     return;
   }
 
-  allRepos = repos;
+  if (!projects.length) {
+    grid.innerHTML = `<div class="grid-empty" style="display:flex;flex-direction:column;align-items:center;gap:12px;padding:60px 20px;">
+      <svg width="40" height="40" fill="none" stroke="var(--text-4)" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+      <span style="font-size:15px;font-weight:700;color:var(--text-2);">Nenhum projeto cadastrado ainda.</span>
+      <span style="font-size:13px;color:var(--text-3);">Em breve haverá projetos aqui.</span>
+    </div>`;
+    return;
+  }
+
+  allProjects = projects;
   renderGrid();
 
-  // Build filter buttons dynamically
-  const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
+  // Build dynamic status filter buttons
+  const statuses = [...new Set(projects.map(p => p.status).filter(Boolean))];
   const filterRow = document.querySelector('.filter-row');
-  // Remove old lang filters
   filterRow.querySelectorAll('[data-filter]:not([data-filter="all"])').forEach(b => b.remove());
-  langs.slice(0, 6).forEach(lang => {
+  const statusLabels = { live: 'Live', dev: 'Em dev', soon: 'Em breve' };
+  statuses.forEach(s => {
     const btn = document.createElement('button');
     btn.className = 'filter-btn';
-    btn.dataset.filter = lang;
-    btn.textContent = lang;
+    btn.dataset.filter = s;
+    btn.textContent = statusLabels[s] || s;
     filterRow.insertBefore(btn, filterRow.querySelector('.search-wrap'));
   });
 
-  // Filter events
   filterRow.addEventListener('click', e => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
