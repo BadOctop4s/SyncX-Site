@@ -1,22 +1,8 @@
 /* ═══════════════════════════════════════════════
-   SyncX — evileye.js  v1.0
+   SyncX — evileye.js  v1.1
    Evil Eye WebGL background — zero dependencies
-   Ported from ReactBits EvilEye to vanilla JS
-
-   Usage:
-     SyncXEye.init('canvasId', options?)
-
-   Options (all optional):
-     eyeColor      '#e02020'   hex
-     bgColor       '#000000'   hex (use CSS opacity instead)
-     intensity      1.5
-     pupilSize      0.6
-     irisWidth      0.25
-     glowIntensity  0.35
-     scale          0.85
-     noiseScale     1.0
-     pupilFollow    1.0
-     flameSpeed     1.0
+   Fix: scroll flicker removed (canvas uses position:fixed,
+   resize only on actual size change, no duplicate visibilitychange)
 ═══════════════════════════════════════════════ */
 'use strict';
 
@@ -35,8 +21,8 @@ window.SyncXEye = (function () {
       var ix = Math.floor(fx), iy = Math.floor(fy);
       var tx = fx - ix, ty = fy - iy, w = freq | 0;
       return lerp(
-        lerp(hash(((ix%w)+w)%w, ((iy%w)+w)%w, seed),   hash((((ix+1)%w)+w)%w, ((iy%w)+w)%w, seed),   tx),
-        lerp(hash(((ix%w)+w)%w, (((iy+1)%w)+w)%w, seed), hash((((ix+1)%w)+w)%w, (((iy+1)%w)+w)%w, seed), tx),
+        lerp(hash(((ix%w)+w)%w,((iy%w)+w)%w,seed), hash((((ix+1)%w)+w)%w,((iy%w)+w)%w,seed), tx),
+        lerp(hash(((ix%w)+w)%w,(((iy+1)%w)+w)%w,seed), hash((((ix+1)%w)+w)%w,(((iy+1)%w)+w)%w,seed), tx),
         ty
       );
     }
@@ -114,8 +100,6 @@ window.SyncXEye = (function () {
     gl.attachShader(prog, mkShader(gl, gl.VERTEX_SHADER,   VERT));
     gl.attachShader(prog, mkShader(gl, gl.FRAGMENT_SHADER, FRAG));
     gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS))
-      console.error('[SyncXEye] link error:', gl.getProgramInfoLog(prog));
     gl.useProgram(prog);
 
     var vb = gl.createBuffer();
@@ -138,59 +122,83 @@ window.SyncXEye = (function () {
     'uT,uPup,uIris,uGlo,uInt,uSc,uNSc,uFol,uSpd'.split(',').forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
     'uRes,uMou,uEye,uBg'.split(',').forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
 
-    var eyeC  = hex3(opts.eyeColor      || '#e02020');
-    var bgC   = hex3(opts.bgColor       || '#000000');
-    var INT   = opts.intensity    != null ? opts.intensity    : 1.5;
-    var PUP   = opts.pupilSize    != null ? opts.pupilSize    : 0.6;
-    var IRIS  = opts.irisWidth    != null ? opts.irisWidth    : 0.25;
-    var GLO   = opts.glowIntensity!= null ? opts.glowIntensity: 0.35;
-    var SC    = opts.scale        != null ? opts.scale        : 0.85;
-    var NSC   = opts.noiseScale   != null ? opts.noiseScale   : 1.0;
-    var FOL   = opts.pupilFollow  != null ? opts.pupilFollow  : 1.0;
-    var SPD   = opts.flameSpeed   != null ? opts.flameSpeed   : 1.0;
+    var eyeC = hex3(opts.eyeColor      || '#e02020');
+    var bgC  = hex3(opts.bgColor       || '#000000');
+    var INT  = opts.intensity    != null ? opts.intensity    : 1.5;
+    var PUP  = opts.pupilSize    != null ? opts.pupilSize    : 0.6;
+    var IRIS = opts.irisWidth    != null ? opts.irisWidth    : 0.25;
+    var GLO  = opts.glowIntensity!= null ? opts.glowIntensity: 0.35;
+    var SC   = opts.scale        != null ? opts.scale        : 0.85;
+    var NSC  = opts.noiseScale   != null ? opts.noiseScale   : 1.0;
+    var FOL  = opts.pupilFollow  != null ? opts.pupilFollow  : 1.0;
+    var SPD  = opts.flameSpeed   != null ? opts.flameSpeed   : 1.0;
 
+    /* mouse — track on window so it works even when canvas is fixed */
     var mx=0,my=0,tx=0,ty=0;
-    function onMove(e){ var r=canvas.getBoundingClientRect(); tx=((e.clientX-r.left)/r.width)*2-1; ty=-(((e.clientY-r.top)/r.height)*2-1); }
-    function onLeave(){ tx=0; ty=0; }
-    window.addEventListener('mousemove', onMove);
-    canvas.addEventListener('mouseleave', onLeave);
-
-    function resize(){
-      var dpr=Math.min(window.devicePixelRatio||1,2);
-      canvas.width=canvas.offsetWidth*dpr; canvas.height=canvas.offsetHeight*dpr;
-      gl.viewport(0,0,canvas.width,canvas.height);
+    function onMove(e) {
+      var r = canvas.getBoundingClientRect();
+      tx = ((e.clientX - r.left) / r.width)  * 2 - 1;
+      ty = -(((e.clientY - r.top) / r.height) * 2 - 1);
     }
-    var ro = window.ResizeObserver ? new ResizeObserver(resize) : null;
-    if (ro) ro.observe(canvas); else window.addEventListener('resize', resize);
+    window.addEventListener('mousemove', onMove, {passive:true});
+
+    /* resize — only update when dimensions actually change to avoid flicker */
+    var lastW = 0, lastH = 0;
+    function resize() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var w = Math.round(canvas.offsetWidth  * dpr);
+      var h = Math.round(canvas.offsetHeight * dpr);
+      if (w === lastW && h === lastH) return;
+      lastW = w; lastH = h;
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+
+    /* Use window resize (not ResizeObserver) for fixed canvases — avoids
+       layout-triggered redraws that cause the scroll flicker */
+    window.addEventListener('resize', resize, {passive:true});
     resize();
 
-    var raf;
-    function loop(t){
-      raf=requestAnimationFrame(loop);
-      mx+=(tx-mx)*0.05; my+=(ty-my)*0.05;
-      gl.uniform1f(U.uT,   t*0.001);
-      gl.uniform3f(U.uRes, canvas.width, canvas.height, canvas.width/canvas.height);
+    var raf, running = true;
+    function loop(t) {
+      if (!running) return;
+      raf = requestAnimationFrame(loop);
+      mx += (tx - mx) * 0.05;
+      my += (ty - my) * 0.05;
+      gl.uniform1f(U.uT,   t * 0.001);
+      gl.uniform3f(U.uRes, canvas.width, canvas.height, canvas.width / canvas.height);
       gl.uniform2f(U.uMou, mx, my);
-      gl.uniform1f(U.uPup, PUP);  gl.uniform1f(U.uIris, IRIS);
-      gl.uniform1f(U.uGlo, GLO);  gl.uniform1f(U.uInt,  INT);
-      gl.uniform1f(U.uSc,  SC);   gl.uniform1f(U.uNSc,  NSC);
-      gl.uniform1f(U.uFol, FOL);  gl.uniform1f(U.uSpd,  SPD);
-      gl.uniform3fv(U.uEye, eyeC); gl.uniform3fv(U.uBg, bgC);
+      gl.uniform1f(U.uPup,  PUP);  gl.uniform1f(U.uIris, IRIS);
+      gl.uniform1f(U.uGlo,  GLO);  gl.uniform1f(U.uInt,  INT);
+      gl.uniform1f(U.uSc,   SC);   gl.uniform1f(U.uNSc,  NSC);
+      gl.uniform1f(U.uFol,  FOL);  gl.uniform1f(U.uSpd,  SPD);
+      gl.uniform3fv(U.uEye, eyeC); gl.uniform3fv(U.uBg,  bgC);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     }
-    document.addEventListener('visibilitychange', function(){
-      if(document.hidden) cancelAnimationFrame(raf); else requestAnimationFrame(loop);
-    });
+
+    /* Pause/resume on tab visibility — single listener per instance */
+    function onVisibility() {
+      if (document.hidden) {
+        running = false;
+        cancelAnimationFrame(raf);
+      } else {
+        running = true;
+        requestAnimationFrame(loop);
+      }
+    }
+    document.addEventListener('visibilitychange', onVisibility);
+
     requestAnimationFrame(loop);
 
     return {
-      destroy: function(){
+      destroy: function() {
+        running = false;
         cancelAnimationFrame(raf);
-        if(ro) ro.disconnect();
+        window.removeEventListener('resize', resize);
         window.removeEventListener('mousemove', onMove);
-        canvas.removeEventListener('mouseleave', onLeave);
-        var ext=gl.getExtension('WEBGL_lose_context');
-        if(ext) ext.loseContext();
+        document.removeEventListener('visibilitychange', onVisibility);
+        var ext = gl.getExtension('WEBGL_lose_context');
+        if (ext) ext.loseContext();
       }
     };
   }

@@ -11,6 +11,118 @@
     rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
+
+<style id="dash-mobile">
+/* ── DASHBOARD MOBILE ── */
+@media (max-width: 768px) {
+  body { cursor: auto !important; }
+  #x-cursor, #x-cursor-ring { display: none !important; }
+  #x-canvas { display: none; }
+
+  .dash-layout {
+    grid-template-columns: 1fr;
+    padding-top: 60px; /* space for mobile topbar */
+  }
+
+  /* Sidebar becomes slide-in drawer */
+  .sidebar {
+    position: fixed;
+    left: -240px;
+    top: 0; bottom: 0;
+    width: 240px;
+    z-index: 800;
+    transition: left 0.3s cubic-bezier(0.22,1,0.36,1);
+    box-shadow: none;
+  }
+  .sidebar.open {
+    left: 0;
+    box-shadow: 4px 0 32px rgba(0,0,0,0.6);
+  }
+
+  /* Overlay behind sidebar */
+  #dash-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.55);
+    z-index: 799;
+    backdrop-filter: blur(2px);
+  }
+  #dash-overlay.show { display: block; }
+
+  /* Mobile topbar */
+  #dash-mobile-bar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    background: var(--bg-1);
+    border-bottom: 1px solid var(--border);
+    z-index: 850;
+  }
+  #dash-mobile-bar .mb-logo {
+    font-family: var(--font-display);
+    font-size: 18px; font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+  #dash-mobile-bar .mb-logo span { color: var(--accent); }
+  #dash-mobile-bar .mb-title {
+    font-family: var(--font-display);
+    font-size: 13px; font-weight: 600;
+    color: var(--text-2);
+    position: absolute; left: 50%; transform: translateX(-50%);
+  }
+  #dash-ham {
+    background: none; border: none;
+    display: flex; flex-direction: column;
+    gap: 5px; padding: 6px; cursor: pointer;
+  }
+  #dash-ham span {
+    display: block; width: 20px; height: 2px;
+    background: var(--text-2); border-radius: 2px;
+    transition: transform 0.28s, opacity 0.28s;
+  }
+  #dash-ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  #dash-ham.open span:nth-child(2) { opacity: 0; }
+  #dash-ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  /* Content adjustments */
+  .dash-topbar { display: none; } /* replaced by mobile bar */
+  .dash-content { padding: 20px 14px; }
+  .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .stat-value { font-size: 22px !important; }
+  .download-grid { grid-template-columns: 1fr; }
+  .dash-table { font-size: 11px; }
+  .dash-table th, .dash-table td { padding: 8px 10px; }
+  .license-card { padding: 18px; }
+  .license-key { font-size: 11px; letter-spacing: 0.5px; }
+
+  /* Product manager modal */
+  #pm-modal > div {
+    max-width: calc(100vw - 24px) !important;
+    padding: 20px !important;
+    margin: 12px;
+  }
+
+  /* Admin grid */
+  #page-admin .stat-grid { grid-template-columns: 1fr 1fr; }
+
+  /* Creator quick links */
+  #page-creator > div[style*="grid-template-columns:repeat(3"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Sidebar user footer readable */
+  .sidebar-user-name { font-size: 11px; }
+}
+
+@media (max-width: 400px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
+</style>
+
 </head>
 
 <body>
@@ -19,7 +131,18 @@
   <canvas id="x-canvas"></canvas>
   <div id="toast-container"></div>
 
-  <div class="dash-layout" style="position:relative;z-index:2;">
+  
+<!-- Mobile Dashboard Topbar -->
+<div id="dash-mobile-bar">
+  <button id="dash-ham" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+  <span class="mb-title" id="mobile-page-title">Overview</span>
+  <span class="mb-logo">Sync<span>X</span></span>
+</div>
+<div id="dash-overlay"></div>
+
+<div class="dash-layout" style="position:relative;z-index:2;">
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">

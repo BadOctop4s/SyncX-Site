@@ -1217,7 +1217,191 @@
         width: calc(100% - 24px);
       }
     }
-  </style>
+  /* ══ UNIFIED FLOATING NAV ══ */
+#site-nav {
+  position: fixed;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: rgba(10,10,14,0.82);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+  transition: box-shadow 0.4s, border-color 0.4s;
+  max-width: calc(100vw - 32px);
+}
+#site-nav:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 24px rgba(224,32,32,0.06);
+}
+.sn-logo {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 16px; font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text, #f0f0f0);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.sn-logo span { color: var(--accent, #e02020); }
+.sn-sep {
+  width: 1px; height: 20px;
+  background: rgba(255,255,255,0.08);
+  margin: 0 14px;
+  flex-shrink: 0;
+}
+.sn-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  list-style: none;
+  margin: 0; padding: 0;
+}
+.sn-links a {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 12px; font-weight: 600;
+  color: var(--text-3, #666);
+  padding: 6px 12px;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+  display: block;
+}
+.sn-links a:hover { color: var(--text, #f0f0f0); background: rgba(255,255,255,0.06); }
+.sn-links a.active { color: var(--accent, #e02020); }
+.sn-actions {
+  margin-left: 8px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.sn-btn {
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 12px; font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 100px;
+  border: none;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-decoration: none;
+  cursor: none;
+  display: inline-flex; align-items: center; gap: 6px;
+}
+.sn-btn-ghost {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-2, #aaa);
+  border: 1px solid rgba(255,255,255,0.06) !important;
+}
+.sn-btn-ghost:hover { background: rgba(255,255,255,0.09); color: var(--text, #f0f0f0); }
+.sn-btn-primary {
+  background: var(--accent, #e02020);
+  color: #fff;
+}
+.sn-btn-primary:hover {
+  background: var(--accent-2, #ff4444);
+  box-shadow: 0 0 20px rgba(224,32,32,0.4);
+}
+/* hamburger */
+.sn-hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none; border: none;
+  cursor: none; padding: 8px;
+  margin-left: 4px;
+  flex-shrink: 0;
+}
+.sn-hamburger span {
+  display: block; width: 20px; height: 2px;
+  background: var(--text-2, #aaa);
+  border-radius: 2px;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.sn-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.sn-hamburger.open span:nth-child(2) { opacity: 0; }
+.sn-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* drawer */
+.sn-drawer {
+  position: fixed;
+  top: 76px;
+  left: 50%;
+  transform: translateX(-50%) translateY(-12px);
+  width: calc(100vw - 32px);
+  max-width: 420px;
+  background: rgba(10,10,16,0.96);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 899;
+}
+.sn-drawer.open {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateX(-50%) translateY(0);
+}
+.sn-drawer ul {
+  list-style: none; margin: 0; padding: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.sn-drawer ul a {
+  display: block;
+  padding: 11px 14px;
+  color: var(--text-2, #aaa);
+  text-decoration: none;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 14px; font-weight: 600;
+  border-radius: 10px;
+  transition: background 0.2s, color 0.2s;
+}
+.sn-drawer ul a:hover, .sn-drawer ul a.active {
+  background: rgba(255,255,255,0.05);
+  color: var(--text, #f0f0f0);
+}
+.sn-drawer ul a.active { color: var(--accent, #e02020); }
+.sn-drawer-actions {
+  display: flex; gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,0.07);
+}
+.sn-drawer-actions a {
+  flex: 1; text-align: center;
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-family: var(--font-display, 'Syne', sans-serif);
+  font-size: 13px; font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+/* mobile breakpoint */
+@media (max-width: 768px) {
+  #site-nav { padding: 6px 6px 6px 16px; top: 10px; }
+  .sn-sep { display: none; }
+  .sn-links { display: none; }
+  .sn-actions .sn-btn { display: none; }
+  .sn-hamburger { display: flex; }
+  body { cursor: auto !important; }
+  #x-cursor, #x-cursor-ring, #cursor, #cursor-ring { display: none !important; }
+}
+
+</style>
 </head>
 
 <body>
@@ -1240,48 +1424,40 @@
   <div id="grain" aria-hidden="true"></div>
 
   <!-- ══ NAV ══ -->
-  <nav id="main-nav">
-    <a href="index.html" class="nav-logo">Sync<span>X</span></a>
-    <ul class="nav-links">
-      <li><a href="index.html">Produtos</a></li>
-      <li><a href="proximos.html" class="active">Próximos</a></li>
-      <li><a href="outros-projetos.html">Outros</a></li>
-      <li><a href="index.html#tab-features">Features</a></li>
-      <li><a href="index.html#tab-comunidade">Comunidade</a></li>
-      <li><a href="index.html#tab-como-usar">Como Usar</a></li>
-    </ul>
-    <div class="nav-actions">
-      <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost">
-        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24">
-          <path
-            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z" />
-        </svg>
-        Discord
-      </a>
-      <a href="index.html" class="btn-primary">Ver Produtos</a>
-    </div>
-    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+  <nav id="site-nav">
+  <a href="index.html" class="sn-logo">Sync<span>X</span></a>
+  <div class="sn-sep"></div>
+  <ul class="sn-links">
+    <li><a href="index.html">Produtos</a></li>
+    <li><a href="proximos.html" class="active">Proximos</a></li>
+    <li><a href="outros-projetos.html">Outros</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="index.html#community">Comunidade</a></li>
+    <li><a href="index.html#howto">Como Usar</a></li>
+  </ul>
+  <div class="sn-actions">
+    <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sn-btn sn-btn-ghost">Discord</a>
+    <a href="dashboard.html" class="sn-btn sn-btn-ghost">Dashboard</a>
+    <a href="login.html" class="sn-btn sn-btn-primary">Entrar</a>
+    <button class="sn-hamburger" id="sn-ham" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
-  </nav>
-
-  <!-- Mobile Drawer -->
-  <div class="nav-drawer" id="nav-drawer">
-    <ul>
-      <li><a href="index.html">Produtos</a></li>
-      <li><a href="proximos.html" class="active">Próximos</a></li>
-      <li><a href="outros-projetos.html">Outros Projetos</a></li>
-      <li><a href="index.html#tab-features">Features</a></li>
-      <li><a href="index.html#tab-comunidade">Comunidade</a></li>
-      <li><a href="index.html#tab-como-usar">Como Usar</a></li>
-    </ul>
-    <div class="drawer-actions">
-      <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-ghost"
-        style="font-size:13px;padding:10px 16px;border-radius:10px;">Discord</a>
-      <a href="index.html" class="btn-primary" style="font-size:13px;padding:10px 16px;border-radius:10px;">Ver
-        Produtos</a>
-    </div>
   </div>
+</nav>
+<div class="sn-drawer" id="sn-drawer">
+  <ul>
+    <li><a href="index.html">Produtos</a></li>
+    <li><a href="proximos.html" class="active">Proximos</a></li>
+    <li><a href="outros-projetos.html">Outros Projetos</a></li>
+    <li><a href="index.html#features">Features</a></li>
+    <li><a href="index.html#community">Comunidade</a></li>
+    <li><a href="index.html#howto">Como Usar</a></li>
+  </ul>
+  <div class="sn-drawer-actions">
+    <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="sn-btn sn-btn-ghost">Discord</a>
+    <a href="login.html" class="sn-btn sn-btn-primary">Entrar</a>
+  </div>
+</div>
 
   <!-- ══ PAGE HERO ══ -->
   <div class="page-hero">
@@ -1624,15 +1800,7 @@
     // ── HAMBURGER ──
     const hamburger = document.getElementById('hamburger');
     const drawer = document.getElementById('nav-drawer');
-    hamburger.addEventListener('click', () => {
-      const open = hamburger.classList.toggle('open');
-      drawer.classList.toggle('open', open);
-    });
-    document.addEventListener('click', e => {
-      if (!nav.contains(e.target) && !drawer.contains(e.target)) {
-        hamburger.classList.remove('open'); drawer.classList.remove('open');
-      }
-    });
+    // hamburger: handled by unified nav JS
 
     // ── SCROLL REVEAL + PROGRESS BARS ──
     const io = new IntersectionObserver(entries => {
@@ -1663,6 +1831,31 @@
     flameSpeed:    0.85
   });
   </script>
+<script>
+/* ── UNIFIED NAV ── */
+(function(){
+  var ham = document.getElementById('sn-ham');
+  var drawer = document.getElementById('sn-drawer');
+  if (!ham || !drawer) return;
+  ham.addEventListener('click', function(){
+    var open = ham.classList.toggle('open');
+    drawer.classList.toggle('open', open);
+  });
+  document.addEventListener('click', function(e){
+    if (!document.getElementById('site-nav').contains(e.target) && !drawer.contains(e.target)){
+      ham.classList.remove('open');
+      drawer.classList.remove('open');
+    }
+  });
+  drawer.querySelectorAll('a').forEach(function(a){
+    a.addEventListener('click', function(){
+      ham.classList.remove('open');
+      drawer.classList.remove('open');
+    });
+  });
+})();
+</script>
+
 </body>
 
 </html>
