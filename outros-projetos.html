@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Outros Projetos — SyncX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<style>
+/* ══ OUTROS PROJETOS — MINIMAL OVERRIDE ══ */
+
+/* Floating navbar (diferente da principal) */
+#nav-float {
+  position: fixed; top: 16px; left: 50%;
+  transform: translateX(-50%);
+  z-index: 900;
+  display: flex; align-items: center;
+  gap: 0;
+  background: rgba(10,10,14,0.82);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 100px;
+  padding: 6px 6px 6px 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.03);
+  transition: box-shadow 0.4s, border-color 0.4s;
+  max-width: calc(100vw - 40px);
+}
+#nav-float:hover {
+  border-color: rgba(255,255,255,0.1);
+  box-shadow: 0 12px 48px rgba(0,0,0,0.6), 0 0 24px rgba(224,32,32,0.06);
+}
+.float-logo {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 800;
+  letter-spacing: -0.3px;
+  color: var(--text);
+  white-space: nowrap;
+}
+.float-logo span { color: var(--accent); }
+.float-sep {
+  width: 1px; height: 20px;
+  background: rgba(255,255,255,0.08);
+  margin: 0 14px;
+}
+.float-links {
+  display: flex; align-items: center; gap: 2px;
+  list-style: none;
+}
+.float-links a {
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 600;
+  color: var(--text-3);
+  padding: 6px 12px;
+  border-radius: 100px;
+  transition: color 0.2s, background 0.2s;
+  white-space: nowrap;
+}
+.float-links a:hover { color: var(--text); background: rgba(255,255,255,0.06); }
+.float-links a.active { color: var(--accent); }
+.float-actions { margin-left: 8px; display: flex; gap: 6px; }
+.float-btn {
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 700;
+  padding: 7px 16px;
+  border-radius: 100px;
+  border: none; transition: all 0.2s;
+  white-space: nowrap;
+}
+.float-btn-ghost {
+  background: rgba(255,255,255,0.05);
+  color: var(--text-2);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+.float-btn-ghost:hover { background: rgba(255,255,255,0.09); color: var(--text); }
+.float-btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+.float-btn-primary:hover {
+  background: var(--accent-2);
+  box-shadow: 0 0 20px rgba(224,32,32,0.4);
+}
+
+/* Page hero */
+.page-hero {
+  padding: 140px 0 60px;
+  position: relative; z-index: 2;
+}
+.page-hero-inner {
+  max-width: 700px;
+}
+.page-kicker {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--accent);
+  letter-spacing: 3px; text-transform: uppercase;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.page-kicker::before {
+  content: ''; width: 24px; height: 1px; background: var(--accent);
+}
+.page-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 72px);
+  font-weight: 800; letter-spacing: -2.5px;
+  line-height: 0.95;
+  margin-bottom: 20px;
+}
+.page-hero p {
+  font-size: 16px; color: var(--text-2);
+  line-height: 1.7; max-width: 480px;
+}
+
+/* Filters */
+.filter-row {
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 48px;
+  position: relative; z-index: 2;
+}
+.filter-btn {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-3);
+  transition: all 0.2s;
+}
+.filter-btn:hover { color: var(--text); border-color: var(--border-strong); }
+.filter-btn.active {
+  background: var(--accent-dim);
+  border-color: rgba(224,32,32,0.3);
+  color: var(--accent-2);
+}
+
+/* Search */
+.search-wrap {
+  position: relative; margin-left: auto;
+}
+.search-input {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  padding: 7px 14px 7px 36px;
+  font-family: var(--font-mono);
+  font-size: 12px; color: var(--text);
+  outline: none; width: 200px;
+  transition: border-color 0.2s, width 0.3s var(--ease);
+}
+.search-input:focus { border-color: var(--border-h); width: 260px; }
+.search-input::placeholder { color: var(--text-4); }
+.search-icon {
+  position: absolute; left: 12px; top: 50%;
+  transform: translateY(-50%);
+  width: 14px; height: 14px; stroke: var(--text-4); fill: none;
+  pointer-events: none;
+}
+
+/* Projects grid */
+.projects-section { position: relative; z-index: 2; padding-bottom: 120px; }
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+/* Project card */
+.project-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 26px 24px;
+  display: flex; flex-direction: column;
+  gap: 14px;
+  transition: border-color 0.3s, background 0.3s, transform 0.3s var(--ease), box-shadow 0.3s;
+  position: relative; overflow: hidden;
+  cursor: default;
+}
+.project-card::after {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0; transition: opacity 0.4s;
+}
+.project-card:hover {
+  border-color: rgba(255,255,255,0.1);
+  background: var(--surface-h);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.3);
+}
+.project-card:hover::after { opacity: 0.6; }
+
+.project-card-top {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 12px;
+}
+.project-icon {
+  width: 40px; height: 40px; flex-shrink: 0;
+  border-radius: var(--radius-sm);
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+}
+.project-icon svg { width: 18px; height: 18px; fill: none; stroke: var(--text-2); stroke-width: 1.5; }
+.project-lang-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  flex-shrink: 0; margin-top: 4px;
+}
+.project-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+.project-stat {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-3);
+  display: flex; align-items: center; gap: 4px;
+}
+.project-stat svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+.project-name {
+  font-family: var(--font-display);
+  font-size: 16px; font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--text);
+}
+.project-desc {
+  font-size: 13px; color: var(--text-3);
+  line-height: 1.6;
+  flex: 1;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.project-tags {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--text-3);
+  padding: 3px 9px;
+  border: 1px solid var(--border);
+  border-radius: 100px;
+  background: var(--bg-2);
+}
+.project-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+}
+.project-updated {
+  font-family: var(--font-mono);
+  font-size: 10px; color: var(--text-4);
+}
+.project-link {
+  font-family: var(--font-mono);
+  font-size: 11px; color: var(--text-3);
+  display: flex; align-items: center; gap: 5px;
+  transition: color 0.2s;
+}
+.project-link:hover { color: var(--text); }
+.project-link svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* Empty / loading */
+.grid-loading {
+  grid-column: 1/-1;
+  display: flex; flex-direction: column; align-items: center;
+  gap: 16px; padding: 60px;
+  color: var(--text-3); font-size: 13px;
+}
+.loader-ring {
+  width: 32px; height: 32px;
+  border: 2px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin-slow 0.8s linear infinite;
+}
+.grid-empty {
+  grid-column: 1/-1;
+  text-align: center; padding: 60px;
+  color: var(--text-3); font-size: 14px;
+}
+
+/* Scroll line decoration */
+.scroll-indicator {
+  position: fixed; top: 0; left: 0;
+  height: 2px; background: var(--accent);
+  z-index: 9999; width: 0%;
+  transition: width 0.1s;
+  box-shadow: 0 0 8px var(--accent-glow);
+}
+
+/* Lang colors */
+.lang-lua         { background: #000080; }
+.lang-csharp      { background: #239120; }
+.lang-javascript  { background: #f1e05a; }
+.lang-typescript  { background: #3178c6; }
+.lang-html        { background: #e34c26; }
+.lang-css         { background: #563d7c; }
+.lang-python      { background: #3572A5; }
+.lang-default     { background: var(--text-4); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  #nav-float { top: 10px; padding: 5px 5px 5px 14px; }
+  .float-links { display: none; }
+  .float-sep { display: none; }
+  .page-hero { padding: 110px 0 40px; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .search-wrap { margin-left: 0; }
+  .search-input { width: 100%; }
+  .filter-row { gap: 6px; }
+}
+</style>
+</head>
+<body>
+
+<div id="x-cursor"></div>
+<div id="x-cursor-ring"></div>
+<canvas id="x-canvas"></canvas>
+<div class="scroll-indicator" id="scroll-indicator"></div>
+
+<!-- FLOATING NAV -->
+<nav id="nav-float">
+  <a href="index.html" class="float-logo">Sync<span>X</span></a>
+  <div class="float-sep"></div>
+  <ul class="float-links">
+    <li><a href="index.html#products">Produtos</a></li>
+    <li><a href="proximos.html">Próximos</a></li>
+    <li><a href="outros-projetos.html" class="active">Outros</a></li>
+    <li><a href="index.html#community">Comunidade</a></li>
+  </ul>
+  <div class="float-actions">
+    <a href="dashboard.html" class="float-btn float-btn-primary">Dashboard</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+      <div class="page-kicker" data-reveal>Outros Projetos</div>
+      <h1 data-reveal data-delay="1">
+        Código que<br/>não para.
+      </h1>
+      <p data-reveal data-delay="2">
+        Projetos open source, experimentos e trabalhos pessoais. Tudo que está sendo construído fora da marca SyncX.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section">
+  <div class="container">
+
+    <!-- Filters + Search -->
+    <div class="filter-row" data-reveal>
+      <button class="filter-btn active" data-filter="all">Todos</button>
+      <button class="filter-btn" data-filter="Lua">Lua</button>
+      <button class="filter-btn" data-filter="C#">C#</button>
+      <button class="filter-btn" data-filter="JavaScript">JavaScript</button>
+      <button class="filter-btn" data-filter="HTML">HTML</button>
+      <div class="search-wrap">
+        <svg class="search-icon" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" class="search-input" id="search-input" placeholder="Buscar projeto..."/>
+      </div>
+    </div>
+
+    <!-- Grid -->
+    <div class="projects-grid stagger" id="projects-grid">
+      <div class="grid-loading">
+        <div class="loader-ring"></div>
+        <span>Carregando projetos do GitHub...</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer" style="position:relative;z-index:2;">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h3>Sync<span>X</span></h3>
+        <p>Scripts e ferramentas de alta performance. Construído com precisão, distribuído com responsabilidade.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Páginas</h4>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="proximos.html">Próximos</a></li>
+          <li><a href="outros-projetos.html">Outros Projetos</a></li>
+          <li><a href="dashboard.html">Dashboard</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Links</h4>
+        <ul>
+          <li><a href="https://github.com/BadOctop4s" target="_blank">GitHub</a></li>
+          <li><a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Termos</a></li>
+          <li><a href="#">Privacidade</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>SyncX © 2025 — Não afiliado à Roblox Corporation.</span>
+      <div class="footer-links">
+        <a href="#">Termos</a>
+        <a href="#">Privacidade</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script>
+'use strict';
+
+/* ── SCROLL PROGRESS ── */
+window.addEventListener('scroll', () => {
+  const el  = document.getElementById('scroll-indicator');
+  const max = document.body.scrollHeight - window.innerHeight;
+  el.style.width = (window.scrollY / max * 100) + '%';
+}, { passive: true });
+
+/* ── LANGUAGE CONFIG ── */
+const LANG_COLORS = {
+  'Lua': '#000080', 'C#': '#239120', 'JavaScript': '#f1e05a',
+  'TypeScript': '#3178c6', 'HTML': '#e34c26', 'CSS': '#563d7c',
+  'Python': '#3572A5',
+};
+const LANG_SHORT = {
+  'C#': 'csharp', 'JavaScript': 'javascript', 'TypeScript': 'typescript',
+  'HTML': 'html', 'CSS': 'css', 'Lua': 'lua', 'Python': 'python',
+};
+
+/* ── GITHUB API ── */
+const GITHUB_USER = 'BadOctop4s';
+// Repos to exclude from display
+const EXCLUDE = ['BadOctop4s'];
+
+async function fetchRepos() {
+  try {
+    const res = await fetch(`https://api.github.com/users/${GITHUB_USER}/repos?sort=updated&per_page=50&type=public`);
+    if (!res.ok) throw new Error('GitHub API ' + res.status);
+    const data = await res.json();
+    return data.filter(r => !EXCLUDE.includes(r.name) && !r.fork);
+  } catch(e) {
+    console.error('GitHub fetch failed:', e);
+    return null;
+  }
+}
+
+function relativeTime(iso) {
+  const diff = Date.now() - new Date(iso).getTime();
+  const d = Math.floor(diff / 86400000);
+  if (d === 0) return 'hoje';
+  if (d === 1) return 'ontem';
+  if (d < 30) return `${d}d atrás`;
+  if (d < 365) return `${Math.floor(d/30)}m atrás`;
+  return `${Math.floor(d/365)}a atrás`;
+}
+
+function langClass(lang) {
+  return 'lang-' + (LANG_SHORT[lang] || 'default');
+}
+
+function makeCard(repo) {
+  const lang    = repo.language || '';
+  const color   = LANG_COLORS[lang] || '#555';
+  const topics  = (repo.topics || []).slice(0, 4);
+  const updated = relativeTime(repo.pushed_at);
+  const desc    = repo.description || 'Sem descrição.';
+
+  return `
+    <div class="project-card" data-lang="${lang}" data-name="${repo.name.toLowerCase()}" data-desc="${desc.toLowerCase()}">
+      <div class="project-card-top">
+        <div class="project-icon">
+          <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        </div>
+        <div class="project-meta">
+          ${lang ? `<span class="project-stat"><span class="project-lang-dot" style="background:${color};"></span>${lang}</span>` : ''}
+          <span class="project-stat">
+            <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            ${repo.stargazers_count}
+          </span>
+          <span class="project-stat">
+            <svg viewBox="0 0 24 24"><line x1="6" y1="3" x2="6" y2="15"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></svg>
+            ${repo.forks_count}
+          </span>
+        </div>
+      </div>
+
+      <div class="project-name">${repo.name}</div>
+      <div class="project-desc">${desc}</div>
+
+      ${topics.length ? `
+        <div class="project-tags">
+          ${topics.map(t => `<span class="project-tag">${t}</span>`).join('')}
+        </div>
+      ` : ''}
+
+      <div class="project-footer">
+        <span class="project-updated">Atualizado ${updated}</span>
+        <a href="${repo.html_url}" target="_blank" class="project-link">
+          Ver no GitHub
+          <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+        </a>
+      </div>
+    </div>
+  `;
+}
+
+/* ── RENDER ── */
+let allRepos = [];
+let currentFilter = 'all';
+let currentSearch = '';
+
+function renderGrid() {
+  const grid = document.getElementById('projects-grid');
+  let filtered = allRepos;
+
+  if (currentFilter !== 'all') {
+    filtered = filtered.filter(r => r.language === currentFilter);
+  }
+  if (currentSearch) {
+    const q = currentSearch.toLowerCase();
+    filtered = filtered.filter(r =>
+      r.name.toLowerCase().includes(q) ||
+      (r.description || '').toLowerCase().includes(q)
+    );
+  }
+
+  if (!filtered.length) {
+    grid.innerHTML = `<div class="grid-empty">Nenhum projeto encontrado.</div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(makeCard).join('');
+
+  // Trigger reveal on new cards
+  setTimeout(() => {
+    grid.querySelectorAll('.project-card').forEach((card, i) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(20px)';
+      setTimeout(() => {
+        card.style.transition = 'opacity 0.5s ease, transform 0.5s ease, border-color 0.3s, background 0.3s, box-shadow 0.3s';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, i * 40);
+    });
+  }, 10);
+}
+
+async function init() {
+  const repos = await fetchRepos();
+  const grid  = document.getElementById('projects-grid');
+
+  if (!repos) {
+    grid.innerHTML = `<div class="grid-empty">
+      Falhou ao carregar projetos do GitHub.<br/>
+      <a href="https://github.com/BadOctop4s" target="_blank" style="color:var(--accent);">Ver direto no GitHub →</a>
+    </div>`;
+    return;
+  }
+
+  allRepos = repos;
+  renderGrid();
+
+  // Build filter buttons dynamically
+  const langs = [...new Set(repos.map(r => r.language).filter(Boolean))];
+  const filterRow = document.querySelector('.filter-row');
+  // Remove old lang filters
+  filterRow.querySelectorAll('[data-filter]:not([data-filter="all"])').forEach(b => b.remove());
+  langs.slice(0, 6).forEach(lang => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn';
+    btn.dataset.filter = lang;
+    btn.textContent = lang;
+    filterRow.insertBefore(btn, filterRow.querySelector('.search-wrap'));
+  });
+
+  // Filter events
+  filterRow.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filterRow.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    renderGrid();
+  });
+}
+
+/* ── SEARCH ── */
+let searchTimer;
+document.getElementById('search-input').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => {
+    currentSearch = e.target.value.trim();
+    renderGrid();
+  }, 200);
+});
+
+init();
+</script>
+</body>
+</html>
