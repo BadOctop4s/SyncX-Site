@@ -365,18 +365,18 @@
       display: flex;
       flex-direction: column;
       gap: 0;
-      overflow: hidden;
+      overflow: visible;
     }
 
-    .page-hero::before {
-      content: '';
-      position: absolute;
-      top: 60%;
-      left: -100px;
-      width: 700px;
-      height: 400px;
-      background: radial-gradient(ellipse, rgba(210, 19, 19, 0.08) 0%, transparent 70%);
+    .page-hero::before { display: none; }
+
+    #eye-canvas-prox {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
       pointer-events: none;
+      opacity: 0.45;
     }
 
     .breadcrumb {
@@ -1236,6 +1236,7 @@
   <div id="cursor"></div>
   <div id="cursor-ring"></div>
   <canvas id="bg-canvas"></canvas>
+  <canvas id="eye-canvas-prox"></canvas>
   <div id="grain" aria-hidden="true"></div>
 
   <!-- ══ NAV ══ -->
@@ -1284,8 +1285,6 @@
 
   <!-- ══ PAGE HERO ══ -->
   <div class="page-hero">
-    <div class="orb orb-1"></div>
-    <div class="orb orb-2"></div>
     <div class="breadcrumb reveal">
       <a href="index.html">SyncX</a>
       <span>/</span>
@@ -1648,6 +1647,21 @@
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
     document.querySelectorAll('.glass-card').forEach(el => io.observe(el));
+  </script>
+  <script src="js/evileye.js"></script>
+  <script>
+  SyncXEye.init('eye-canvas-prox', {
+    eyeColor:      '#e02020',
+    bgColor:       '#000000',
+    intensity:     1.4,
+    pupilSize:     0.5,
+    irisWidth:     0.28,
+    glowIntensity: 0.32,
+    scale:         0.75,
+    noiseScale:    1.0,
+    pupilFollow:   1.1,
+    flameSpeed:    0.85
+  });
   </script>
 </body>
 

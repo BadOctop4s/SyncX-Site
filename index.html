@@ -69,21 +69,24 @@
   background: radial-gradient(ellipse, rgba(224,32,32,0.10), transparent 70%);
   pointer-events: none;
 }
-.orb {
-  position: absolute; border-radius: 50%;
-  filter: blur(100px); pointer-events: none;
-  animation: orbFloat linear infinite alternate;
+.orb { display: none; }
+.hero::before { display: none; }
+
+/* Evil Eye canvas background */
+#eye-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.72;
 }
-.orb-1 { width:520px;height:320px;background:radial-gradient(ellipse,rgba(224,32,32,0.18),transparent 70%);top:10%;left:-10%;animation-duration:14s; }
-.orb-2 { width:420px;height:280px;background:radial-gradient(ellipse,rgba(180,10,10,0.12),transparent 70%);top:30%;right:-8%;animation-duration:18s;animation-delay:-6s; }
-.orb-3 { width:300px;height:200px;background:radial-gradient(ellipse,rgba(255,80,80,0.08),transparent 70%);bottom:15%;left:30%;animation-duration:22s;animation-delay:-10s; }
-@keyframes orbFloat {
-  0% { transform:translate(0,0) scale(1); }
-  33% { transform:translate(30px,-20px) scale(1.05); }
-  66% { transform:translate(-20px,15px) scale(0.97); }
-  100% { transform:translate(15px,25px) scale(1.03); }
+@media (max-width: 768px) {
+  #eye-canvas { opacity: 0.5; }
 }
-.hero-badge {
+.hero-badge, .hero-title, .hero-sub, .hero-actions, .hero-stats, .hero-line, .scroll-hint {
+  position: relative; z-index: 2;
+}
   display: inline-flex; align-items: center; gap: 8px;
   background: rgba(224,32,32,0.08); border: 1px solid rgba(224,32,32,0.2);
   border-radius: 100px; padding: 6px 16px;
@@ -429,9 +432,7 @@ footer { position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.06)
 
 <!-- ══ HERO ══ -->
 <div class="hero">
-  <div class="orb orb-1"></div>
-  <div class="orb orb-2"></div>
-  <div class="orb orb-3"></div>
+  <canvas id="eye-canvas"></canvas>
   <div class="hero-badge">Novo — SyncX Zero Hour v2.0 disponível</div>
   <h1 class="hero-title">Sync<span class="x">X</span></h1>
   <p class="hero-sub">Scripts e ferramentas de alto nível para Roblox e diversos outros jogos. Construído para quem não aceita menos que o melhor.</p>
@@ -931,6 +932,21 @@ const revealIO = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting){e.target.classList.add('visible');revealIO.unobserve(e.target);} });
 }, {threshold:0.10});
 document.querySelectorAll('.reveal').forEach(el => revealIO.observe(el));
+</script>
+<script src="js/evileye.js"></script>
+<script>
+SyncXEye.init('eye-canvas', {
+  eyeColor:      '#e02020',
+  bgColor:       '#000000',
+  intensity:     1.6,
+  pupilSize:     0.55,
+  irisWidth:     0.28,
+  glowIntensity: 0.4,
+  scale:         0.82,
+  noiseScale:    1.0,
+  pupilFollow:   1.2,
+  flameSpeed:    0.9
+});
 </script>
 </body>
 </html>

@@ -132,6 +132,15 @@
       z-index: 2;
     }
 
+    #eye-canvas-outros {
+      position: fixed;
+      inset: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.42;
+    }
+
     .page-hero-inner {
       max-width: 700px;
     }
@@ -564,6 +573,7 @@
   <div id="x-cursor"></div>
   <div id="x-cursor-ring"></div>
   <canvas id="x-canvas"></canvas>
+  <canvas id="eye-canvas-outros"></canvas>
   <div class="scroll-indicator" id="scroll-indicator"></div>
 
   <!-- FLOATING NAV -->
@@ -967,6 +977,21 @@
     });
     tiltObserver.observe(document.getElementById('projects-grid'), { childList: true, subtree: true });
 
+  </script>
+  <script src="js/evileye.js"></script>
+  <script>
+  SyncXEye.init('eye-canvas-outros', {
+    eyeColor:      '#e02020',
+    bgColor:       '#000000',
+    intensity:     1.3,
+    pupilSize:     0.5,
+    irisWidth:     0.28,
+    glowIntensity: 0.3,
+    scale:         0.72,
+    noiseScale:    1.0,
+    pupilFollow:   1.0,
+    flameSpeed:    0.8
+  });
   </script>
 </body>
 
