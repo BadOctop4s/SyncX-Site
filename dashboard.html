@@ -43,19 +43,14 @@
   #dash-overlay {
     display: none;
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.55);
+    background: rgba(0,0,0,0.6);
     z-index: 799;
-    backdrop-filter: blur(2px);
+    /* NO backdrop-filter — would blur the sidebar itself */
   }
   #dash-overlay.show { display: block; }
 
   /* Mobile topbar */
-  /* Desktop: hide mobile bar */
-@media (min-width: 769px) {
-  #dash-mobile-bar { display: none !important; }
-  #dash-overlay     { display: none !important; }
-}
-#dash-mobile-bar {
+  #dash-mobile-bar {
     position: fixed;
     top: 0; left: 0; right: 0;
     height: 56px;
@@ -125,6 +120,12 @@
 
 @media (max-width: 400px) {
   .stat-grid { grid-template-columns: 1fr; }
+}
+
+/* Desktop: hide mobile bar completely */
+@media (min-width: 769px) {
+  #dash-mobile-bar { display: none !important; }
+  #dash-overlay     { display: none !important; }
 }
 </style>
 
@@ -1463,22 +1464,19 @@
         document.body.style.overflow = '';
       }
 
-      ham.addEventListener('click', function() {
+      ham.addEventListener('click', function(e) {
+        e.stopPropagation();
         sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
       });
 
       if (overlay) overlay.addEventListener('click', closeSidebar);
 
-      // Close when a nav link is clicked
-      sidebar.querySelectorAll('.sidebar-link[data-page]').forEach(function(link) {
-        link.addEventListener('click', function() {
-          if (window.innerWidth <= 768) closeSidebar();
-          // Sync mobile title
-          var titles = { overview:'Overview', license:'Licença', downloads:'Downloads',
-            activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools',
-            admin:'Admin', creator:'Creator' };
-          if (mTitle) mTitle.textContent = titles[link.dataset.page] || link.dataset.page;
-        });
+      document.addEventListener('click', function(e) {
+        if (sidebar.classList.contains('open') &&
+            !sidebar.contains(e.target) &&
+            !ham.contains(e.target)) {
+          closeSidebar();
+        }
       });
     })();
 
