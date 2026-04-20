@@ -12,6 +12,10 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
 
+<style id="dash-init">
+  #dash-layout-wrap { visibility: hidden; opacity: 0; }
+  #auth-loading { position:fixed;inset:0;background:var(--bg,#050507);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:var(--font-display,sans-serif);font-size:14px;color:rgba(255,255,255,0.3); }
+</style>
 <style id="dash-mobile">
 /* ── DASHBOARD MOBILE ── */
 @media (max-width: 768px) {
@@ -115,9 +119,8 @@
 
   /* Sidebar user footer readable */
   .sidebar-user-name { font-size: 11px; }
-  /* Allow content pages to be visible */
-  .dash-main { overflow: visible; }
-  .dash-content { overflow: visible; }
+  /* CRITICAL: allow page content to render */
+  .dash-main { overflow: visible !important; }
 }
 
 @media (max-width: 400px) {
@@ -148,6 +151,8 @@
 </div>
 <div id="dash-overlay"></div>
 
+<div id="auth-loading">Verificando sessão...</div>
+<div id="dash-layout-wrap" style="position:relative;z-index:2;">
 <div class="dash-layout" style="position:relative;z-index:2;">
 
     <!-- SIDEBAR -->
@@ -865,6 +870,9 @@
     </main>
   </div>
 
+</div><!-- /dash-layout -->
+</div><!-- /dash-layout-wrap -->
+
   <script src="js/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
@@ -878,14 +886,12 @@
       if (pageEl) pageEl.style.display = 'block';
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
-      const titles = { overview:'Overview', license:'Licença', downloads:'Downloads',
-        activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools',
-        admin:'Admin', creator:'Creator' };
+      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
       const label = titles[page] || page;
-      const dtitle = document.getElementById('page-title');
-      const mtitle = document.getElementById('mobile-page-title');
-      if (dtitle) dtitle.textContent = label;
-      if (mtitle) mtitle.textContent = label;
+      const dt = document.getElementById('page-title');
+      const mt = document.getElementById('mobile-page-title');
+      if (dt) dt.textContent = label;
+      if (mt) mt.textContent = label;
       // Close sidebar on mobile
       if (window.innerWidth <= 768) {
         const sb  = document.getElementById('sidebar');
@@ -1169,7 +1175,13 @@
     // ── LOAD USER ──
     async function loadDashboard() {
       const session = await requireAuth();
-      if (!session) return;
+      if (!session) return; // requireAuth redirects to login.html
+
+      // Auth confirmed — reveal dashboard, hide loading screen
+      const loader = document.getElementById('auth-loading');
+      const wrap   = document.getElementById('dash-layout-wrap');
+      if (loader) loader.style.display = 'none';
+      if (wrap)   { wrap.style.visibility = 'visible'; wrap.style.opacity = '1'; }
 
       const user = session.user;
 
@@ -1467,21 +1479,24 @@
       var ov  = document.getElementById('dash-overlay');
       if (!ham || !sb) return;
 
-      ham.addEventListener('click', function(e) {
-        e.stopPropagation();
-        var isOpen = sb.classList.contains('open');
-        sb.classList.toggle('open', !isOpen);
-        ham.classList.toggle('open', !isOpen);
-        if (ov) ov.classList.toggle('show', !isOpen);
-        document.body.style.overflow = isOpen ? '' : 'hidden';
-      });
-
-      if (ov) ov.addEventListener('click', function() {
+      function close() {
         sb.classList.remove('open');
         ham.classList.remove('open');
-        ov.classList.remove('show');
+        if (ov) ov.classList.remove('show');
         document.body.style.overflow = '';
+      }
+      function open() {
+        sb.classList.add('open');
+        ham.classList.add('open');
+        if (ov) ov.classList.add('show');
+        document.body.style.overflow = 'hidden';
+      }
+
+      ham.addEventListener('click', function(e) {
+        e.stopPropagation();
+        sb.classList.contains('open') ? close() : open();
       });
+      if (ov) ov.addEventListener('click', close);
     })();
 
   </script>
