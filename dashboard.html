@@ -45,7 +45,6 @@
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.55);
     z-index: 799;
-    /* no backdrop-filter - would blur sidebar */
   }
   #dash-overlay.show { display: block; }
 
@@ -116,6 +115,9 @@
 
   /* Sidebar user footer readable */
   .sidebar-user-name { font-size: 11px; }
+  /* Allow content pages to be visible */
+  .dash-main { overflow: visible; }
+  .dash-content { overflow: visible; }
 }
 
 @media (max-width: 400px) {
@@ -876,22 +878,24 @@
       if (pageEl) pageEl.style.display = 'block';
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
-      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
-      const title = titles[page] || page;
-      const desktopTitle = document.getElementById('page-title');
-      const mobileTitle  = document.getElementById('mobile-page-title');
-      if (desktopTitle) desktopTitle.textContent = title;
-      if (mobileTitle)  mobileTitle.textContent  = title;
-
-      // On mobile: close sidebar after navigating
+      const titles = { overview:'Overview', license:'Licença', downloads:'Downloads',
+        activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools',
+        admin:'Admin', creator:'Creator' };
+      const label = titles[page] || page;
+      const dtitle = document.getElementById('page-title');
+      const mtitle = document.getElementById('mobile-page-title');
+      if (dtitle) dtitle.textContent = label;
+      if (mtitle) mtitle.textContent = label;
+      // Close sidebar on mobile
       if (window.innerWidth <= 768) {
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('dash-overlay');
-        const ham     = document.getElementById('dash-ham');
-        if (sidebar) sidebar.classList.remove('open');
-        if (overlay) overlay.classList.remove('show');
-        if (ham)     ham.classList.remove('open');
+        const sb  = document.getElementById('sidebar');
+        const ov  = document.getElementById('dash-overlay');
+        const ham = document.getElementById('dash-ham');
+        if (sb)  sb.classList.remove('open');
+        if (ov)  ov.classList.remove('show');
+        if (ham) ham.classList.remove('open');
         document.body.style.overflow = '';
+        window.scrollTo(0, 0);
       }
     }
 
@@ -1458,31 +1462,26 @@
   
     /* ── MOBILE HAMBURGER ── */
     (function() {
-      var ham     = document.getElementById('dash-ham');
-      var sidebar = document.getElementById('sidebar');
-      var overlay = document.getElementById('dash-overlay');
-      if (!ham || !sidebar) return;
-
-      function openSidebar() {
-        sidebar.classList.add('open');
-        overlay.classList.add('show');
-        ham.classList.add('open');
-        document.body.style.overflow = 'hidden';
-      }
-      function closeSidebar() {
-        sidebar.classList.remove('open');
-        overlay.classList.remove('show');
-        ham.classList.remove('open');
-        document.body.style.overflow = '';
-      }
+      var ham = document.getElementById('dash-ham');
+      var sb  = document.getElementById('sidebar');
+      var ov  = document.getElementById('dash-overlay');
+      if (!ham || !sb) return;
 
       ham.addEventListener('click', function(e) {
         e.stopPropagation();
-        sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
+        var isOpen = sb.classList.contains('open');
+        sb.classList.toggle('open', !isOpen);
+        ham.classList.toggle('open', !isOpen);
+        if (ov) ov.classList.toggle('show', !isOpen);
+        document.body.style.overflow = isOpen ? '' : 'hidden';
       });
 
-      // Tap overlay to close
-      if (overlay) overlay.addEventListener('click', closeSidebar);
+      if (ov) ov.addEventListener('click', function() {
+        sb.classList.remove('open');
+        ham.classList.remove('open');
+        ov.classList.remove('show');
+        document.body.style.overflow = '';
+      });
     })();
 
   </script>
