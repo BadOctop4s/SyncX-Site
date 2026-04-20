@@ -43,9 +43,9 @@
   #dash-overlay {
     display: none;
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.55);
     z-index: 799;
-    /* NO backdrop-filter — would blur the sidebar itself */
+    /* no backdrop-filter - would blur sidebar */
   }
   #dash-overlay.show { display: block; }
 
@@ -121,8 +121,6 @@
 @media (max-width: 400px) {
   .stat-grid { grid-template-columns: 1fr; }
 }
-
-/* Desktop: hide mobile bar completely */
 @media (min-width: 769px) {
   #dash-mobile-bar { display: none !important; }
   #dash-overlay     { display: none !important; }
@@ -879,7 +877,22 @@
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
       const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
-      document.getElementById('page-title').textContent = titles[page] || page;
+      const title = titles[page] || page;
+      const desktopTitle = document.getElementById('page-title');
+      const mobileTitle  = document.getElementById('mobile-page-title');
+      if (desktopTitle) desktopTitle.textContent = title;
+      if (mobileTitle)  mobileTitle.textContent  = title;
+
+      // On mobile: close sidebar after navigating
+      if (window.innerWidth <= 768) {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('dash-overlay');
+        const ham     = document.getElementById('dash-ham');
+        if (sidebar) sidebar.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
+        if (ham)     ham.classList.remove('open');
+        document.body.style.overflow = '';
+      }
     }
 
     document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
@@ -1443,24 +1456,23 @@
     };
 
   
-    /* ── MOBILE SIDEBAR HAMBURGER ── */
+    /* ── MOBILE HAMBURGER ── */
     (function() {
       var ham     = document.getElementById('dash-ham');
       var sidebar = document.getElementById('sidebar');
       var overlay = document.getElementById('dash-overlay');
-      var mTitle  = document.getElementById('mobile-page-title');
       if (!ham || !sidebar) return;
 
       function openSidebar() {
-        ham.classList.add('open');
         sidebar.classList.add('open');
-        if (overlay) overlay.classList.add('show');
+        overlay.classList.add('show');
+        ham.classList.add('open');
         document.body.style.overflow = 'hidden';
       }
       function closeSidebar() {
-        ham.classList.remove('open');
         sidebar.classList.remove('open');
-        if (overlay) overlay.classList.remove('show');
+        overlay.classList.remove('show');
+        ham.classList.remove('open');
         document.body.style.overflow = '';
       }
 
@@ -1469,15 +1481,8 @@
         sidebar.classList.contains('open') ? closeSidebar() : openSidebar();
       });
 
+      // Tap overlay to close
       if (overlay) overlay.addEventListener('click', closeSidebar);
-
-      document.addEventListener('click', function(e) {
-        if (sidebar.classList.contains('open') &&
-            !sidebar.contains(e.target) &&
-            !ham.contains(e.target)) {
-          closeSidebar();
-        }
-      });
     })();
 
   </script>
