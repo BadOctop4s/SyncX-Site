@@ -12,10 +12,6 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
 
-<style id="dash-init">
-  #dash-layout-wrap { visibility: hidden; opacity: 0; }
-  #auth-loading { position:fixed;inset:0;background:var(--bg,#050507);display:flex;align-items:center;justify-content:center;z-index:9999;font-family:var(--font-display,sans-serif);font-size:14px;color:rgba(255,255,255,0.3); }
-</style>
 <style id="dash-mobile">
 /* ── DASHBOARD MOBILE ── */
 @media (max-width: 768px) {
@@ -119,16 +115,19 @@
 
   /* Sidebar user footer readable */
   .sidebar-user-name { font-size: 11px; }
-  /* CRITICAL: allow page content to render */
-  .dash-main { overflow: visible !important; }
 }
 
 @media (max-width: 400px) {
   .stat-grid { grid-template-columns: 1fr; }
 }
+
+@media (max-width: 768px) {
+  .dash-main { overflow: visible !important; }
+  .dash-content { overflow: visible !important; }
+}
 @media (min-width: 769px) {
   #dash-mobile-bar { display: none !important; }
-  #dash-overlay     { display: none !important; }
+  #dash-overlay { display: none !important; }
 }
 </style>
 
@@ -151,8 +150,6 @@
 </div>
 <div id="dash-overlay"></div>
 
-<div id="auth-loading">Verificando sessão...</div>
-<div id="dash-layout-wrap" style="position:relative;z-index:2;">
 <div class="dash-layout" style="position:relative;z-index:2;">
 
     <!-- SIDEBAR -->
@@ -870,9 +867,6 @@
     </main>
   </div>
 
-</div><!-- /dash-layout -->
-</div><!-- /dash-layout-wrap -->
-
   <script src="js/config.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth.js"></script>
@@ -887,22 +881,7 @@
       const link = document.querySelector(`[data-page="${page}"]`);
       if (link) link.classList.add('active');
       const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
-      const label = titles[page] || page;
-      const dt = document.getElementById('page-title');
-      const mt = document.getElementById('mobile-page-title');
-      if (dt) dt.textContent = label;
-      if (mt) mt.textContent = label;
-      // Close sidebar on mobile
-      if (window.innerWidth <= 768) {
-        const sb  = document.getElementById('sidebar');
-        const ov  = document.getElementById('dash-overlay');
-        const ham = document.getElementById('dash-ham');
-        if (sb)  sb.classList.remove('open');
-        if (ov)  ov.classList.remove('show');
-        if (ham) ham.classList.remove('open');
-        document.body.style.overflow = '';
-        window.scrollTo(0, 0);
-      }
+      document.getElementById('page-title').textContent = titles[page] || page;
     }
 
     document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
@@ -1175,13 +1154,7 @@
     // ── LOAD USER ──
     async function loadDashboard() {
       const session = await requireAuth();
-      if (!session) return; // requireAuth redirects to login.html
-
-      // Auth confirmed — reveal dashboard, hide loading screen
-      const loader = document.getElementById('auth-loading');
-      const wrap   = document.getElementById('dash-layout-wrap');
-      if (loader) loader.style.display = 'none';
-      if (wrap)   { wrap.style.visibility = 'visible'; wrap.style.opacity = '1'; }
+      if (!session) return;
 
       const user = session.user;
 
@@ -1472,31 +1445,70 @@
     };
 
   
-    /* ── MOBILE HAMBURGER ── */
-    (function() {
-      var ham = document.getElementById('dash-ham');
-      var sb  = document.getElementById('sidebar');
-      var ov  = document.getElementById('dash-overlay');
-      if (!ham || !sb) return;
 
-      function close() {
-        sb.classList.remove('open');
-        ham.classList.remove('open');
-        if (ov) ov.classList.remove('show');
+    /* ═══════════════════════════════════════
+       MOBILE NAV - intercepts at capture phase
+    ═══════════════════════════════════════ */
+    (function() {
+      var ham     = document.getElementById('dash-ham');
+      var sidebar = document.getElementById('sidebar');
+      var overlay = document.getElementById('dash-overlay');
+      var TITLES  = { overview:'Overview', license:'Licença', downloads:'Downloads', activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools', admin:'Admin', creator:'Creator' };
+
+      function closeSB() {
+        if (sidebar) sidebar.classList.remove('open');
+        if (ham)     ham.classList.remove('open');
+        if (overlay) overlay.classList.remove('show');
         document.body.style.overflow = '';
       }
-      function open() {
-        sb.classList.add('open');
-        ham.classList.add('open');
-        if (ov) ov.classList.add('show');
+      function openSB() {
+        if (sidebar) sidebar.classList.add('open');
+        if (ham)     ham.classList.add('open');
+        if (overlay) overlay.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
 
-      ham.addEventListener('click', function(e) {
-        e.stopPropagation();
-        sb.classList.contains('open') ? close() : open();
-      });
-      if (ov) ov.addEventListener('click', close);
+      if (ham) ham.addEventListener('click', function(e) { e.stopPropagation(); sidebar && sidebar.classList.contains('open') ? closeSB() : openSB(); });
+      if (overlay) overlay.addEventListener('click', closeSB);
+
+      /* Use CAPTURE so this fires before any other handler */
+      document.addEventListener('click', function(e) {
+        var link = e.target.closest('.sidebar-link[data-page]');
+        if (!link) return;
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        var page = link.dataset.page;
+        var minTier = parseInt(link.dataset.minTier || '0');
+        if (minTier > 0 && (window.__userTier || 0) < minTier) {
+          var toastFn = window.toast;
+          if (toastFn) toastFn('Acesso restrito.', 'error');
+          closeSB();
+          return;
+        }
+
+        /* Switch page content */
+        document.querySelectorAll('.dash-page').forEach(function(p) { p.style.display = 'none'; });
+        var pg = document.getElementById('page-' + page);
+        if (pg) { pg.style.display = 'block'; pg.style.visibility = 'visible'; pg.style.opacity = '1'; }
+
+        /* Active state */
+        document.querySelectorAll('.sidebar-link').forEach(function(l) { l.classList.toggle('active', l.dataset.page === page); });
+
+        /* Titles */
+        var lbl = TITLES[page] || page;
+        var dt = document.getElementById('page-title');
+        var mt = document.getElementById('mobile-page-title');
+        if (dt) dt.textContent = lbl;
+        if (mt) mt.textContent = lbl;
+
+        /* Close sidebar on mobile */
+        if (window.innerWidth <= 768) { closeSB(); window.scrollTo(0,0); }
+
+        /* Trigger creator load if needed */
+        if (page === 'creator' && typeof window._loadProductsFn === 'function') window._loadProductsFn();
+      }, true); /* true = capture phase */
+
     })();
 
   </script>
