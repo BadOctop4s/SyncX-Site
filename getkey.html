@@ -1,734 +1,513 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Royal Hub — Get Key</title>
-  <meta name="description" content="Obtenha sua key do Royal Hub gratuitamente completando tarefas rápidas." />
-  <link rel="icon" type="image/png" href="logo.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Obter Key — SyncX</title>
+<link rel="icon" type="image/png" href="logo.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/animations.css"/>
+<style>
+/* ══ NAV — pill igual ao index.html ══ */
+#nav {
+  position: fixed; top: 12px; left: 50%; transform: translateX(-50%);
+  z-index: 900; display: flex; align-items: center; justify-content: space-between;
+  height: 52px; width: calc(100% - 48px); max-width: 1160px; padding: 0 24px;
+  border-radius: 100px;
+  background: rgba(8,8,14,0.60);
+  backdrop-filter: blur(32px) saturate(180%); -webkit-backdrop-filter: blur(32px) saturate(180%);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+#nav.scrolled { background: rgba(6,6,12,0.82); box-shadow: 0 8px 48px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05); }
+.nav-logo { display: inline-flex; align-items: center; gap: 8px; color: var(--text); font-family: var(--font-display); font-size: 20px; font-weight: 800; letter-spacing: -0.5px; flex-shrink: 0; }
+.nav-logo img { width: 24px; height: 24px; border-radius: 6px; object-fit: cover; }
+.nav-logo span { color: var(--accent); }
+.nav-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
 
-  <style>
-    /* ── TOKENS (mesmos do site) ── */
-    :root {
-      --bg:           #050507;
-      --bg-1:         #0a0a0f;
-      --bg-2:         #0f0f18;
-      --bg-3:         #161620;
-      --surface:      rgba(255,255,255,0.03);
-      --surface-h:    rgba(255,255,255,0.055);
-      --accent:       #e02020;
-      --accent-dim:   rgba(224,32,32,0.12);
-      --accent-glow:  rgba(224,32,32,0.25);
-      --accent-2:     #ff4444;
-      --border:       rgba(255,255,255,0.06);
-      --border-h:     rgba(224,32,32,0.3);
-      --text:         #f2f2f5;
-      --text-2:       #9898a8;
-      --text-3:       #55555f;
-      --text-4:       #2a2a35;
-      --green:        #22c55e;
-      --font-display: 'Syne', sans-serif;
-      --font-body:    'DM Sans', sans-serif;
-      --font-mono:    'DM Mono', monospace;
-      --radius-sm:    6px;
-      --radius:       10px;
-      --radius-lg:    16px;
-      --ease:         cubic-bezier(0.16, 1, 0.3, 1);
-    }
+/* Hamburger */
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; padding: 6px; cursor: pointer; }
+.nav-hamburger span { display: block; width: 20px; height: 2px; background: var(--text-3); border-radius: 2px; transition: transform 0.3s, opacity 0.3s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--text); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--text); }
 
-    /* ── RESET ── */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { -webkit-font-smoothing: antialiased; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-body);
-      font-size: 15px;
-      line-height: 1.6;
-      overflow-x: hidden;
-      cursor: none;
-      min-height: 100vh;
-    }
-    a { color: inherit; text-decoration: none; cursor: none; }
-    button { cursor: none; font-family: inherit; }
-    ::-webkit-scrollbar { width: 3px; }
-    ::-webkit-scrollbar-track { background: var(--bg); }
-    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-    ::selection { background: var(--accent-dim); color: var(--text); }
+/* Drawer mobile */
+.nav-drawer {
+  position: fixed; top: 72px; left: 50%;
+  transform: translateX(-50%) translateY(-12px);
+  width: calc(100% - 40px); max-width: 480px;
+  background: rgba(10,10,16,0.95); backdrop-filter: blur(32px); -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  opacity: 0; pointer-events: none; transition: opacity 0.25s, transform 0.25s; z-index: 899;
+}
+.nav-drawer.open { opacity: 1; pointer-events: all; transform: translateX(-50%) translateY(0); }
+.nav-drawer ul { list-style: none; display: flex; flex-direction: column; gap: 2px; }
+.nav-drawer ul a { display: block; padding: 11px 14px; color: var(--text-3); font-size: 14px; font-weight: 600; border-radius: 10px; transition: background 0.2s, color 0.2s; }
+.nav-drawer ul a:hover { background: var(--surface); color: var(--text); }
+.drawer-actions { display: flex; gap: 10px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+.drawer-actions a { flex: 1; text-align: center; justify-content: center; }
 
-    /* ── CURSOR ── */
-    #x-cursor {
-      position: fixed; z-index: 99999;
-      width: 6px; height: 6px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%,-50%);
-      transition: width 0.2s, height 0.2s, background 0.2s;
-    }
-    #x-cursor-ring {
-      position: fixed; z-index: 99998;
-      width: 28px; height: 28px;
-      border: 1.5px solid rgba(224,32,32,0.5);
-      border-radius: 50%;
-      pointer-events: none;
-      transform: translate(-50%,-50%);
-      transition: width 0.3s, height 0.3s, border-color 0.3s;
-    }
-    body.cursor-hover #x-cursor { width: 10px; height: 10px; }
-    body.cursor-hover #x-cursor-ring { width: 44px; height: 44px; border-color: rgba(224,32,32,0.8); }
-    body.cursor-click #x-cursor { transform: translate(-50%,-50%) scale(0.7); }
+/* ══ PAGE LAYOUT ══ */
+.getkey-wrap {
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 100px 24px 60px;
+  position: relative; z-index: 2;
+}
+.getkey-card {
+  width: 100%; max-width: 500px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 40px 36px;
+  animation: scale-in 0.5s var(--ease) both;
+  position: relative; z-index: 2;
+}
 
-    /* ── CANVAS PARTICLES ── */
-    #x-canvas {
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 0;
-      opacity: 0.4;
-    }
+/* ── Header ── */
+.gk-header { text-align: center; margin-bottom: 32px; }
+.gk-logo { font-family: var(--font-display); font-size: 28px; font-weight: 800; letter-spacing: -1px; margin-bottom: 6px; }
+.gk-logo span { color: var(--accent); }
+.gk-sub { font-size: 13px; color: var(--text-3); line-height: 1.55; }
 
-    /* ── GLOW BG ── */
-    .bg-glow {
-      position: fixed;
-      top: 20%; left: 50%;
-      transform: translateX(-50%);
-      width: 800px; height: 400px;
-      background: radial-gradient(ellipse, rgba(224,32,32,0.07), transparent 70%);
-      pointer-events: none; z-index: 0;
-    }
+/* ── Steps ── */
+.steps-list { display: flex; flex-direction: column; gap: 0; margin-bottom: 28px; }
+.step-item {
+  display: flex; align-items: flex-start; gap: 14px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--border);
+  opacity: 0.45;
+  transition: opacity 0.3s;
+}
+.step-item:last-child { border-bottom: none; }
+.step-item.active { opacity: 1; }
+.step-item.done   { opacity: 0.7; }
+.step-num {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-3);
+  transition: background 0.3s, border-color 0.3s, color 0.3s;
+}
+.step-item.active .step-num { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.step-item.done   .step-num { background: rgba(34,197,94,0.12); border-color: rgba(34,197,94,0.3); color: #4ade80; }
+.step-body { flex: 1; }
+.step-title { font-family: var(--font-display); font-size: 14px; font-weight: 700; margin-bottom: 3px; }
+.step-desc  { font-size: 12px; color: var(--text-3); line-height: 1.5; }
 
-    /* ── NAV ── */
-    #nav {
-      position: fixed; top: 12px; left: 50%;
-      transform: translateX(-50%);
-      z-index: 900;
-      display: flex; align-items: center; justify-content: space-between;
-      height: 52px;
-      width: calc(100% - 48px); max-width: 1160px;
-      padding: 0 24px;
-      border-radius: 100px;
-      background: rgba(8,8,14,0.60);
-      backdrop-filter: blur(32px) saturate(180%);
-      -webkit-backdrop-filter: blur(32px) saturate(180%);
-      border: 1px solid rgba(255,255,255,0.09);
-      box-shadow: 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06);
-    }
-    .nav-logo {
-      display: flex; align-items: center; gap: 8px;
-      font-family: var(--font-display); font-size: 20px; font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .nav-logo span { color: var(--accent); }
-    .nav-actions { display: flex; align-items: center; gap: 8px; }
-    .btn-ghost {
-      padding: 7px 16px; border-radius: 100px;
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      color: var(--text-2); border: 1px solid var(--border);
-      background: transparent;
-      transition: color 0.2s, border-color 0.2s, background 0.2s;
-    }
-    .btn-ghost:hover { color: var(--text); border-color: var(--border-h); background: var(--accent-dim); }
-    .btn-primary {
-      padding: 8px 18px; border-radius: 100px;
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      color: #fff; background: var(--accent); border: none;
-      box-shadow: 0 0 20px rgba(224,32,32,0.3);
-      transition: box-shadow 0.2s, transform 0.2s, background 0.2s;
-    }
-    .btn-primary:hover { background: var(--accent-2); box-shadow: 0 0 32px rgba(224,32,32,0.5); transform: translateY(-1px); }
+/* ── Buttons ── */
+.btn-getkey {
+  width: 100%; padding: 14px 20px;
+  background: var(--accent); color: #fff;
+  border: none; border-radius: var(--radius);
+  font-family: var(--font-display); font-size: 15px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.15s;
+  box-shadow: 0 0 24px rgba(224,32,32,0.25);
+  position: relative; overflow: hidden;
+}
+.btn-getkey:hover { background: #ff3333; box-shadow: 0 0 36px rgba(224,32,32,0.4); transform: translateY(-1px); }
+.btn-getkey:active { transform: translateY(0); }
+.btn-getkey.loading .btn-text { opacity: 0; }
+.btn-getkey.loading .spinner { opacity: 1; }
+.spinner {
+  position: absolute; width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin-key 0.7s linear infinite;
+  opacity: 0; transition: opacity 0.2s;
+}
+@keyframes spin-key { to { transform: rotate(360deg); } }
 
-    /* ── MAIN ── */
-    main {
-      position: relative; z-index: 1;
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      padding: 100px 24px 60px;
-    }
+/* ── Divider ── */
+.gk-divider {
+  display: flex; align-items: center; gap: 12px; margin: 20px 0;
+}
+.gk-divider::before, .gk-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+.gk-divider span { font-family: var(--font-mono); font-size: 11px; color: var(--text-4); letter-spacing: 1px; white-space: nowrap; }
 
-    .key-wrapper {
-      width: 100%; max-width: 520px;
-      display: flex; flex-direction: column; gap: 24px;
-    }
+/* ── Input ── */
+.key-input-wrap { display: flex; gap: 8px; }
+.key-input-wrap input {
+  flex: 1; padding: 11px 14px;
+  background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-family: var(--font-mono); font-size: 13px; outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  text-transform: uppercase; letter-spacing: 1px;
+}
+.key-input-wrap input:focus { border-color: var(--border-h); box-shadow: 0 0 0 3px var(--accent-dim); }
+.key-input-wrap input::placeholder { color: var(--text-4); letter-spacing: 0.5px; text-transform: none; }
+.btn-verify {
+  padding: 11px 18px; background: var(--surface-h); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text-2); font-family: var(--font-display);
+  font-size: 13px; font-weight: 700; cursor: pointer; white-space: nowrap;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-verify:hover { border-color: var(--border-h); color: var(--text); }
 
-    /* ── HEADER ── */
-    .key-header {
-      text-align: center;
-      animation: fade-up 0.8s var(--ease) both;
-    }
-    .key-badge {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-      letter-spacing: 2px; text-transform: uppercase;
-      color: var(--accent); background: var(--accent-dim);
-      border: 1px solid rgba(224,32,32,0.2);
-      padding: 5px 12px; border-radius: 100px;
-      margin-bottom: 16px;
-    }
-    .key-badge::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 8px var(--accent);
-      animation: pulse 2s ease infinite;
-    }
-    .key-title {
-      font-family: var(--font-display); font-size: 36px; font-weight: 800;
-      letter-spacing: -1.5px; line-height: 1.1;
-      margin-bottom: 10px;
-    }
-    .key-title span { color: var(--accent); }
-    .key-sub { font-size: 14px; color: var(--text-2); line-height: 1.6; }
+/* ── Status messages ── */
+.key-status {
+  display: none; align-items: center; gap: 10px;
+  padding: 11px 14px; border-radius: var(--radius-sm);
+  font-size: 13px; margin-top: 12px;
+  background: rgba(224,32,32,0.07);
+  border: 1px solid rgba(224,32,32,0.18);
+  color: var(--accent-2);
+}
+.key-status.show { display: flex; }
+.key-status.success { background: rgba(34,197,94,0.07); border-color: rgba(34,197,94,0.2); color: #4ade80; }
+.key-status svg { width: 16px; height: 16px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; }
 
-    /* ── CARD PRINCIPAL ── */
-    .key-card {
-      background: var(--bg-1);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      animation: fade-up 0.8s 0.1s var(--ease) both;
-      position: relative;
-    }
-    .key-card::before {
-      content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    }
+/* ── Key info hint ── */
+.key-info {
+  font-size: 12px; color: var(--text-4); text-align: center; margin-top: 16px; line-height: 1.5;
+}
 
-    /* ── STEPS ── */
-    .steps {
-      padding: 24px 24px 0;
-      display: flex; flex-direction: column; gap: 12px;
-    }
-    .step {
-      display: flex; align-items: flex-start; gap: 14px;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color 0.2s, background 0.2s;
-    }
-    .step.active { border-color: rgba(224,32,32,0.3); background: var(--accent-dim); }
-    .step.done { border-color: rgba(34,197,94,0.2); background: rgba(34,197,94,0.05); }
-    .step-num {
-      width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
-      display: flex; align-items: center; justify-content: center;
-      font-family: var(--font-mono); font-size: 11px; font-weight: 700;
-      background: var(--bg-3); border: 1px solid var(--border);
-      color: var(--text-3);
-    }
-    .step.active .step-num { background: var(--accent); border-color: var(--accent); color: #fff; }
-    .step.done .step-num { background: rgba(34,197,94,0.15); border-color: rgba(34,197,94,0.3); color: var(--green); }
-    .step-body { flex: 1; }
-    .step-title {
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      margin-bottom: 2px;
-    }
-    .step.active .step-title { color: var(--text); }
-    .step.done .step-title { color: var(--green); }
-    .step-desc { font-size: 12px; color: var(--text-3); }
+/* ── Success box ── */
+.key-success {
+  display: none; flex-direction: column; align-items: center; gap: 16px;
+  padding: 28px; background: rgba(34,197,94,0.05);
+  border: 1px solid rgba(34,197,94,0.2); border-radius: var(--radius);
+  text-align: center; margin-top: 4px;
+  animation: scale-in 0.4s var(--ease) both;
+}
+.key-success.show { display: flex; }
+.key-success-icon {
+  width: 52px; height: 52px; border-radius: 50%;
+  background: rgba(34,197,94,0.12); border: 1px solid rgba(34,197,94,0.25);
+  display: flex; align-items: center; justify-content: center;
+}
+.key-success-icon svg { width: 24px; height: 24px; stroke: #4ade80; fill: none; stroke-width: 2.5; }
+.key-success h3 { font-family: var(--font-display); font-size: 18px; font-weight: 800; color: var(--text); }
+.key-success p  { font-size: 13px; color: var(--text-3); }
+.key-display {
+  width: 100%; background: var(--bg-2); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px 16px;
+  font-family: var(--font-mono); font-size: 14px; font-weight: 700;
+  color: var(--text); text-align: center; letter-spacing: 2px;
+  word-break: break-all;
+}
+.btn-copy-key {
+  width: 100%; padding: 12px; background: rgba(34,197,94,0.1);
+  border: 1px solid rgba(34,197,94,0.25); border-radius: var(--radius);
+  color: #4ade80; font-family: var(--font-display); font-size: 14px; font-weight: 700;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background 0.2s;
+}
+.btn-copy-key:hover { background: rgba(34,197,94,0.18); }
 
-    /* ── ACTION AREA ── */
-    .key-action { padding: 24px; }
-
-    /* Botão get key */
-    .btn-getkey {
-      width: 100%; padding: 15px;
-      background: var(--accent);
-      border: none; border-radius: var(--radius);
-      font-family: var(--font-display); font-size: 15px; font-weight: 800;
-      color: #fff; letter-spacing: -0.3px;
-      box-shadow: 0 0 32px rgba(224,32,32,0.3);
-      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-getkey:hover { background: var(--accent-2); box-shadow: 0 0 48px rgba(224,32,32,0.5); transform: translateY(-2px); }
-    .btn-getkey:active { transform: translateY(0); }
-    .btn-getkey svg { width: 16px; height: 16px; }
-
-    /* ── INPUT KEY ── */
-    .key-input-wrap {
-      display: none;
-      flex-direction: column; gap: 10px;
-    }
-    .key-input-wrap.visible { display: flex; }
-    .key-input-label {
-      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
-      letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-3);
-    }
-    .key-input-row { display: flex; gap: 8px; }
-    .key-input {
-      flex: 1; padding: 12px 16px;
-      background: var(--bg-3); border: 1px solid var(--border);
-      border-radius: var(--radius); color: var(--text);
-      font-family: var(--font-mono); font-size: 13px;
-      outline: none; transition: border-color 0.2s;
-    }
-    .key-input:focus { border-color: var(--accent); }
-    .key-input::placeholder { color: var(--text-4); }
-    .btn-validate {
-      padding: 12px 20px;
-      background: var(--accent); border: none; border-radius: var(--radius);
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      color: #fff; white-space: nowrap;
-      transition: background 0.2s, transform 0.2s;
-    }
-    .btn-validate:hover { background: var(--accent-2); transform: translateY(-1px); }
-
-    .key-status {
-      display: none; align-items: center; gap: 8px;
-      padding: 10px 14px; border-radius: var(--radius);
-      font-size: 12px; font-weight: 600;
-    }
-    .key-status.show { display: flex; }
-    .key-status.success { background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2); color: var(--green); }
-    .key-status.error { background: rgba(224,32,32,0.1); border: 1px solid rgba(224,32,32,0.2); color: var(--accent-2); }
-    .key-status svg { width: 14px; height: 14px; flex-shrink: 0; }
-
-    /* ── DIVIDER ── */
-    .key-divider {
-      display: flex; align-items: center; gap: 12px;
-      margin: 0 24px;
-    }
-    .key-divider::before, .key-divider::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
-    }
-    .key-divider span {
-      font-family: var(--font-mono); font-size: 10px;
-      color: var(--text-4); text-transform: uppercase; letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    /* ── INFO BOX ── */
-    .key-info {
-      margin: 0 24px 24px;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      display: flex; gap: 12px; align-items: flex-start;
-    }
-    .key-info svg { width: 14px; height: 14px; flex-shrink: 0; margin-top: 2px; stroke: var(--text-3); fill: none; }
-    .key-info p { font-size: 12px; color: var(--text-3); line-height: 1.5; }
-    .key-info p strong { color: var(--text-2); font-weight: 600; }
-
-    /* ── FOOTER ── */
-    .key-footer {
-      text-align: center;
-      animation: fade-up 0.8s 0.2s var(--ease) both;
-    }
-    .key-footer p { font-size: 12px; color: var(--text-3); }
-    .key-footer a { color: var(--accent); }
-    .key-footer a:hover { text-decoration: underline; }
-
-    /* ── LOADING SPINNER ── */
-    .spinner {
-      width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.3);
-      border-top-color: #fff;
-      border-radius: 50%;
-      animation: spin 0.7s linear infinite;
-      display: none;
-    }
-    .loading .spinner { display: block; }
-    .loading .btn-text { display: none; }
-
-    /* ── SUCCESS STATE ── */
-    .key-success {
-      display: none;
-      flex-direction: column; align-items: center; gap: 16px;
-      text-align: center; padding: 32px 24px;
-    }
-    .key-success.show { display: flex; }
-    .success-icon {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .success-icon svg { width: 24px; height: 24px; stroke: var(--green); fill: none; stroke-width: 2.5; }
-    .success-title {
-      font-family: var(--font-display); font-size: 20px; font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .success-sub { font-size: 13px; color: var(--text-2); }
-    .success-key-box {
-      width: 100%; padding: 12px 16px;
-      background: var(--bg-3); border: 1px solid rgba(34,197,94,0.2);
-      border-radius: var(--radius);
-      font-family: var(--font-mono); font-size: 13px;
-      color: var(--green); letter-spacing: 1px;
-      text-align: center; word-break: break-all;
-    }
-    .btn-copy-success {
-      width: 100%; padding: 12px;
-      background: rgba(34,197,94,0.1); border: 1px solid rgba(34,197,94,0.2);
-      border-radius: var(--radius);
-      font-family: var(--font-display); font-size: 13px; font-weight: 700;
-      color: var(--green);
-      transition: background 0.2s;
-      display: flex; align-items: center; justify-content: center; gap: 8px;
-    }
-    .btn-copy-success:hover { background: rgba(34,197,94,0.2); }
-    .btn-copy-success svg { width: 14px; height: 14px; stroke: currentColor; fill: none; }
-
-    /* ── KEYFRAMES ── */
-    @keyframes fade-up {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%,100% { box-shadow: 0 0 6px var(--accent); }
-      50%      { box-shadow: 0 0 14px var(--accent); }
-    }
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    @keyframes pop-in {
-      0%   { opacity: 0; transform: scale(0.8) translateY(10px); }
-      60%  { transform: scale(1.04); }
-      100% { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .pop-in { animation: pop-in 0.5s var(--ease) both; }
-
-    /* ── RESPONSIVE ── */
-    @media (max-width: 480px) {
-      .key-title { font-size: 28px; }
-      main { padding: 90px 16px 40px; }
-    }
-  </style>
+/* ── Mobile ── */
+@media (max-width: 768px) {
+  #nav { width: calc(100% - 24px); padding: 0 16px; height: 48px; }
+  .nav-actions .btn:not(.btn-primary) { display: none; }
+  .nav-hamburger { display: flex; }
+  body { cursor: auto !important; }
+  #x-cursor, #x-cursor-ring { display: none !important; }
+  .getkey-card { padding: 28px 20px; }
+  .getkey-wrap { padding: 80px 16px 40px; }
+}
+</style>
 </head>
-
 <body>
-  <!-- Cursor -->
-  <div id="x-cursor"></div>
-  <div id="x-cursor-ring"></div>
 
-  <!-- Canvas particles -->
-  <canvas id="x-canvas"></canvas>
-  <div class="bg-glow"></div>
+<div id="x-cursor"></div>
+<div id="x-cursor-ring"></div>
+<canvas id="x-canvas"></canvas>
 
-  <!-- NAV -->
-  <nav id="nav">
-    <a href="index.html" class="nav-logo">Sync<span>X</span></a>
+<!-- ══ NAV ══ -->
+<nav id="nav">
+  <div class="nav-inner" style="display:flex;align-items:center;justify-content:space-between;width:100%;">
+    <a href="index.html" class="nav-logo">
+      <img src="logo.png" alt="SyncX">
+      Sync<span>X</span>
+    </a>
     <div class="nav-actions">
-      <a href="index.html" class="btn-ghost">Voltar</a>
-      <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn-primary">Discord</a>
+      <a href="index.html" class="btn btn-ghost btn-sm">← Início</a>
+      <a href="login.html" class="btn btn-primary btn-sm">Entrar</a>
+      <button class="nav-hamburger" id="nav-ham" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </nav>
+  </div>
+</nav>
 
-  <!-- MAIN -->
-  <main>
-    <div class="key-wrapper">
+<div class="nav-drawer" id="nav-drawer">
+  <ul>
+    <li><a href="index.html">Início</a></li>
+    <li><a href="proximos.html">Próximos</a></li>
+    <li><a href="outros-projetos.html">Outros Projetos</a></li>
+    <li><a href="login.html">Entrar</a></li>
+  </ul>
+  <div class="drawer-actions">
+    <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-ghost btn-sm" style="text-align:center;">Discord</a>
+    <a href="login.html" class="btn btn-primary btn-sm" style="text-align:center;">Entrar</a>
+  </div>
+</div>
 
-      <!-- Header -->
-      <div class="key-header">
-        <div class="key-badge">Royal Hub Key System</div>
-        <h1 class="key-title">Obtenha sua <span>Key</span></h1>
-        <p class="key-sub">Complete tarefas rápidas para liberar o acesso ao Royal Hub gratuitamente.</p>
-      </div>
+<!-- ══ PAGE CONTENT ══ -->
+<div class="getkey-wrap">
+  <div class="getkey-card">
 
-      <!-- Card -->
-      <div class="key-card" id="key-card">
-
-        <!-- Steps -->
-        <div class="steps" id="steps-list">
-          <div class="step active" id="step-1">
-            <div class="step-num">1</div>
-            <div class="step-body">
-              <div class="step-title">Completar tarefas</div>
-              <div class="step-desc">Clique em "Obter Key" e complete as tarefas no Lootlabs</div>
-            </div>
-          </div>
-          <div class="step" id="step-2">
-            <div class="step-num">2</div>
-            <div class="step-body">
-              <div class="step-title">Copiar a key gerada</div>
-              <div class="step-desc">Após completar, copie a key exibida no final</div>
-            </div>
-          </div>
-          <div class="step" id="step-3">
-            <div class="step-num">3</div>
-            <div class="step-body">
-              <div class="step-title">Colar na script</div>
-              <div class="step-desc">Execute o Royal Hub e cole a key quando solicitado</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Action: botão principal -->
-        <div class="key-action" id="action-getkey">
-          <button class="btn-getkey" onclick="openLootlabs(this)">
-            <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
-                <polyline points="10 17 15 12 10 7"/>
-                <line x1="15" y1="12" x2="3" y2="12"/>
-              </svg>
-              Obter Key Gratuitamente
-            </span>
-            <div class="spinner"></div>
-          </button>
-        </div>
-
-        <!-- Divider -->
-        <div class="key-divider" id="divider-input">
-          <span>já tem uma key?</span>
-        </div>
-
-        <!-- Input key -->
-        <div class="key-action" id="action-input">
-          <div class="key-input-wrap visible">
-            <div class="key-input-label">Verificar Key</div>
-            <div class="key-input-row">
-              <input
-                type="text"
-                class="key-input"
-                id="key-input"
-                placeholder="ROYAL-XXXX-XXXX-XXXX"
-                spellcheck="false"
-                autocomplete="off"
-              />
-              <button class="btn-validate" onclick="verifyKey()">
-                Verificar
-              </button>
-            </div>
-            <div class="key-status" id="key-status">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" id="status-icon"></svg>
-              <span id="status-msg"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Info -->
-        <div class="key-info">
-          <svg viewBox="0 0 24 24" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-          <p>As keys do Royal Hub são geradas automaticamente após completar as tarefas. <strong>Cada key é válida por 24 horas</strong> e é salva automaticamente no executor.</p>
-        </div>
-
-        <!-- Success state (hidden by default) -->
-        <div class="key-success" id="key-success">
-          <div class="success-icon pop-in">
-            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
-          </div>
-          <div>
-            <div class="success-title">Key Válida!</div>
-            <div class="success-sub">Sua key foi verificada com sucesso.</div>
-          </div>
-          <div class="success-key-box" id="success-key-display"></div>
-          <button class="btn-copy-success" onclick="copyValidKey()">
-            <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-            <span id="copy-btn-text">Copiar Key</span>
-          </button>
-        </div>
-
-      </div><!-- /key-card -->
-
-      <!-- Footer -->
-      <div class="key-footer">
-        <p>Problemas com a key? Entre no <a href="https://discord.gg/faUyqCdd3P" target="_blank">Discord</a> para suporte.</p>
-      </div>
-
+    <div class="gk-header">
+      <div class="gk-logo">Sync<span>X</span> — Key</div>
+      <div class="gk-sub">Complete as etapas abaixo para obter sua key de acesso gratuita.<br/>A key é válida por 7 dias.</div>
     </div>
-  </main>
 
-  <script>
-    /* ── CONFIG ── */
-    const SUPABASE_URL  = 'https://gdaiirmnqdypikeugdij.supabase.co';
-    const SUPABASE_ANON = 'eyJhbGci...'; // sua anon key
-    const LOOTLABS_LINK = 'https://loot-link.com/s?Q57oaWij';
+    <!-- ── Steps ── -->
+    <div class="steps-list">
+      <div class="step-item active" id="step-1">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Acessar o link</div>
+          <div class="step-desc">Clique no botão abaixo para acessar o Lootlabs e completar as tarefas.</div>
+        </div>
+      </div>
+      <div class="step-item" id="step-2">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Completar as tarefas</div>
+          <div class="step-desc">Complete as tarefas no Lootlabs. Sua key será gerada automaticamente.</div>
+        </div>
+      </div>
+      <div class="step-item" id="step-3">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Copiar a key</div>
+          <div class="step-desc">Sua key ficará disponível aqui. Copie e use no executor.</div>
+        </div>
+      </div>
+    </div>
 
-// Ao carregar, verifica se veio com ?token= na URL (retorno da Lootlabs)
-    document.addEventListener('DOMContentLoaded', async () => {
-      const params = new URLSearchParams(window.location.search);
-      const token  = params.get('token');
+    <!-- ── Action area ── -->
+    <div id="action-getkey">
+      <button class="btn-getkey" onclick="openLootlabs(this)">
+        <span class="btn-text" style="display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Acessar Lootlabs e obter key
+        </span>
+        <div class="spinner"></div>
+      </button>
+    </div>
 
-      if (token) {
-        showStatus('loading', 'Gerando sua key...');
-        try {
-          const res  = await fetch(`/api/generate-key?token=${token}`);
-          const data = await res.json();
-          if (data.key) {
-            showSuccess(data.key);
-          } else {
-            showStatus('error', data.error || 'Erro ao gerar key.');
-          }
-        } catch (e) {
-          showStatus('error', 'Erro de conexão. Tente novamente.');
-        }
-      }
+    <!-- ── Divider + manual input ── -->
+    <div id="divider-input">
+      <div class="gk-divider" style="margin-top:20px;"><span>já tem uma key?</span></div>
+    </div>
+
+    <div id="action-input">
+      <div class="key-input-wrap">
+        <input type="text" id="key-input" placeholder="RH-XXXXX-XXXXX-XXXXX" maxlength="20"/>
+        <button class="btn-verify" onclick="verifyKey()">Verificar</button>
+      </div>
+    </div>
+
+    <!-- Status -->
+    <div class="key-status" id="key-status">
+      <svg viewBox="0 0 24 24"><polyline id="status-icon" points="20 6 9 17 4 12"/></svg>
+      <span id="status-msg"></span>
+    </div>
+
+    <p class="key-info">Ao completar o Lootlabs, a key é gerada automaticamente com seu IP.<br>Não compartilhe sua key com ninguém.</p>
+
+    <!-- ── Success box ── -->
+    <div class="key-success" id="key-success">
+      <div class="key-success-icon">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <h3>Key obtida com sucesso!</h3>
+      <p>Sua key de acesso ao Royal Hub é:</p>
+      <div class="key-display" id="success-key-display">—</div>
+      <button class="btn-copy-key" onclick="copyValidKey()">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span id="copy-btn-text">Copiar Key</span>
+      </button>
+      <p style="font-size:11px;color:var(--text-4);margin-top:4px;">Válida por 7 dias a partir de agora.</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+<script>
+'use strict';
+
+const SUPABASE_URL  = SYNCX_CONFIG.supabase.url;
+const SUPABASE_ANON = SYNCX_CONFIG.supabase.anonKey;
+
+let userIP = null;
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', async () => {
+  // Nav scroll pill
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', window.scrollY > 40), {passive:true});
+
+  // Hamburger
+  const ham    = document.getElementById('nav-ham');
+  const drawer = document.getElementById('nav-drawer');
+  ham.addEventListener('click', () => {
+    const open = ham.classList.toggle('open');
+    drawer.classList.toggle('open', open);
+  });
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    ham.classList.remove('open'); drawer.classList.remove('open');
+  }));
+  document.addEventListener('click', e => {
+    if (!nav.contains(e.target) && !drawer.contains(e.target)) {
+      ham.classList.remove('open'); drawer.classList.remove('open');
+    }
+  });
+
+  // Pega IP e monta link com puid
+  try {
+    const r = await fetch('https://api.ipify.org?format=json');
+    const { ip } = await r.json();
+    userIP = ip;
+    window._lootlabsLink = `https://loot-link.com/s?Q57oaWij&puid=${encodeURIComponent(ip)}`;
+  } catch {
+    window._lootlabsLink = 'https://loot-link.com/s?Q57oaWij';
+  }
+
+  // Enter no input de verificação
+  document.getElementById('key-input').addEventListener('keydown', e => {
+    if (e.key === 'Enter') verifyKey();
+  });
 });
-    /* ── LOOTLABS ── */
-    function openLootlabs(btn) {
-      // Marca step 1 como done, step 2 como active
-      document.getElementById('step-1').classList.remove('active');
-      document.getElementById('step-1').classList.add('done');
-      document.getElementById('step-1').querySelector('.step-num').innerHTML = `
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>`;
-      document.getElementById('step-1').classList.remove('active');
-      document.getElementById('step-1').classList.add('done');
 
-      // Abre o Lootlabs
-      window.open(LOOTLABS_LINK, '_blank');
+/* ── ABRE LOOTLABS ── */
+function openLootlabs(btn) {
+  // Step 1 → done
+  const s1 = document.getElementById('step-1');
+  s1.classList.remove('active'); s1.classList.add('done');
+  s1.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
 
-      // Troca o botão
-      document.getElementById('action-getkey').innerHTML = `
-        <div style="display:flex;flex-direction:column;gap:8px;">
-          <button class="btn-getkey" onclick="window.open('${LOOTLABS_LINK}','_blank')" style="background:var(--bg-3);border:1px solid var(--border);box-shadow:none;color:var(--text-2);font-size:13px;">
-            <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-              Abrir Lootlabs novamente
-            </span>
-          </button>
-        </div>`;
+  // Step 2 → active
+  document.getElementById('step-2').classList.add('active');
+
+  window.open(window._lootlabsLink, '_blank');
+
+  // Troca botão para opções pós-click
+  document.getElementById('action-getkey').innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="btn-getkey" onclick="checkMyKey(this)">
+        <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Já completei — ver minha key
+        </span>
+        <div class="spinner"></div>
+      </button>
+      <button class="btn-getkey" onclick="window.open(window._lootlabsLink,'_blank')"
+        style="background:var(--bg-3);border:1px solid var(--border);box-shadow:none;color:var(--text-2);font-size:13px;">
+        <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Abrir Lootlabs novamente
+        </span>
+      </button>
+    </div>`;
+}
+
+/* ── BUSCA KEY POR IP (puid) ── */
+async function checkMyKey(btn) {
+  if (!userIP) { showStatus('error', 'Não foi possível identificar seu IP. Tente novamente.'); return; }
+  btn.classList.add('loading');
+  try {
+    const res  = await fetch(
+      `${SUPABASE_URL}/rest/v1/keys?lootlabs_puid=eq.${encodeURIComponent(userIP)}&select=key&order=created_at.desc&limit=1`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
+    );
+    const data = await res.json();
+    if (data && data.length > 0) {
+      showSuccess(data[0].key);
+    } else {
+      btn.classList.remove('loading');
+      showStatus('error', 'Key ainda não gerada. Aguarde alguns segundos e tente de novo.');
     }
+  } catch {
+    btn.classList.remove('loading');
+    showStatus('error', 'Erro de conexão. Tente novamente.');
+  }
+}
 
-    /* ── VERIFY KEY ── */
-    async function verifyKey() {
-      const input  = document.getElementById('key-input');
-      const status = document.getElementById('key-status');
-      const key    = input.value.trim().toUpperCase();
+/* ── VERIFY KEY (input manual) ── */
+async function verifyKey() {
+  const key = document.getElementById('key-input').value.trim().toUpperCase();
+  if (!key) { showStatus('error', 'Digite uma key válida.'); return; }
+  showStatus('loading', 'Verificando...');
+  try {
+    const res  = await fetch(
+      `${SUPABASE_URL}/rest/v1/keys?key=eq.${encodeURIComponent(key)}&select=key,used`,
+      { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
+    );
+    const data = await res.json();
+    if (data && data.length > 0) showSuccess(key);
+    else showStatus('error', 'Key inválida ou não encontrada.');
+  } catch {
+    showStatus('error', 'Erro ao verificar. Tente novamente.');
+  }
+}
 
-      if (!key) {
-        showStatus('error', 'Digite uma key válida.'); return;
-      }
+/* ── UI HELPERS ── */
+function showStatus(type, msg) {
+  const el   = document.getElementById('key-status');
+  const icon = document.getElementById('status-icon');
+  const text = document.getElementById('status-msg');
+  el.className = 'key-status show ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
+  text.textContent = msg;
+  if (type === 'success') icon.outerHTML = '<polyline id="status-icon" points="20 6 9 17 4 12"/>';
+  else if (type === 'error') icon.outerHTML = '<circle id="status-icon" cx="12" cy="12" r="10"/>';
+  else icon.outerHTML = '<polyline id="status-icon" points=""/>';
+}
 
-      showStatus('loading', 'Verificando...');
+function showSuccess(key) {
+  // Esconde elementos intermediários
+  const dividerEl = document.getElementById('divider-input');
+  const inputEl   = document.getElementById('action-input');
+  const infoEl    = document.querySelector('.key-info');
+  const statusEl  = document.getElementById('key-status');
+  if (dividerEl) dividerEl.style.display = 'none';
+  if (inputEl)   inputEl.style.display   = 'none';
+  if (infoEl)    infoEl.style.display    = 'none';
+  if (statusEl)  statusEl.classList.remove('show');
 
-      try {
-        const res = await fetch(
-          `${SUPABASE_URL}/rest/v1/keys?key=eq.${encodeURIComponent(key)}&select=key,used`,
-          { headers: { 'apikey': SUPABASE_ANON, 'Authorization': `Bearer ${SUPABASE_ANON}` } }
-        );
-        const data = await res.json();
+  // Steps → done
+  const s2 = document.getElementById('step-2');
+  const s3 = document.getElementById('step-3');
+  s2.classList.remove('active'); s2.classList.add('done');
+  s2.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+  s3.classList.add('done');
+  s3.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
 
-        if (data && data.length > 0) {
-          // Key válida — mostra sucesso
-          showSuccess(key);
-        } else {
-          showStatus('error', 'Key inválida ou não encontrada.');
-        }
-      } catch (e) {
-        showStatus('error', 'Erro ao verificar. Tente novamente.');
-      }
-    }
+  // Exibe key
+  document.getElementById('success-key-display').textContent = key;
+  document.getElementById('key-success').classList.add('show');
+}
 
-    function showStatus(type, msg) {
-      const el   = document.getElementById('key-status');
-      const icon = document.getElementById('status-icon');
-      const text = document.getElementById('status-msg');
-
-      el.className = 'key-status show ' + (type === 'error' ? 'error' : type === 'success' ? 'success' : '');
-      text.textContent = msg;
-
-      if (type === 'success') {
-        icon.innerHTML = '<polyline points="20 6 9 17 4 12"/>';
-      } else if (type === 'error') {
-        icon.innerHTML = '<circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/>';
-      } else {
-        icon.innerHTML = '';
-      }
-    }
-
-    function showSuccess(key) {
-      // Esconde o input e info
-      document.getElementById('divider-input').style.display = 'none';
-      document.getElementById('action-input').style.display = 'none';
-      document.querySelector('.key-info').style.display = 'none';
-
-      // Marca steps como done
-      document.getElementById('step-2').classList.remove('active');
-      document.getElementById('step-2').classList.add('done');
-      document.getElementById('step-2').querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
-      document.getElementById('step-3').classList.add('done');
-      document.getElementById('step-3').querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
-
-      // Mostra success
-      const successEl = document.getElementById('key-success');
-      document.getElementById('success-key-display').textContent = key;
-      successEl.classList.add('show');
-    }
-
-    let copyTimer;
-    function copyValidKey() {
-      const key = document.getElementById('success-key-display').textContent;
-      navigator.clipboard.writeText(key).then(() => {
-        const btn = document.getElementById('copy-btn-text');
-        btn.textContent = '✓ Copiado!';
-        clearTimeout(copyTimer);
-        copyTimer = setTimeout(() => { btn.textContent = 'Copiar Key'; }, 2000);
-      });
-    }
-
-    /* ── ENTER KEY ── */
-    document.addEventListener('DOMContentLoaded', () => {
-      document.getElementById('key-input').addEventListener('keydown', e => {
-        if (e.key === 'Enter') verifyKey();
-      });
-    });
-
-    /* ── CURSOR ── */
-    (function() {
-      const dot  = document.getElementById('x-cursor');
-      const ring = document.getElementById('x-cursor-ring');
-      if (!dot || !ring) return;
-      if (window.matchMedia('(max-width: 768px)').matches) {
-        dot.style.display = ring.style.display = 'none'; return;
-      }
-      let mx=0,my=0,rx=0,ry=0;
-      document.addEventListener('mousemove', e => {
-        mx=e.clientX; my=e.clientY;
-        dot.style.left=mx+'px'; dot.style.top=my+'px';
-      });
-      (function animRing() {
-        rx+=(mx-rx)*0.14; ry+=(my-ry)*0.14;
-        ring.style.left=rx+'px'; ring.style.top=ry+'px';
-        requestAnimationFrame(animRing);
-      })();
-      document.querySelectorAll('a,button,[data-hover]').forEach(el => {
-        el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-        el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-      });
-      document.addEventListener('mousedown', () => document.body.classList.add('cursor-click'));
-      document.addEventListener('mouseup',   () => document.body.classList.remove('cursor-click'));
-    })();
-
-    /* ── CANVAS PARTICLES ── */
-    (function() {
-      const canvas = document.getElementById('x-canvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      let W, H, animId;
-      const COUNT = 50;
-      const MAX_DIST = 120;
-      const particles = [];
-      function resize() { W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
-      function mkP() { return {x:Math.random()*W,y:Math.random()*H,vx:(Math.random()-0.5)*0.25,vy:(Math.random()-0.5)*0.25,r:Math.random()*1.2+0.3}; }
-      function init() { resize(); particles.length=0; for(let i=0;i<COUNT;i++) particles.push(mkP()); }
-      function draw() {
-        ctx.clearRect(0,0,W,H);
-        for(let i=0;i<particles.length;i++) {
-          const p=particles[i];
-          p.x+=p.vx; p.y+=p.vy;
-          if(p.x<-10) p.x=W+10; if(p.x>W+10) p.x=-10;
-          if(p.y<-10) p.y=H+10; if(p.y>H+10) p.y=-10;
-          ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-          ctx.fillStyle='rgba(224,32,32,0.45)'; ctx.fill();
-          for(let j=i+1;j<particles.length;j++) {
-            const q=particles[j];
-            const dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-            if(d<MAX_DIST) {
-              ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y);
-              ctx.strokeStyle=`rgba(224,32,32,${(1-d/MAX_DIST)*0.08})`; ctx.lineWidth=0.6; ctx.stroke();
-            }
-          }
-        }
-        animId=requestAnimationFrame(draw);
-      }
-      document.addEventListener('visibilitychange',()=>{ if(document.hidden) cancelAnimationFrame(animId); else draw(); });
-      window.addEventListener('resize',resize);
-      init(); draw();
-    })();
-  </script>
+let copyTimer;
+function copyValidKey() {
+  const key = document.getElementById('success-key-display').textContent;
+  navigator.clipboard.writeText(key).then(() => {
+    const btn = document.getElementById('copy-btn-text');
+    btn.textContent = '✓ Copiado!';
+    clearTimeout(copyTimer);
+    copyTimer = setTimeout(() => { btn.textContent = 'Copiar Key'; }, 2000);
+  });
+}
+</script>
 </body>
 </html>
