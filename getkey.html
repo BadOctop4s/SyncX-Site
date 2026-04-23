@@ -532,10 +532,30 @@
 
   <script>
     /* ── CONFIG ── */
-    const SUPABASE_URL    = 'https://gdaiirmnqdypikeugdij.supabase.co';
-    const SUPABASE_ANON   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdkYWlpcm1ucWR5cGlrZXVnZGlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0NDI1MjksImV4cCI6MjA5MjAxODUyOX0.ZRWJKeQfMKuWyISNSKcAYf9ZucSBWWpn_MZ57fcNztA';
-    const LOOTLABS_LINK   = 'https://links.lootlabs.gg/s?NonbLjPP';
+    const SUPABASE_URL  = 'https://gdaiirmnqdypikeugdij.supabase.co';
+    const SUPABASE_ANON = 'eyJhbGci...'; // sua anon key
+    const LOOTLABS_LINK = 'https://links.lootlabs.gg/s?NonbLjPP';
 
+// Ao carregar, verifica se veio com ?token= na URL (retorno da Lootlabs)
+    document.addEventListener('DOMContentLoaded', async () => {
+      const params = new URLSearchParams(window.location.search);
+      const token  = params.get('token');
+
+      if (token) {
+        showStatus('loading', 'Gerando sua key...');
+        try {
+          const res  = await fetch(`/api/generate-key?token=${token}`);
+          const data = await res.json();
+          if (data.key) {
+            showSuccess(data.key);
+          } else {
+            showStatus('error', data.error || 'Erro ao gerar key.');
+          }
+        } catch (e) {
+          showStatus('error', 'Erro de conexão. Tente novamente.');
+        }
+      }
+});
     /* ── LOOTLABS ── */
     function openLootlabs(btn) {
       // Marca step 1 como done, step 2 como active
@@ -545,7 +565,8 @@
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
           <polyline points="20 6 9 17 4 12"/>
         </svg>`;
-      document.getElementById('step-2').classList.add('active');
+      document.getElementById('step-1').classList.remove('active');
+      document.getElementById('step-1').classList.add('done');
 
       // Abre o Lootlabs
       window.open(LOOTLABS_LINK, '_blank');
