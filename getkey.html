@@ -385,7 +385,44 @@ document.addEventListener('DOMContentLoaded', async () => {
   document.getElementById('key-input').addEventListener('keydown', e => {
     if (e.key === 'Enter') verifyKey();
   });
+
+  // Se usuário já clicou antes (voltou do Lootlabs), restaura o estado
+  if (localStorage.getItem('syncx_lootlabs_clicked') === '1') {
+    _restorePostLootlabsState();
+  }
 });
+
+function _restorePostLootlabsState() {
+  const s1 = document.getElementById('step-1');
+  if (s1) {
+    s1.classList.remove('active'); s1.classList.add('done');
+    s1.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+  }
+  const s2 = document.getElementById('step-2');
+  if (s2) s2.classList.add('active');
+
+  const actionEl = document.getElementById('action-getkey');
+  if (actionEl) actionEl.innerHTML = `
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <button class="btn-getkey" onclick="checkMyKey(this)">
+        <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Já completei — ver minha key
+        </span>
+        <div class="spinner"></div>
+      </button>
+      <button class="btn-getkey" onclick="window.open(window._lootlabsLink,'_blank')"
+        style="background:var(--bg-3);border:1px solid var(--border);box-shadow:none;color:var(--text-2);font-size:13px;">
+        <span class="btn-text" style="display:flex;align-items:center;gap:8px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+          Abrir Lootlabs novamente
+        </span>
+      </button>
+    </div>`;
+}
 
 /* ── ABRE LOOTLABS ── */
 function openLootlabs(btn) {
@@ -396,6 +433,9 @@ function openLootlabs(btn) {
 
   // Step 2 → active
   document.getElementById('step-2').classList.add('active');
+
+  // Salva que o usuário clicou (persiste ao recarregar a página)
+  localStorage.setItem('syncx_lootlabs_clicked', '1');
 
   window.open(window._lootlabsLink, '_blank');
 
@@ -492,6 +532,9 @@ function showSuccess(key) {
   s2.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
   s3.classList.add('done');
   s3.querySelector('.step-num').innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>`;
+
+  // Limpa o estado salvo — key já foi obtida
+  localStorage.removeItem('syncx_lootlabs_clicked');
 
   // Exibe key
   document.getElementById('success-key-display').textContent = key;
