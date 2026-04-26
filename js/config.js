@@ -17,6 +17,6 @@ const SYNCX_CONFIG = {
   },
   downloads: {
     zerohour: 'https://github.com/BadOctop4s/SyncX---ZeroHour/releases/download/SyncX/SyncX-ZeroHour.exe',
-    royalhub_loadstring: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/RoyalHub/main/Source.lua"))()',
+    royalhub_loadstring: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/BadOctop4s/Source/refs/heads/main/Source.lua"))()',
   },
 };

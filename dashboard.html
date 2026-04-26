@@ -1506,7 +1506,7 @@
         if (window.innerWidth <= 768) { closeSB(); window.scrollTo(0,0); }
 
         /* Trigger creator load if needed */
-        if (page === 'creator' && typeof window._loadProductsFn === 'function') window._loadProductsFn();
+        if (page === 'creator' && typeof loadProducts === 'function') loadProducts();
       }, true); /* true = capture phase */
 
     })();
