@@ -12,124 +12,217 @@
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/dashboard.css" />
 
-<style id="dash-mobile">
-/* ── DASHBOARD MOBILE ── */
-@media (max-width: 768px) {
-  body { cursor: auto !important; }
-  #x-cursor, #x-cursor-ring { display: none !important; }
-  #x-canvas { display: none; }
+  <style id="dash-mobile">
+    /* ── DASHBOARD MOBILE ── */
+    @media (max-width: 768px) {
+      body {
+        cursor: auto !important;
+      }
 
-  .dash-layout {
-    grid-template-columns: 1fr;
-    padding-top: 60px; /* space for mobile topbar */
-  }
+      #x-cursor,
+      #x-cursor-ring {
+        display: none !important;
+      }
 
-  /* Sidebar becomes slide-in drawer */
-  .sidebar {
-    position: fixed;
-    left: -240px;
-    top: 0; bottom: 0;
-    width: 240px;
-    z-index: 800;
-    transition: left 0.3s cubic-bezier(0.22,1,0.36,1);
-    box-shadow: none;
-  }
-  .sidebar.open {
-    left: 0;
-    box-shadow: 4px 0 32px rgba(0,0,0,0.6);
-  }
+      #x-canvas {
+        display: none;
+      }
 
-  /* Overlay behind sidebar */
-  #dash-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.55);
-    z-index: 799;
-  }
-  #dash-overlay.show { display: block; }
+      .dash-layout {
+        grid-template-columns: 1fr;
+        padding-top: 60px;
+        /* space for mobile topbar */
+      }
 
-  /* Mobile topbar */
-  #dash-mobile-bar {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 16px;
-    background: var(--bg-1);
-    border-bottom: 1px solid var(--border);
-    z-index: 850;
-  }
-  #dash-mobile-bar .mb-logo {
-    font-family: var(--font-display);
-    font-size: 18px; font-weight: 800;
-    letter-spacing: -0.5px;
-  }
-  #dash-mobile-bar .mb-logo span { color: var(--accent); }
-  #dash-mobile-bar .mb-title {
-    font-family: var(--font-display);
-    font-size: 13px; font-weight: 600;
-    color: var(--text-2);
-    position: absolute; left: 50%; transform: translateX(-50%);
-  }
-  #dash-ham {
-    background: none; border: none;
-    display: flex; flex-direction: column;
-    gap: 5px; padding: 6px; cursor: pointer;
-  }
-  #dash-ham span {
-    display: block; width: 20px; height: 2px;
-    background: var(--text-2); border-radius: 2px;
-    transition: transform 0.28s, opacity 0.28s;
-  }
-  #dash-ham.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  #dash-ham.open span:nth-child(2) { opacity: 0; }
-  #dash-ham.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      /* Sidebar becomes slide-in drawer */
+      .sidebar {
+        position: fixed;
+        left: -240px;
+        top: 0;
+        bottom: 0;
+        width: 240px;
+        z-index: 800;
+        transition: left 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+        box-shadow: none;
+      }
 
-  /* Content adjustments */
-  .dash-topbar { display: none; } /* replaced by mobile bar */
-  .dash-content { padding: 20px 14px; }
-  .stat-grid { grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
-  .stat-value { font-size: 22px !important; }
-  .download-grid { grid-template-columns: 1fr; }
-  .dash-table { font-size: 11px; }
-  .dash-table th, .dash-table td { padding: 8px 10px; }
-  .license-card { padding: 18px; }
-  .license-key { font-size: 11px; letter-spacing: 0.5px; }
+      .sidebar.open {
+        left: 0;
+        box-shadow: 4px 0 32px rgba(0, 0, 0, 0.6);
+      }
 
-  /* Product manager modal */
-  #pm-modal > div {
-    max-width: calc(100vw - 24px) !important;
-    padding: 20px !important;
-    margin: 12px;
-  }
+      /* Overlay behind sidebar */
+      #dash-overlay {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        z-index: 799;
+      }
 
-  /* Admin grid */
-  #page-admin .stat-grid { grid-template-columns: 1fr 1fr; }
+      #dash-overlay.show {
+        display: block;
+      }
 
-  /* Creator quick links */
-  #page-creator > div[style*="grid-template-columns:repeat(3"] {
-    grid-template-columns: 1fr !important;
-  }
+      /* Mobile topbar */
+      #dash-mobile-bar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 16px;
+        background: var(--bg-1);
+        border-bottom: 1px solid var(--border);
+        z-index: 850;
+      }
 
-  /* Sidebar user footer readable */
-  .sidebar-user-name { font-size: 11px; }
-}
+      #dash-mobile-bar .mb-logo {
+        font-family: var(--font-display);
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+      }
 
-@media (max-width: 400px) {
-  .stat-grid { grid-template-columns: 1fr; }
-}
+      #dash-mobile-bar .mb-logo span {
+        color: var(--accent);
+      }
 
-@media (max-width: 768px) {
-  .dash-main { overflow: visible !important; }
-  .dash-content { overflow: visible !important; }
-}
-@media (min-width: 769px) {
-  #dash-mobile-bar { display: none !important; }
-  #dash-overlay { display: none !important; }
-}
-</style>
+      #dash-mobile-bar .mb-title {
+        font-family: var(--font-display);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-2);
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      #dash-ham {
+        background: none;
+        border: none;
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        padding: 6px;
+        cursor: pointer;
+      }
+
+      #dash-ham span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: var(--text-2);
+        border-radius: 2px;
+        transition: transform 0.28s, opacity 0.28s;
+      }
+
+      #dash-ham.open span:nth-child(1) {
+        transform: translateY(7px) rotate(45deg);
+      }
+
+      #dash-ham.open span:nth-child(2) {
+        opacity: 0;
+      }
+
+      #dash-ham.open span:nth-child(3) {
+        transform: translateY(-7px) rotate(-45deg);
+      }
+
+      /* Content adjustments */
+      .dash-topbar {
+        display: none;
+      }
+
+      /* replaced by mobile bar */
+      .dash-content {
+        padding: 20px 14px;
+      }
+
+      .stat-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .stat-value {
+        font-size: 22px !important;
+      }
+
+      .download-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dash-table {
+        font-size: 11px;
+      }
+
+      .dash-table th,
+      .dash-table td {
+        padding: 8px 10px;
+      }
+
+      .license-card {
+        padding: 18px;
+      }
+
+      .license-key {
+        font-size: 11px;
+        letter-spacing: 0.5px;
+      }
+
+      /* Product manager modal */
+      #pm-modal>div {
+        max-width: calc(100vw - 24px) !important;
+        padding: 20px !important;
+        margin: 12px;
+      }
+
+      /* Admin grid */
+      #page-admin .stat-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      /* Creator quick links */
+      #page-creator>div[style*="grid-template-columns:repeat(3"] {
+        grid-template-columns: 1fr !important;
+      }
+
+      /* Sidebar user footer readable */
+      .sidebar-user-name {
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 400px) {
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dash-main {
+        overflow: visible !important;
+      }
+
+      .dash-content {
+        overflow: visible !important;
+      }
+    }
+
+    @media (min-width: 769px) {
+      #dash-mobile-bar {
+        display: none !important;
+      }
+
+      #dash-overlay {
+        display: none !important;
+      }
+    }
+  </style>
 
 </head>
 
@@ -139,18 +232,19 @@
   <canvas id="x-canvas"></canvas>
   <div id="toast-container"></div>
 
-  
-<!-- Mobile Dashboard Topbar -->
-<div id="dash-mobile-bar">
-  <button id="dash-ham" aria-label="Menu" type="button" style="-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
-    <span></span><span></span><span></span>
-  </button>
-  <span class="mb-title" id="mobile-page-title">Overview</span>
-  <span class="mb-logo">Sync<span>X</span></span>
-</div>
-<div id="dash-overlay"></div>
 
-<div class="dash-layout" style="position:relative;z-index:2;">
+  <!-- Mobile Dashboard Topbar -->
+  <div id="dash-mobile-bar">
+    <button id="dash-ham" aria-label="Menu" type="button"
+      style="-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
+      <span></span><span></span><span></span>
+    </button>
+    <span class="mb-title" id="mobile-page-title">Overview</span>
+    <span class="mb-logo">Sync<span>X</span></span>
+  </div>
+  <div id="dash-overlay"></div>
+
+  <div class="dash-layout" style="position:relative;z-index:2;">
 
     <!-- SIDEBAR -->
     <aside class="sidebar" id="sidebar">
@@ -193,20 +287,23 @@
         </a>
 
         <!-- Seções exclusivas por cargo — aparecem via JS -->
-        <a href="#" onclick="navTo('staff');return false;" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
+        <a href="#" onclick="navTo('staff');return false;" class="sidebar-link role-only" data-page="staff"
+          data-min-tier="50" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           Staff
         </a>
-        <a href="#" onclick="navTo('developer');return false;" class="sidebar-link role-only" data-page="developer" data-min-tier="70" style="display:none;">
+        <a href="#" onclick="navTo('developer');return false;" class="sidebar-link role-only" data-page="developer"
+          data-min-tier="70" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="16 18 22 12 16 6" />
             <polyline points="8 6 2 12 8 18" />
           </svg>
           Dev Tools
         </a>
-        <a href="#" onclick="navTo('admin');return false;" class="sidebar-link role-only" data-page="admin" data-min-tier="80" style="display:none;">
+        <a href="#" onclick="navTo('admin');return false;" class="sidebar-link role-only" data-page="admin"
+          data-min-tier="80" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="3" />
             <path
@@ -214,7 +311,8 @@
           </svg>
           Admin
         </a>
-        <a href="#" onclick="navTo('creator');return false;" class="sidebar-link role-only" data-page="creator" data-min-tier="90" style="display:none;">
+        <a href="#" onclick="navTo('creator');return false;" class="sidebar-link role-only" data-page="creator"
+          data-min-tier="90" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polygon
               points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -522,29 +620,73 @@
 
         <!-- ══ STAFF PAGE ══ -->
         <div id="page-staff" class="dash-page" style="display:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-            <div><div class="heading-sm" style="margin-bottom:4px;">Painel de Staff</div><p style="font-size:13px;color:var(--text-3);">Moderação e suporte.</p></div>
+          <div
+            style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div class="heading-sm" style="margin-bottom:4px;">Painel de Staff</div>
+              <p style="font-size:13px;color:var(--text-3);">Moderação e suporte.</p>
+            </div>
             <span class="badge badge-green" style="font-size:11px;">Staff+</span>
           </div>
           <div class="stat-grid" style="margin-bottom:24px;">
-            <div class="stat-card"><div class="stat-label">Licenças ativas</div><div class="stat-value" id="staff-active-lic">—</div></div>
-            <div class="stat-card"><div class="stat-label">Total de usuários</div><div class="stat-value" id="staff-total-users">—</div></div>
-            <div class="stat-card"><div class="stat-label">Keys não usadas</div><div class="stat-value" id="staff-unused-keys">—</div></div>
-            <div class="stat-card"><div class="stat-label">Keys inativas</div><div class="stat-value" id="staff-inactive-keys">—</div></div>
+            <div class="stat-card">
+              <div class="stat-label">Licenças ativas</div>
+              <div class="stat-value" id="staff-active-lic">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total de usuários</div>
+              <div class="stat-value" id="staff-total-users">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Keys não usadas</div>
+              <div class="stat-value" id="staff-unused-keys">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Keys inativas</div>
+              <div class="stat-value" id="staff-inactive-keys">—</div>
+            </div>
           </div>
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
             <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Buscar Usuário / Key</div>
             <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
-              <input id="staff-search-input" type="text" placeholder="Username ou key..." style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')staffSearch()"/>
+              <input id="staff-search-input" type="text" placeholder="Username ou key..."
+                style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"
+                onkeydown="if(event.key==='Enter')staffSearch()" />
               <button onclick="staffSearch()" class="btn btn-primary btn-sm">Buscar</button>
             </div>
-            <div id="staff-search-result" style="display:none;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;"></div>
+            <div id="staff-search-result"
+              style="display:none;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;">
+            </div>
           </div>
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;"><div class="heading-sm" style="font-size:15px;">Ativações Recentes</div><button onclick="staffLoadActivations()" class="btn btn-ghost btn-sm">Atualizar</button></div>
-            <div style="overflow-x:auto;"><table class="dash-table"><thead><tr><th>Username</th><th>Key</th><th>Expira</th><th>Ativada em</th></tr></thead><tbody id="staff-act-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar</td></tr></tbody></table></div>
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+              <div class="heading-sm" style="font-size:15px;">Ativações Recentes</div><button
+                onclick="staffLoadActivations()" class="btn btn-ghost btn-sm">Atualizar</button>
+            </div>
+            <div style="overflow-x:auto;">
+              <table class="dash-table">
+                <thead>
+                  <tr>
+                    <th>Username</th>
+                    <th>Key</th>
+                    <th>Expira</th>
+                    <th>Ativada em</th>
+                  </tr>
+                </thead>
+                <tbody id="staff-act-tbody">
+                  <tr>
+                    <td colspan="4" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+          <div
+            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
             <div class="heading-sm" style="font-size:15px;margin-bottom:12px;">Ações Rápidas</div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;">
               <button onclick="staffLoadStats()" class="btn btn-ghost btn-sm">Atualizar Stats</button>
@@ -556,39 +698,73 @@
 
         <!-- ══ DEVELOPER PAGE ══ -->
         <div id="page-developer" class="dash-page" style="display:none;">
-          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
-            <div><div class="heading-sm" style="margin-bottom:4px;">Dev Tools</div><p style="font-size:13px;color:var(--text-3);">Ferramentas para desenvolvedores.</p></div>
+          <div
+            style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <div>
+              <div class="heading-sm" style="margin-bottom:4px;">Dev Tools</div>
+              <p style="font-size:13px;color:var(--text-3);">Ferramentas para desenvolvedores.</p>
+            </div>
             <span class="badge badge-blue" style="font-size:11px;">Developer+</span>
           </div>
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Build Info</div>
-            <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:8px;">
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Supabase URL</span><span>gdaiirmnqdypikeugdij.supabase.co</span></div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Versão</span><span>2.0.0</span></div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Data/Hora local</span><span id="dev-build-date">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Viewport</span><span id="dev-viewport">—</span></div>
-              <div style="display:flex;justify-content:space-between;padding:8px 0;flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">DPR</span><span id="dev-dpr">—</span></div>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">
+              Build Info</div>
+            <div
+              style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:8px;">
+              <div
+                style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+                <span style="color:var(--text-3);">Supabase URL</span><span>gdaiirmnqdypikeugdij.supabase.co</span>
+              </div>
+              <div
+                style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+                <span style="color:var(--text-3);">Versão</span><span>2.0.0</span></div>
+              <div
+                style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+                <span style="color:var(--text-3);">Data/Hora local</span><span id="dev-build-date">—</span></div>
+              <div
+                style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
+                <span style="color:var(--text-3);">Viewport</span><span id="dev-viewport">—</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;flex-wrap:wrap;gap:8px;"><span
+                  style="color:var(--text-3);">DPR</span><span id="dev-dpr">—</span></div>
             </div>
           </div>
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Diagnóstico DB</div>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">
+              Diagnóstico DB</div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
               <button onclick="devRunDiag('licenses')" class="btn btn-ghost btn-sm">Query: licenses</button>
               <button onclick="devRunDiag('profiles')" class="btn btn-ghost btn-sm">Query: profiles</button>
               <button onclick="devRunDiag('products')" class="btn btn-ghost btn-sm">Query: products</button>
               <button onclick="devPingSupabase()" class="btn btn-ghost btn-sm">Ping Supabase</button>
             </div>
-            <pre id="dev-diag-out" style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;min-height:60px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);white-space:pre-wrap;word-break:break-all;margin:0;">Aguardando...</pre>
+            <pre id="dev-diag-out"
+              style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;min-height:60px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);white-space:pre-wrap;word-break:break-all;margin:0;">Aguardando...</pre>
           </div>
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;"><div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;">Config Atual (config.js)</div><button onclick="devCopyConfig()" class="btn btn-ghost btn-sm">Copiar JSON</button></div>
-            <pre id="dev-config-out" style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0;"></pre>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div
+              style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;">
+              <div
+                style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;">
+                Config Atual (config.js)</div><button onclick="devCopyConfig()" class="btn btn-ghost btn-sm">Copiar
+                JSON</button>
+            </div>
+            <pre id="dev-config-out"
+              style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0;"></pre>
           </div>
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
-            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">Links Dev</div>
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div
+              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
+              Links Dev</div>
             <div style="display:flex;flex-wrap:wrap;gap:8px;">
               <a href="https://github.com/BadOctop4s" target="_blank" class="btn btn-primary btn-sm">GitHub Org</a>
-              <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Supabase</a>
+              <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+                class="btn btn-ghost btn-sm">Supabase</a>
               <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel</a>
             </div>
           </div>
@@ -667,11 +843,16 @@
           </div>
 
           <!-- Revogar por Username -->
-          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.1);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+          <div
+            style="background:var(--surface);border:1px solid rgba(224,32,32,0.1);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
             <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Revogar por Username</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap;">
-              <input id="revoke-username-input" type="text" placeholder="Username exato..." style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')adminRevokeByUsername()"/>
-              <button onclick="adminRevokeByUsername()" class="btn btn-ghost btn-sm" style="color:var(--accent);border-color:rgba(224,32,32,0.2);">Revogar</button>
+              <input id="revoke-username-input" type="text" placeholder="Username exato..."
+                style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"
+                onkeydown="if(event.key==='Enter')adminRevokeByUsername()" />
+              <button onclick="adminRevokeByUsername()" class="btn btn-ghost btn-sm"
+                style="color:var(--accent);border-color:rgba(224,32,32,0.2);">Revogar</button>
             </div>
           </div>
 
@@ -681,7 +862,13 @@
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
               <div class="heading-sm" style="font-size:15px;">Licenças Cadastradas</div>
               <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                <select id="admin-filter-status" onchange="adminLoadLicenses()" style="padding:6px 10px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:12px;outline:none;"><option value="all">Todas</option><option value="active">Ativas</option><option value="inactive">Inativas</option><option value="unused">Não usadas</option></select>
+                <select id="admin-filter-status" onchange="adminLoadLicenses()"
+                  style="padding:6px 10px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:12px;outline:none;">
+                  <option value="all">Todas</option>
+                  <option value="active">Ativas</option>
+                  <option value="inactive">Inativas</option>
+                  <option value="unused">Não usadas</option>
+                </select>
                 <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
               </div>
             </div>
@@ -737,41 +924,66 @@
           </div>
 
           <!-- Quick links -->
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:28px;">
-            <a href="https://github.com/BadOctop4s/SyncX-Site" target="_blank" class="btn btn-ghost btn-sm">Repositório do Site</a>
+          <div
+            style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:28px;">
+            <a href="https://github.com/BadOctop4s/SyncX-Site" target="_blank" class="btn btn-ghost btn-sm">Repositório
+              do Site</a>
             <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel Deploy</a>
-            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Supabase DB</a>
-            <a href="https://discord.com/developers/applications" target="_blank" class="btn btn-ghost btn-sm">Discord Dev</a>
+            <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank"
+              class="btn btn-ghost btn-sm">Supabase DB</a>
+            <a href="https://discord.com/developers/applications" target="_blank" class="btn btn-ghost btn-sm">Discord
+              Dev</a>
           </div>
 
           <!-- Announcements -->
-          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;">
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+          <div
+            style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;">
+            <div
+              style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
               <div class="heading-sm" style="font-size:15px;">Anúncios do Sistema</div>
               <button onclick="creatorLoadAnn()" class="btn btn-ghost btn-sm">Atualizar</button>
             </div>
             <div style="display:grid;gap:12px;margin-bottom:16px;">
-              <input id="ann-title" type="text" placeholder="Título do anúncio..." style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
-              <textarea id="ann-body" rows="3" placeholder="Mensagem para todos os usuários..." style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;resize:vertical;font-family:var(--font-body);" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+              <input id="ann-title" type="text" placeholder="Título do anúncio..."
+                style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" />
+              <textarea id="ann-body" rows="3" placeholder="Mensagem para todos os usuários..."
+                style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;resize:vertical;font-family:var(--font-body);"
+                onfocus="this.style.borderColor='var(--border-h)'"
+                onblur="this.style.borderColor='var(--border)'"></textarea>
               <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-                <select id="ann-type" style="padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"><option value="info">ℹ️ Info</option><option value="update">🚀 Update</option><option value="warning">⚠️ Aviso</option><option value="maintenance">🔧 Manutenção</option></select>
+                <select id="ann-type"
+                  style="padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                  <option value="info">ℹ️ Info</option>
+                  <option value="update">🚀 Update</option>
+                  <option value="warning">⚠️ Aviso</option>
+                  <option value="maintenance">🔧 Manutenção</option>
+                </select>
                 <button onclick="creatorPostAnn()" class="btn btn-primary btn-sm">Publicar Anúncio</button>
               </div>
             </div>
-            <div id="ann-list"><div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Clique em Atualizar para carregar</div></div>
+            <div id="ann-list">
+              <div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Clique em Atualizar para
+                carregar</div>
+            </div>
           </div>
 
           <!-- ── PRODUCT MANAGER ── -->
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
-            <div style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.2px;">Gerenciar Produtos</div>
+            <div style="font-family:var(--font-display);font-size:16px;font-weight:700;letter-spacing:-0.2px;">Gerenciar
+              Produtos</div>
             <button onclick="openProductModal()" class="btn btn-primary btn-sm">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <line x1="12" y1="5" x2="12" y2="19" />
+                <line x1="5" y1="12" x2="19" y2="12" />
+              </svg>
               Novo Produto
             </button>
           </div>
 
           <!-- Filter tabs -->
-          <div style="display:flex;gap:4px;margin-bottom:16px;background:var(--bg-2);border-radius:var(--radius);padding:4px;width:fit-content;">
+          <div
+            style="display:flex;gap:4px;margin-bottom:16px;background:var(--bg-2);border-radius:var(--radius);padding:4px;width:fit-content;">
             <button class="pm-tab-btn active" data-pm-filter="all">Todos</button>
             <button class="pm-tab-btn" data-pm-filter="main">Principal</button>
             <button class="pm-tab-btn" data-pm-filter="proximos">Próximos</button>
@@ -788,28 +1000,37 @@
         </div>
 
         <!-- ── PRODUCT MODAL ── -->
-        <div id="pm-modal" style="display:none;position:fixed;inset:0;z-index:9000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);">
-          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
-            <button onclick="closeProductModal()" style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-3);font-size:20px;line-height:1;">✕</button>
-            <div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:24px;" id="pm-modal-title">Novo Produto</div>
+        <div id="pm-modal"
+          style="display:none;position:fixed;inset:0;z-index:9000;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);">
+          <div
+            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;position:relative;">
+            <button onclick="closeProductModal()"
+              style="position:absolute;top:16px;right:16px;background:none;border:none;color:var(--text-3);font-size:20px;line-height:1;">✕</button>
+            <div style="font-family:var(--font-display);font-size:18px;font-weight:800;margin-bottom:24px;"
+              id="pm-modal-title">Novo Produto</div>
 
-            <input type="hidden" id="pm-id"/>
+            <input type="hidden" id="pm-id" />
             <div style="display:grid;gap:14px;">
 
               <div>
                 <div class="stat-label" style="margin-bottom:6px;">Nome do produto *</div>
-                <input id="pm-name" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;" placeholder="Ex: SyncX Zero Hour"/>
+                <input id="pm-name" type="text"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;"
+                  placeholder="Ex: SyncX Zero Hour" />
               </div>
 
               <div>
                 <div class="stat-label" style="margin-bottom:6px;">Descrição</div>
-                <textarea id="pm-desc" rows="3" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;resize:vertical;" placeholder="Descrição curta do produto..."></textarea>
+                <textarea id="pm-desc" rows="3"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-body);font-size:13px;outline:none;resize:vertical;"
+                  placeholder="Descrição curta do produto..."></textarea>
               </div>
 
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div>
                   <div class="stat-label" style="margin-bottom:6px;">Status *</div>
-                  <select id="pm-status" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                  <select id="pm-status"
+                    style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
                     <option value="live">🟢 Live</option>
                     <option value="dev">🔴 Em desenvolvimento</option>
                     <option value="soon">⚫ Em breve</option>
@@ -817,7 +1038,8 @@
                 </div>
                 <div>
                   <div class="stat-label" style="margin-bottom:6px;">Página *</div>
-                  <select id="pm-page" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                  <select id="pm-page"
+                    style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
                     <option value="main">Principal (index)</option>
                     <option value="proximos">Próximos</option>
                     <option value="outros">Outros Projetos</option>
@@ -828,11 +1050,14 @@
               <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
                 <div>
                   <div class="stat-label" style="margin-bottom:6px;">Badge label</div>
-                  <input id="pm-badge-label" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="Ex: Destaque"/>
+                  <input id="pm-badge-label" type="text"
+                    style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                    placeholder="Ex: Destaque" />
                 </div>
                 <div>
                   <div class="stat-label" style="margin-bottom:6px;">Badge cor</div>
-                  <select id="pm-badge-color" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
+                  <select id="pm-badge-color"
+                    style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;">
                     <option value="gray">Cinza</option>
                     <option value="red">Vermelho</option>
                     <option value="green">Verde</option>
@@ -848,8 +1073,12 @@
                 <div class="stat-label" style="margin-bottom:6px;">Ícone do projeto</div>
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                   <div>
-                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">ÍCONE PREDEFINIDO</div>
-                    <select id="pm-icon-type" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onchange="document.getElementById('pm-icon-url').value=''">
+                    <div
+                      style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">
+                      ÍCONE PREDEFINIDO</div>
+                    <select id="pm-icon-type"
+                      style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                      onchange="document.getElementById('pm-icon-url').value=''">
                       <option value="layers">📦 Padrão (layers)</option>
                       <option value="github">🐙 GitHub</option>
                       <option value="discord">💬 Discord</option>
@@ -868,41 +1097,60 @@
                     </select>
                   </div>
                   <div>
-                    <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">OU URL DE IMAGEM</div>
-                    <input id="pm-icon-url" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://..." oninput="if(this.value)document.getElementById('pm-icon-type').value='layers'"/>
+                    <div
+                      style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);margin-bottom:6px;letter-spacing:0.5px;">
+                      OU URL DE IMAGEM</div>
+                    <input id="pm-icon-url" type="url"
+                      style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                      placeholder="https://..."
+                      oninput="if(this.value)document.getElementById('pm-icon-type').value='layers'" />
                   </div>
                 </div>
                 <div id="pm-icon-preview" style="margin-top:10px;display:flex;align-items:center;gap:8px;">
-                  <div style="width:40px;height:40px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;" id="pm-icon-preview-box"></div>
+                  <div
+                    style="width:40px;height:40px;border-radius:8px;background:var(--bg-3);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-shrink:0;"
+                    id="pm-icon-preview-box"></div>
                   <span style="font-size:11px;color:var(--text-4);">Prévia do ícone</span>
                 </div>
               </div>
 
               <div>
-                <input id="pm-tags" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="roblox, lua, open-source"/>
+                <input id="pm-tags" type="text"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                  placeholder="roblox, lua, open-source" />
               </div>
 
               <div>
                 <div class="stat-label" style="margin-bottom:6px;">GitHub URL</div>
-                <input id="pm-github" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://github.com/..."/>
+                <input id="pm-github" type="url"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                  placeholder="https://github.com/..." />
               </div>
 
               <div>
-                <div class="stat-label" style="margin-bottom:6px;">Download URL <span style="color:var(--text-4)">(opcional)</span></div>
-                <input id="pm-download" type="url" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" placeholder="https://..."/>
+                <div class="stat-label" style="margin-bottom:6px;">Download URL <span
+                    style="color:var(--text-4)">(opcional)</span></div>
+                <input id="pm-download" type="url"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"
+                  placeholder="https://..." />
               </div>
 
               <div>
-                <div class="stat-label" style="margin-bottom:6px;">Loadstring <span style="color:var(--text-4)">(para scripts Lua)</span></div>
-                <input id="pm-loadstring" type="text" style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:12px;outline:none;" placeholder='loadstring(game:HttpGet("..."))()' />
+                <div class="stat-label" style="margin-bottom:6px;">Loadstring <span style="color:var(--text-4)">(para
+                    scripts Lua)</span></div>
+                <input id="pm-loadstring" type="text"
+                  style="width:100%;padding:9px 12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font-mono);font-size:12px;outline:none;"
+                  placeholder='loadstring(game:HttpGet("..."))()' />
               </div>
 
               <div style="display:flex;align-items:center;gap:10px;">
-                <input type="checkbox" id="pm-visible" checked style="width:16px;height:16px;accent-color:var(--accent);"/>
+                <input type="checkbox" id="pm-visible" checked
+                  style="width:16px;height:16px;accent-color:var(--accent);" />
                 <label for="pm-visible" style="font-size:13px;color:var(--text-2);">Visível no site</label>
               </div>
 
-              <div style="display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border);">
+              <div
+                style="display:flex;gap:8px;justify-content:flex-end;padding-top:8px;border-top:1px solid var(--border);">
                 <button onclick="closeProductModal()" class="btn btn-ghost btn-sm">Cancelar</button>
                 <button onclick="saveProduct()" class="btn btn-primary btn-sm" id="pm-save-btn">Salvar</button>
               </div>
@@ -933,13 +1181,13 @@
         if (window._closeSB) window._closeSB();
         return;
       }
-      document.querySelectorAll('.dash-page').forEach(function(p) { p.style.display = 'none'; });
+      document.querySelectorAll('.dash-page').forEach(function (p) { p.style.display = 'none'; });
       var pg = document.getElementById('page-' + page);
       if (pg) pg.style.display = 'block';
-      document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) {
+      document.querySelectorAll('.sidebar-link[data-page]').forEach(function (l) {
         l.classList.toggle('active', l.dataset.page === page);
       });
-      var titles = { overview:'Overview', license:'Licença', downloads:'Downloads', activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools', admin:'Admin', creator:'Creator' };
+      var titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
       var lbl = titles[page] || page;
       var dt = document.getElementById('page-title');
       var mt = document.getElementById('mobile-page-title');
@@ -1272,7 +1520,7 @@
     }
 
     loadDashboard();
-  
+
     /* ══ PRODUCT MANAGER ══ */
     const pmSb = window._pmSb || (window._pmSb = (() => {
       const { createClient } = supabase;
@@ -1284,27 +1532,27 @@
 
     /* ── ICON PREVIEW ── */
     const ICON_SVGS_DASH = {
-      layers:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
-      github:   `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`,
-      discord:  `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>`,
-      roblox:   `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.686 0L0 15.314 19.314 20 24 4.686zm9.5 13.343l-5.53-1.48 1.48-5.529 5.53 1.48z"/></svg>`,
-      code:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+      layers: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>`,
+      github: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`,
+      discord: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.04.03.05a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>`,
+      roblox: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M4.686 0L0 15.314 19.314 20 24 4.686zm9.5 13.343l-5.53-1.48 1.48-5.529 5.53 1.48z"/></svg>`,
+      code: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
       terminal: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>`,
-      bot:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="9" cy="16" r="1.5"/><circle cx="15" cy="16" r="1.5"/><path d="M12 11V7"/><path d="M8 7h8"/></svg>`,
-      game:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>`,
-      shield:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
+      bot: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="9" cy="16" r="1.5"/><circle cx="15" cy="16" r="1.5"/><path d="M12 11V7"/><path d="M8 7h8"/></svg>`,
+      game: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4"/><circle cx="15" cy="12" r="1"/><circle cx="18" cy="10" r="1"/></svg>`,
+      shield: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>`,
       download: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>`,
-      star:     `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
-      zap:      `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
-      lua:      `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="17" cy="7" r="3" fill="#1a1a2e"/></svg>`,
-      web:      `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
-      lock:     `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      star: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      zap: `<svg viewBox="0 0 24 24" fill="currentColor"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      lua: `<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/><circle cx="17" cy="7" r="3" fill="#1a1a2e"/></svg>`,
+      web: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>`,
+      lock: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
     };
 
     function updateIconPreview() {
-      const box   = document.getElementById('pm-icon-preview-box');
-      const url   = document.getElementById('pm-icon-url')?.value?.trim();
-      const type  = document.getElementById('pm-icon-type')?.value;
+      const box = document.getElementById('pm-icon-preview-box');
+      const url = document.getElementById('pm-icon-url')?.value?.trim();
+      const type = document.getElementById('pm-icon-type')?.value;
       if (!box) return;
       box.style.color = 'var(--text-2)';
       if (url) {
@@ -1365,17 +1613,17 @@
           <div style="flex:1;min-width:0;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;flex-wrap:wrap;">
               <span style="font-family:var(--font-display);font-size:14px;font-weight:700;">${p.name}</span>
-              <span class="badge badge-${p.badge_color||'gray'}" style="font-size:9px;">${p.badge_label||''}</span>
+              <span class="badge badge-${p.badge_color || 'gray'}" style="font-size:9px;">${p.badge_label || ''}</span>
               <span class="pm-status-${p.status}" style="font-family:var(--font-mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;">● ${p.status}</span>
               <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);text-transform:uppercase;">${p.page}</span>
               ${!p.visible ? '<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-4);">[oculto]</span>' : ''}
             </div>
-            <div style="font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">${p.description||'—'}</div>
-            ${p.tags&&p.tags.length ? `<div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">${p.tags.map(t=>`<span style="font-family:var(--font-mono);font-size:9px;padding:2px 7px;border:1px solid var(--border);border-radius:100px;color:var(--text-4);">${t}</span>`).join('')}</div>` : ''}
+            <div style="font-size:12px;color:var(--text-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:400px;">${p.description || '—'}</div>
+            ${p.tags && p.tags.length ? `<div style="display:flex;gap:4px;margin-top:6px;flex-wrap:wrap;">${p.tags.map(t => `<span style="font-family:var(--font-mono);font-size:9px;padding:2px 7px;border:1px solid var(--border);border-radius:100px;color:var(--text-4);">${t}</span>`).join('')}</div>` : ''}
           </div>
           <div style="display:flex;gap:6px;flex-shrink:0;">
             <button onclick="editProduct('${p.id}')" class="btn btn-ghost btn-sm" style="font-size:11px;">Editar</button>
-            <button onclick="deleteProduct('${p.id}','${p.name.replace(/'/g,"\\'")}'')" class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--accent-2);border-color:rgba(224,32,32,0.2);">Excluir</button>
+            <button onclick="deleteProduct('${p.id}','${p.name.replace(/'/g, "\\'")}'')" class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--accent-2);border-color:rgba(224,32,32,0.2);">Excluir</button>
           </div>
         </div>
       `).join('');
@@ -1397,31 +1645,31 @@
       modal.style.display = 'flex';
       if (product) {
         title.textContent = 'Editar Produto';
-        document.getElementById('pm-id').value          = product.id;
-        document.getElementById('pm-name').value        = product.name;
-        document.getElementById('pm-desc').value        = product.description || '';
-        document.getElementById('pm-status').value      = product.status;
-        document.getElementById('pm-page').value        = product.page;
+        document.getElementById('pm-id').value = product.id;
+        document.getElementById('pm-name').value = product.name;
+        document.getElementById('pm-desc').value = product.description || '';
+        document.getElementById('pm-status').value = product.status;
+        document.getElementById('pm-page').value = product.page;
         document.getElementById('pm-badge-label').value = product.badge_label || '';
         document.getElementById('pm-badge-color').value = product.badge_color || 'gray';
-        document.getElementById('pm-tags').value        = (product.tags || []).join(', ');
-        document.getElementById('pm-github').value      = product.github_url || '';
-        document.getElementById('pm-download').value    = product.download_url || '';
-        document.getElementById('pm-loadstring').value  = product.loadstring || '';
-        document.getElementById('pm-visible').checked   = product.visible !== false;
-        document.getElementById('pm-icon-type').value   = product.icon_type || 'layers';
-        document.getElementById('pm-icon-url').value    = product.icon_url || '';
+        document.getElementById('pm-tags').value = (product.tags || []).join(', ');
+        document.getElementById('pm-github').value = product.github_url || '';
+        document.getElementById('pm-download').value = product.download_url || '';
+        document.getElementById('pm-loadstring').value = product.loadstring || '';
+        document.getElementById('pm-visible').checked = product.visible !== false;
+        document.getElementById('pm-icon-type').value = product.icon_type || 'layers';
+        document.getElementById('pm-icon-url').value = product.icon_url || '';
       } else {
         title.textContent = 'Novo Produto';
-        ['pm-id','pm-name','pm-desc','pm-badge-label','pm-tags','pm-github','pm-download','pm-loadstring','pm-icon-url'].forEach(id => {
+        ['pm-id', 'pm-name', 'pm-desc', 'pm-badge-label', 'pm-tags', 'pm-github', 'pm-download', 'pm-loadstring', 'pm-icon-url'].forEach(id => {
           const el = document.getElementById(id);
           if (el) el.value = '';
         });
-        document.getElementById('pm-status').value      = 'soon';
-        document.getElementById('pm-page').value        = 'main';
+        document.getElementById('pm-status').value = 'soon';
+        document.getElementById('pm-page').value = 'main';
         document.getElementById('pm-badge-color').value = 'gray';
-        document.getElementById('pm-icon-type').value   = 'layers';
-        document.getElementById('pm-visible').checked   = true;
+        document.getElementById('pm-icon-type').value = 'layers';
+        document.getElementById('pm-visible').checked = true;
       }
       updateIconPreview();
     }
@@ -1444,27 +1692,27 @@
     }
 
     async function saveProduct() {
-      const id     = document.getElementById('pm-id').value;
-      const name   = document.getElementById('pm-name').value.trim();
+      const id = document.getElementById('pm-id').value;
+      const name = document.getElementById('pm-name').value.trim();
       if (!name) { toast('Nome é obrigatório.', 'error'); return; }
 
       const tagsRaw = document.getElementById('pm-tags').value;
-      const tags    = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+      const tags = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
 
       const payload = {
         name,
-        description:  document.getElementById('pm-desc').value.trim() || null,
-        status:       document.getElementById('pm-status').value,
-        page:         document.getElementById('pm-page').value,
-        badge_label:  document.getElementById('pm-badge-label').value.trim() || null,
-        badge_color:  document.getElementById('pm-badge-color').value,
+        description: document.getElementById('pm-desc').value.trim() || null,
+        status: document.getElementById('pm-status').value,
+        page: document.getElementById('pm-page').value,
+        badge_label: document.getElementById('pm-badge-label').value.trim() || null,
+        badge_color: document.getElementById('pm-badge-color').value,
         tags,
-        github_url:   document.getElementById('pm-github').value.trim() || null,
+        github_url: document.getElementById('pm-github').value.trim() || null,
         download_url: document.getElementById('pm-download').value.trim() || null,
-        loadstring:   document.getElementById('pm-loadstring').value.trim() || null,
-        visible:      document.getElementById('pm-visible').checked,
-        icon_type:    document.getElementById('pm-icon-url').value.trim() ? null : (document.getElementById('pm-icon-type').value || 'layers'),
-        icon_url:     document.getElementById('pm-icon-url').value.trim() || null,
+        loadstring: document.getElementById('pm-loadstring').value.trim() || null,
+        visible: document.getElementById('pm-visible').checked,
+        icon_type: document.getElementById('pm-icon-url').value.trim() ? null : (document.getElementById('pm-icon-type').value || 'layers'),
+        icon_url: document.getElementById('pm-icon-url').value.trim() || null,
       };
 
       const btn = document.getElementById('pm-save-btn');
@@ -1492,88 +1740,88 @@
 
     // Auto-load products when creator page is shown
     const origShowPage = window.showPage;
-    window.showPage = function(page) {
+    window.showPage = function (page) {
       origShowPage(page);
       if (page === 'creator') loadProducts();
     };
 
-  
+
 
     /* ═══════════════════════════════════════
        MOBILE SIDEBAR — clean implementation
     ═══════════════════════════════════════ */
-    (function() {
-      var ham     = document.getElementById('dash-ham');
+    (function () {
+      var ham = document.getElementById('dash-ham');
       var sidebar = document.getElementById('sidebar');
       var overlay = document.getElementById('dash-overlay');
 
       function closeSB() {
         if (sidebar) sidebar.classList.remove('open');
-        if (ham)     ham.classList.remove('open');
+        if (ham) ham.classList.remove('open');
         if (overlay) overlay.classList.remove('show');
         document.body.style.overflow = '';
       }
       function openSB() {
         if (sidebar) sidebar.classList.add('open');
-        if (ham)     ham.classList.add('open');
+        if (ham) ham.classList.add('open');
         if (overlay) overlay.classList.add('show');
         document.body.style.overflow = 'hidden';
       }
 
-      if (ham) ham.addEventListener('click', function(e) { e.stopPropagation(); sidebar && sidebar.classList.contains('open') ? closeSB() : openSB(); });
+      if (ham) ham.addEventListener('click', function (e) { e.stopPropagation(); sidebar && sidebar.classList.contains('open') ? closeSB() : openSB(); });
       if (overlay) overlay.addEventListener('click', closeSB);
 
       /* Expose helpers globally so navTo() can call them */
       window._closeSB = closeSB;
-      window._openSB  = openSB;
+      window._openSB = openSB;
     })();
 
-  
+
     /* ══════════════════════════════════════════
        STAFF — functions
     ══════════════════════════════════════════ */
     async function staffLoadStats() {
       try {
-        var r1 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',true).not('user_id','is',null);
-        var r2 = await sb.from('profiles').select('*',{count:'exact',head:true});
-        var r3 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',true).is('user_id',null);
-        var r4 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',false);
-        var s = function(id,v){var e=document.getElementById(id);if(e)e.textContent=v??'—';};
-        s('staff-active-lic',r1.count??0); s('staff-total-users',r2.count??0);
-        s('staff-unused-keys',r3.count??0); s('staff-inactive-keys',r4.count??0);
-      } catch(e){ console.warn('staffLoadStats',e); }
+        var r1 = await sb.from('licenses').select('*', { count: 'exact', head: true }).eq('active', true).not('user_id', 'is', null);
+        var r2 = await sb.from('profiles').select('*', { count: 'exact', head: true });
+        var r3 = await sb.from('licenses').select('*', { count: 'exact', head: true }).eq('active', true).is('user_id', null);
+        var r4 = await sb.from('licenses').select('*', { count: 'exact', head: true }).eq('active', false);
+        var s = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v ?? '—'; };
+        s('staff-active-lic', r1.count ?? 0); s('staff-total-users', r2.count ?? 0);
+        s('staff-unused-keys', r3.count ?? 0); s('staff-inactive-keys', r4.count ?? 0);
+      } catch (e) { console.warn('staffLoadStats', e); }
     }
 
     async function staffSearch() {
       var q = document.getElementById('staff-search-input').value.trim();
-      if(!q){toast('Digite um termo.','error');return;}
+      if (!q) { toast('Digite um termo.', 'error'); return; }
       var res = document.getElementById('staff-search-result');
-      res.style.display='block'; res.innerHTML='<div style="color:var(--text-3);font-size:13px;">Buscando...</div>';
-      var {data,error} = await sb.from('licenses').select('*').or('username.ilike.%'+q+'%,key.ilike.%'+q+'%').limit(10);
-      if(error||!data||!data.length){res.innerHTML='<div style="color:var(--text-3);font-size:13px;">Nenhum resultado.</div>';return;}
-      res.innerHTML = data.map(function(l){
-        var ok = l.active&&(!l.expires_at||new Date(l.expires_at)>new Date());
+      res.style.display = 'block'; res.innerHTML = '<div style="color:var(--text-3);font-size:13px;">Buscando...</div>';
+      var { data, error } = await sb.from('licenses').select('*').or('username.ilike.%' + q + '%,key.ilike.%' + q + '%').limit(10);
+      if (error || !data || !data.length) { res.innerHTML = '<div style="color:var(--text-3);font-size:13px;">Nenhum resultado.</div>'; return; }
+      res.innerHTML = data.map(function (l) {
+        var ok = l.active && (!l.expires_at || new Date(l.expires_at) > new Date());
         return '<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;">'
-          +'<span style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);">'+(l.username||'Sem username')+'</span>'
-          +'<span class="badge '+(ok?'badge-green':'badge-gray')+'" style="font-size:10px;">'+(ok?'Ativa':'Inativa')+'</span>'
-          +'<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);">'+l.key.substring(0,22)+'...</span>'
-          +'<span style="font-size:11px;color:var(--text-3);">Expira: '+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</span>'
-          +'</div>';
+          + '<span style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);">' + (l.username || 'Sem username') + '</span>'
+          + '<span class="badge ' + (ok ? 'badge-green' : 'badge-gray') + '" style="font-size:10px;">' + (ok ? 'Ativa' : 'Inativa') + '</span>'
+          + '<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);">' + l.key.substring(0, 22) + '...</span>'
+          + '<span style="font-size:11px;color:var(--text-3);">Expira: ' + (l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício') + '</span>'
+          + '</div>';
       }).join('');
     }
 
     async function staffLoadActivations() {
       var tb = document.getElementById('staff-act-tbody');
-      tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
-      var {data,error} = await sb.from('licenses').select('*').not('user_id','is',null).order('used_at',{ascending:false}).limit(20);
-      if(error||!data||!data.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma ativação.</td></tr>';return;}
-      tb.innerHTML = data.map(function(l){
+      tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      var { data, error } = await sb.from('licenses').select('*').not('user_id', 'is', null).order('used_at', { ascending: false }).limit(20);
+      if (error || !data || !data.length) { tb.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma ativação.</td></tr>'; return; }
+      tb.innerHTML = data.map(function (l) {
         return '<tr>'
-          +'<td style="font-size:12px;">'+(l.username||'—')+'</td>'
-          +'<td style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);" title="'+l.key+'">'+l.key.substring(0,18)+'...</td>'
-          +'<td style="font-size:12px;color:var(--text-2);">'+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</td>'
-          +'<td style="font-size:12px;color:var(--text-2);">'+(l.used_at?new Date(l.used_at).toLocaleDateString('pt-BR'):'—')+'</td>'
-          +'</tr>';
+          + '<td style="font-size:12px;">' + (l.username || '—') + '</td>'
+          + '<td style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);" title="' + l.key + '">' + l.key.substring(0, 18) + '...</td>'
+          + '<td style="font-size:12px;color:var(--text-2);">' + (l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício') + '</td>'
+          + '<td style="font-size:12px;color:var(--text-2);">' + (l.used_at ? new Date(l.used_at).toLocaleDateString('pt-BR') : '—') + '</td>'
+          + '</tr>';
       }).join('');
     }
 
@@ -1581,46 +1829,43 @@
        DEVELOPER — functions
     ══════════════════════════════════════════ */
     function devInit() {
-      var s=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+      var s = function (id, v) { var e = document.getElementById(id); if (e) e.textContent = v; };
       s('dev-build-date', new Date().toLocaleString('pt-BR'));
-      s('dev-viewport', window.innerWidth+'x'+window.innerHeight);
-      s('dev-dpr', (window.devicePixelRatio||1).toFixed(1)+'x');
-      var cfg=document.getElementById('dev-config-out');
-      if(cfg){
-        try{
-          var safe=JSON.parse(JSON.stringify(SYNCX_CONFIG));
-          if(safe.supabase) safe.supabase.anonKey=safe.supabase.anonKey.substring(0,30)+'...';
-          cfg.textContent=JSON.stringify(safe,null,2);
-        }catch(e){cfg.textContent='Erro ao carregar config';}
+      s('dev-viewport', window.innerWidth + 'x' + window.innerHeight);
+      s('dev-dpr', (window.devicePixelRatio || 1).toFixed(1) + 'x');
+      var cfg = document.getElementById('dev-config-out');
+      if (cfg) {
+        try {
+          var safe = JSON.parse(JSON.stringify(SYNCX_CONFIG));
+          if (safe.supabase) safe.supabase.anonKey = safe.supabase.anonKey.substring(0, 30) + '...';
+          cfg.textContent = JSON.stringify(safe, null, 2);
+        } catch (e) { cfg.textContent = 'Erro ao carregar config'; }
       }
     }
     async function devRunDiag(table) {
-      var out=document.getElementById('dev-diag-out');
-      out.textContent='Consultando '+table+'...';
-      var t=Date.now();
-      try{
-        var {count,error}=await sb.from(table).select('*',{count:'exact',head:true});
-        var ms=Date.now()-t;
-        out.textContent=error?'ERRO em '+table+':
-'+JSON.stringify(error,null,2):'OK · '+table+'
-registros: '+(count??'N/A')+'
-latência: '+ms+'ms';
-      }catch(e){out.textContent='EXCEÇÃO: '+e.message;}
+      var out = document.getElementById('dev-diag-out');
+      out.textContent = 'Consultando ' + table + '...';
+      var t = Date.now();
+      try {
+        var { count, error } = await sb.from(table).select('*', { count: 'exact', head: true });
+        var ms = Date.now() - t;
+        out.textContent = error ? 'ERRO em ' + table + ':\n' + JSON.stringify(error, null, 2) : 'OK · ' + table + '\n registros: ' + (count ?? 'N/A') + '\nlatência: ' + ms + 'ms';
+      }
+      catch (e) { out.textContent = 'EXCEÇÃO: ' + e.message; }
     }
     async function devPingSupabase() {
-      var out=document.getElementById('dev-diag-out');
-      out.textContent='Pingando Supabase...';
-      var t=Date.now();
-      try{await sb.from('licenses').select('id').limit(1);out.textContent='✓ OK · '+(Date.now()-t)+'ms
-URL: '+SYNCX_CONFIG.supabase.url;}
-      catch(e){out.textContent='✗ Falha: '+e.message;}
+      var out = document.getElementById('dev-diag-out');
+      out.textContent = 'Pingando Supabase...';
+      var t = Date.now();
+      try { await sb.from('licenses').select('id').limit(1); out.textContent = '✓ OK · ' + (Date.now() - t) + 'msURL: ' + SYNCX_CONFIG.supabase.url; }
+      catch (e) { out.textContent = '✗ Falha: ' + e.message; }
     }
     function devCopyConfig() {
-      try{
-        var safe=JSON.parse(JSON.stringify(SYNCX_CONFIG));
-        if(safe.supabase) safe.supabase.anonKey='[REDACTED]';
-        navigator.clipboard.writeText(JSON.stringify(safe,null,2)).then(function(){toast('Config copiada (anonKey removida).');});
-      }catch(e){toast('Erro','error');}
+      try {
+        var safe = JSON.parse(JSON.stringify(SYNCX_CONFIG));
+        if (safe.supabase) safe.supabase.anonKey = '[REDACTED]';
+        navigator.clipboard.writeText(JSON.stringify(safe, null, 2)).then(function () { toast('Config copiada (anonKey removida).'); });
+      } catch (e) { toast('Erro', 'error'); }
     }
 
     /* ══════════════════════════════════════════
@@ -1628,40 +1873,40 @@ URL: '+SYNCX_CONFIG.supabase.url;}
     ══════════════════════════════════════════ */
     async function adminRevokeByUsername() {
       var u = document.getElementById('revoke-username-input').value.trim();
-      if(!u){toast('Digite um username.','error');return;}
-      if(!confirm('Revogar a licença de "'+u+'"?')) return;
-      var {error} = await sb.from('licenses').update({active:false}).eq('username',u);
-      if(error){toast('Erro: '+error.message,'error');return;}
-      toast('Licença de "'+u+'" revogada.');
+      if (!u) { toast('Digite um username.', 'error'); return; }
+      if (!confirm('Revogar a licença de "' + u + '"?')) return;
+      var { error } = await sb.from('licenses').update({ active: false }).eq('username', u);
+      if (error) { toast('Erro: ' + error.message, 'error'); return; }
+      toast('Licença de "' + u + '" revogada.');
       adminLoadLicenses(); adminLoadStats();
-      document.getElementById('revoke-username-input').value='';
+      document.getElementById('revoke-username-input').value = '';
     }
 
     /* Patch adminLoadLicenses to support filter */
     var _origAdminLoadLicenses = adminLoadLicenses;
-    adminLoadLicenses = async function() {
+    adminLoadLicenses = async function () {
       var tbody = document.getElementById('admin-licenses-tbody');
       var filterSel = document.getElementById('admin-filter-status');
       var filter = filterSel ? filterSel.value : 'all';
-      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
-      var query = sb.from('licenses').select('*').order('created_at',{ascending:false}).limit(100);
-      if(filter==='active')   query=query.eq('active',true).not('user_id','is',null);
-      if(filter==='inactive') query=query.eq('active',false);
-      if(filter==='unused')   query=query.eq('active',true).is('user_id',null);
-      var {data,error} = await query;
-      if(error||!data){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--accent-2);padding:16px;">Erro ao carregar</td></tr>';return;}
-      if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma licença</td></tr>';return;}
-      tbody.innerHTML = data.map(function(l){
-        var ok=l.active&&(!l.expires_at||new Date(l.expires_at)>new Date());
-        var lbl=ok?'Ativa':(l.active?'Expirada':'Revogada');
+      tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      var query = sb.from('licenses').select('*').order('created_at', { ascending: false }).limit(100);
+      if (filter === 'active') query = query.eq('active', true).not('user_id', 'is', null);
+      if (filter === 'inactive') query = query.eq('active', false);
+      if (filter === 'unused') query = query.eq('active', true).is('user_id', null);
+      var { data, error } = await query;
+      if (error || !data) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--accent-2);padding:16px;">Erro ao carregar</td></tr>'; return; }
+      if (!data.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma licença</td></tr>'; return; }
+      tbody.innerHTML = data.map(function (l) {
+        var ok = l.active && (!l.expires_at || new Date(l.expires_at) > new Date());
+        var lbl = ok ? 'Ativa' : (l.active ? 'Expirada' : 'Revogada');
         return '<tr>'
-          +'<td style="font-family:var(--font-mono);font-size:11px;" title="'+l.key+'">'+l.key.substring(0,20)+'...</td>'
-          +'<td style="font-size:12px;">'+(l.username||'<span style="color:var(--text-4);">—</span>')+'</td>'
-          +'<td><span class="badge '+(ok?'badge-green':'badge-gray')+'">'+lbl+'</span></td>'
-          +'<td style="font-size:12px;color:var(--text-2);">'+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</td>'
-          +'<td style="font-size:12px;color:var(--text-2);">'+new Date(l.created_at).toLocaleDateString('pt-BR')+'</td>'
-          +'<td><button onclick="adminRevokeKey(''+l.id+'')" class="btn btn-ghost btn-sm" style="font-size:11px;padding:4px 8px;color:var(--accent);">Revogar</button></td>'
-          +'</tr>';
+          + '<td style="font-family:var(--font-mono);font-size:11px;" title="' + l.key + '">' + l.key.substring(0, 20) + '...</td>'
+          + '<td style="font-size:12px;">' + (l.username || '<span style="color:var(--text-4);">—</span>') + '</td>'
+          + '<td><span class="badge ' + (ok ? 'badge-green' : 'badge-gray') + '">' + lbl + '</span></td>'
+          + '<td style="font-size:12px;color:var(--text-2);">' + (l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício') + '</td>'
+          + '<td style="font-size:12px;color:var(--text-2);">' + new Date(l.created_at).toLocaleDateString('pt-BR') + '</td>'
+          + '<td><button onclick="adminRevokeKey(\'' + l.id + '\')'
+          + '</tr>';
       }).join('');
     };
 
@@ -1669,56 +1914,56 @@ URL: '+SYNCX_CONFIG.supabase.url;}
        CREATOR — Announcements
     ══════════════════════════════════════════ */
     async function creatorPostAnn() {
-      var title=document.getElementById('ann-title').value.trim();
-      var body=document.getElementById('ann-body').value.trim();
-      var type=document.getElementById('ann-type').value;
-      if(!title||!body){toast('Preencha título e mensagem.','error');return;}
-      var {error}=await sb.from('announcements').insert({title:title,body:body,type:type});
-      if(error){toast('Erro: '+error.message+' (crie tabela announcements no Supabase)','error');return;}
+      var title = document.getElementById('ann-title').value.trim();
+      var body = document.getElementById('ann-body').value.trim();
+      var type = document.getElementById('ann-type').value;
+      if (!title || !body) { toast('Preencha título e mensagem.', 'error'); return; }
+      var { error } = await sb.from('announcements').insert({ title: title, body: body, type: type });
+      if (error) { toast('Erro: ' + error.message + ' (crie tabela announcements no Supabase)', 'error'); return; }
       toast('Anúncio publicado!');
-      document.getElementById('ann-title').value='';
-      document.getElementById('ann-body').value='';
+      document.getElementById('ann-title').value = '';
+      document.getElementById('ann-body').value = '';
       creatorLoadAnn();
     }
     async function creatorLoadAnn() {
-      var list=document.getElementById('ann-list');
-      list.innerHTML='<div style="font-size:12px;color:var(--text-3);text-align:center;padding:12px;">Carregando...</div>';
-      var {data,error}=await sb.from('announcements').select('*').order('created_at',{ascending:false}).limit(10);
-      if(error){list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px;">Tabela <code>announcements</code> não encontrada. Crie no Supabase com colunas: id, title, body, type, created_at.</div>';return;}
-      if(!data||!data.length){list.innerHTML='<div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Nenhum anúncio.</div>';return;}
-      var tc={info:'badge-blue',update:'badge-green',warning:'badge-yellow',maintenance:'badge-gray'};
-      list.innerHTML=data.map(function(a){
+      var list = document.getElementById('ann-list');
+      list.innerHTML = '<div style="font-size:12px;color:var(--text-3);text-align:center;padding:12px;">Carregando...</div>';
+      var { data, error } = await sb.from('announcements').select('*').order('created_at', { ascending: false }).limit(10);
+      if (error) { list.innerHTML = '<div style="font-size:12px;color:var(--text-3);padding:8px;">Tabela <code>announcements</code> não encontrada. Crie no Supabase com colunas: id, title, body, type, created_at.</div>'; return; }
+      if (!data || !data.length) { list.innerHTML = '<div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Nenhum anúncio.</div>'; return; }
+      var tc = { info: 'badge-blue', update: 'badge-green', warning: 'badge-yellow', maintenance: 'badge-gray' };
+      list.innerHTML = data.map(function (a) {
         return '<div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">'
-          +'<div style="flex:1;min-width:0;">'
-          +'<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">'
-          +'<span style="font-size:13px;font-weight:700;">'+a.title+'</span>'
-          +'<span class="badge '+(tc[a.type]||'badge-gray')+'" style="font-size:9px;">'+a.type+'</span>'
-          +'<span style="font-size:11px;color:var(--text-3);">'+new Date(a.created_at).toLocaleDateString('pt-BR')+'</span>'
-          +'</div>'
-          +'<p style="font-size:12px;color:var(--text-3);line-height:1.5;">'+a.body+'</p>'
-          +'</div>'
-          +'<button onclick="creatorDelAnn(''+a.id+'')" style="background:none;border:none;color:var(--text-4);font-size:16px;cursor:pointer;flex-shrink:0;touch-action:manipulation;">✕</button>'
-          +'</div>';
+          + '<div style="flex:1;min-width:0;">'
+          + '<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">'
+          + '<span style="font-size:13px;font-weight:700;">' + a.title + '</span>'
+          + '<span class="badge ' + (tc[a.type] || 'badge-gray') + '" style="font-size:9px;">' + a.type + '</span>'
+          + '<span style="font-size:11px;color:var(--text-3);">' + new Date(a.created_at).toLocaleDateString('pt-BR') + '</span>'
+          + '</div>'
+          + '<p style="font-size:12px;color:var(--text-3);line-height:1.5;">' + a.body + '</p>'
+          + '</div>'
+          + '<button onclick="creatorDelAnn(\'' + a.id + '\')'
+          + '</div>';
       }).join('');
     }
-    async function creatorDelAnn(id){
-      if(!confirm('Remover este anúncio?')) return;
-      await sb.from('announcements').delete().eq('id',id);
+    async function creatorDelAnn(id) {
+      if (!confirm('Remover este anúncio?')) return;
+      await sb.from('announcements').delete().eq('id', id);
       toast('Removido.'); creatorLoadAnn();
     }
 
     /* navTo on-enter hooks — patch showPage override */
     var _origShowPage2 = window.showPage;
-    window.showPage = function(page) {
+    window.showPage = function (page) {
       navTo(page);
     };
     // patch navTo to trigger staff/dev on enter
     var _origNavTo = window.navTo;
-    window.navTo = function(page) {
+    window.navTo = function (page) {
       _origNavTo(page);
       if (page === 'staff') { staffLoadStats(); }
       if (page === 'developer') { devInit(); }
       if (page === 'admin') { adminLoadStats(); }
       if (page === 'creator') { loadProducts(); adminLoadStats(); }
     };
-</script>
+  </script>
