@@ -719,13 +719,16 @@
               </div>
               <div
                 style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
-                <span style="color:var(--text-3);">Versão</span><span>2.0.0</span></div>
+                <span style="color:var(--text-3);">Versão</span><span>2.0.0</span>
+              </div>
               <div
                 style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
-                <span style="color:var(--text-3);">Data/Hora local</span><span id="dev-build-date">—</span></div>
+                <span style="color:var(--text-3);">Data/Hora local</span><span id="dev-build-date">—</span>
+              </div>
               <div
                 style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;">
-                <span style="color:var(--text-3);">Viewport</span><span id="dev-viewport">—</span></div>
+                <span style="color:var(--text-3);">Viewport</span><span id="dev-viewport">—</span>
+              </div>
               <div style="display:flex;justify-content:space-between;padding:8px 0;flex-wrap:wrap;gap:8px;"><span
                   style="color:var(--text-3);">DPR</span><span id="dev-dpr">—</span></div>
             </div>
@@ -1340,6 +1343,27 @@
 
       // Atualiza overview
       setTimeout(() => loadDashboard(), 1000);
+
+      /* ══════════════════════════════════════════
+          REALTIME — Announcements listener
+         ══════════════════════════════════════════ */
+      sb.channel('announcements-changes')
+        .on('postgres_changes', {
+          event: '*',
+          schema: 'public',
+          table: 'announcements'
+        }, (payload) => {
+          // Recarrega a lista sempre que houver INSERT, UPDATE ou DELETE
+          if (typeof creatorLoadAnn === 'function') creatorLoadAnn();
+
+          // Se for um INSERT novo, mostra toast para todos os usuários logados
+          if (payload.eventType === 'INSERT') {
+            const icons = { info: 'ℹ️', update: '🚀', warning: '⚠️', maintenance: '🔧' };
+            const icon = icons[payload.new.type] || 'ℹ️';
+            toast(`${icon} ${payload.new.title}`, payload.new.type === 'warning' ? 'error' : 'success');
+          }
+        })
+        .subscribe();
     }
 
     // ── COPY ──
@@ -1623,7 +1647,7 @@
           </div>
           <div style="display:flex;gap:6px;flex-shrink:0;">
             <button onclick="editProduct('${p.id}')" class="btn btn-ghost btn-sm" style="font-size:11px;">Editar</button>
-            <button onclick="deleteProduct('${p.id}','${p.name.replace(/'/g, "\\'")}'')" class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--accent-2);border-color:rgba(224,32,32,0.2);">Excluir</button>
+            <button onclick="deleteProduct('${p.id}','${p.name.replace(/'/g, "\\'")}')" class="btn btn-ghost btn-sm" style="font-size:11px;color:var(--accent-2);border-color:rgba(224,32,32,0.2);">Excluir</button>
           </div>
         </div>
       `).join('');
@@ -1905,7 +1929,7 @@
           + '<td><span class="badge ' + (ok ? 'badge-green' : 'badge-gray') + '">' + lbl + '</span></td>'
           + '<td style="font-size:12px;color:var(--text-2);">' + (l.expires_at ? new Date(l.expires_at).toLocaleDateString('pt-BR') : 'Vitalício') + '</td>'
           + '<td style="font-size:12px;color:var(--text-2);">' + new Date(l.created_at).toLocaleDateString('pt-BR') + '</td>'
-          + '<td><button onclick="adminRevokeKey(\'' + l.id + '\')'
+          + '<td><button onclick="adminRevokeKey(\'' + l.id + '\')" class="btn btn-ghost btn-sm" style="font-size:11px;padding:4px 8px;color:var(--accent);">Revogar</button></td>'
           + '</tr>';
       }).join('');
     };
@@ -1942,7 +1966,7 @@
           + '</div>'
           + '<p style="font-size:12px;color:var(--text-3);line-height:1.5;">' + a.body + '</p>'
           + '</div>'
-          + '<button onclick="creatorDelAnn(\'' + a.id + '\')'
+          + '<button onclick="creatorDelAnn(\'' + a.id + '\')" style="background:none;border:none;color:var(--text-4);font-size:16px;cursor:pointer;flex-shrink:0;touch-action:manipulation;">✕</button>'
           + '</div>';
       }).join('');
     }
