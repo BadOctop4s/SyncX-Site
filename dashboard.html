@@ -142,7 +142,7 @@
   
 <!-- Mobile Dashboard Topbar -->
 <div id="dash-mobile-bar">
-  <button id="dash-ham" aria-label="Menu">
+  <button id="dash-ham" aria-label="Menu" type="button" style="-webkit-tap-highlight-color:transparent;touch-action:manipulation;">
     <span></span><span></span><span></span>
   </button>
   <span class="mb-title" id="mobile-page-title">Overview</span>
@@ -161,7 +161,7 @@
       </div>
 
       <nav class="sidebar-nav">
-        <a href="#overview" class="sidebar-link active" data-page="overview">
+        <a href="#overview" class="sidebar-link active" data-page="overview" onclick="navTo('overview');return false;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="3" y="3" width="7" height="7" />
             <rect x="14" y="3" width="7" height="7" />
@@ -170,14 +170,14 @@
           </svg>
           Overview
         </a>
-        <a href="#license" class="sidebar-link" data-page="license">
+        <a href="#license" class="sidebar-link" data-page="license" onclick="navTo('license');return false;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <rect x="3" y="11" width="18" height="11" rx="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
           Licença
         </a>
-        <a href="#downloads" class="sidebar-link" data-page="downloads">
+        <a href="#downloads" class="sidebar-link" data-page="downloads" onclick="navTo('downloads');return false;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
             <polyline points="7 10 12 15 17 10" />
@@ -185,7 +185,7 @@
           </svg>
           Downloads
         </a>
-        <a href="#activate" class="sidebar-link" data-page="activate">
+        <a href="#activate" class="sidebar-link" data-page="activate" onclick="navTo('activate');return false;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
@@ -193,20 +193,20 @@
         </a>
 
         <!-- Seções exclusivas por cargo — aparecem via JS -->
-        <a href="#" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
+        <a href="#" onclick="navTo('staff');return false;" class="sidebar-link role-only" data-page="staff" data-min-tier="50" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
           </svg>
           Staff
         </a>
-        <a href="#" class="sidebar-link role-only" data-page="developer" data-min-tier="70" style="display:none;">
+        <a href="#" onclick="navTo('developer');return false;" class="sidebar-link role-only" data-page="developer" data-min-tier="70" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polyline points="16 18 22 12 16 6" />
             <polyline points="8 6 2 12 8 18" />
           </svg>
           Dev Tools
         </a>
-        <a href="#" class="sidebar-link role-only" data-page="admin" data-min-tier="80" style="display:none;">
+        <a href="#" onclick="navTo('admin');return false;" class="sidebar-link role-only" data-page="admin" data-min-tier="80" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="3" />
             <path
@@ -214,7 +214,7 @@
           </svg>
           Admin
         </a>
-        <a href="#" class="sidebar-link role-only" data-page="creator" data-min-tier="90" style="display:none;">
+        <a href="#" onclick="navTo('creator');return false;" class="sidebar-link role-only" data-page="creator" data-min-tier="90" style="display:none;">
           <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <polygon
               points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
@@ -522,58 +522,74 @@
 
         <!-- ══ STAFF PAGE ══ -->
         <div id="page-staff" class="dash-page" style="display:none;">
-          <div class="heading-sm" style="margin-bottom:8px;">Painel de Staff</div>
-          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Acesso exclusivo para membros com cargo
-            STAFF ou superior.</p>
-          <div class="stat-grid" style="margin-bottom:24px;">
-            <div class="stat-card">
-              <div class="stat-label">Usuários no servidor</div>
-              <div class="stat-value">—</div>
-              <div class="stat-sub">Total de membros Discord</div>
-            </div>
-            <div class="stat-card">
-              <div class="stat-label">Tickets abertos</div>
-              <div class="stat-value">—</div>
-              <div class="stat-sub">Suporte pendente</div>
-            </div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <div><div class="heading-sm" style="margin-bottom:4px;">Painel de Staff</div><p style="font-size:13px;color:var(--text-3);">Moderação e suporte.</p></div>
+            <span class="badge badge-green" style="font-size:11px;">Staff+</span>
           </div>
-          <div
-            style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
-            <div class="heading-sm" style="margin-bottom:12px;">Ações de Staff</div>
-            <div style="display:flex;flex-direction:column;gap:10px;margin-top:8px;">
-              <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-ghost btn-sm"
-                style="width:fit-content;">Abrir Discord (Staff)</a>
-              <p style="font-size:12px;color:var(--text-3);">Ações avançadas de staff requerem integração com o bot
-                Discord. Configure o bot para habilitar funcionalidades adicionais aqui.</p>
+          <div class="stat-grid" style="margin-bottom:24px;">
+            <div class="stat-card"><div class="stat-label">Licenças ativas</div><div class="stat-value" id="staff-active-lic">—</div></div>
+            <div class="stat-card"><div class="stat-label">Total de usuários</div><div class="stat-value" id="staff-total-users">—</div></div>
+            <div class="stat-card"><div class="stat-label">Keys não usadas</div><div class="stat-value" id="staff-unused-keys">—</div></div>
+            <div class="stat-card"><div class="stat-label">Keys inativas</div><div class="stat-value" id="staff-inactive-keys">—</div></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Buscar Usuário / Key</div>
+            <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+              <input id="staff-search-input" type="text" placeholder="Username ou key..." style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')staffSearch()"/>
+              <button onclick="staffSearch()" class="btn btn-primary btn-sm">Buscar</button>
+            </div>
+            <div id="staff-search-result" style="display:none;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:16px;"></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;"><div class="heading-sm" style="font-size:15px;">Ativações Recentes</div><button onclick="staffLoadActivations()" class="btn btn-ghost btn-sm">Atualizar</button></div>
+            <div style="overflow-x:auto;"><table class="dash-table"><thead><tr><th>Username</th><th>Key</th><th>Expira</th><th>Ativada em</th></tr></thead><tbody id="staff-act-tbody"><tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:24px;">Clique em Atualizar</td></tr></tbody></table></div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div class="heading-sm" style="font-size:15px;margin-bottom:12px;">Ações Rápidas</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <button onclick="staffLoadStats()" class="btn btn-ghost btn-sm">Atualizar Stats</button>
+              <a href="https://discord.gg/faUyqCdd3P" target="_blank" class="btn btn-ghost btn-sm">Discord Staff</a>
+              <button onclick="staffLoadActivations()" class="btn btn-ghost btn-sm">Ver Ativações</button>
             </div>
           </div>
         </div>
 
         <!-- ══ DEVELOPER PAGE ══ -->
         <div id="page-developer" class="dash-page" style="display:none;">
-          <div class="heading-sm" style="margin-bottom:8px;">Dev Tools</div>
-          <p style="font-size:13px;color:var(--text-3);margin-bottom:24px;">Ferramentas exclusivas para o cargo
-            DEVELOPER.</p>
-          <div
-            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
-            <div
-              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
-              Repositório Privado</div>
-            <p style="font-size:13px;color:var(--text-2);margin-bottom:16px;">Acesse o repositório privado de
-              desenvolvimento dos produtos SyncX.</p>
-            <a href="https://github.com/BadOctop4s" target="_blank" class="btn btn-primary btn-sm">Acessar GitHub
-              Privado</a>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px;">
+            <div><div class="heading-sm" style="margin-bottom:4px;">Dev Tools</div><p style="font-size:13px;color:var(--text-3);">Ferramentas para desenvolvedores.</p></div>
+            <span class="badge badge-blue" style="font-size:11px;">Developer+</span>
           </div>
-          <div
-            style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
-            <div
-              style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">
-              Build Info</div>
-            <div
-              style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:6px;">
-              <div><span style="color:var(--text-3);">Supabase URL:</span> gdaiirmnqdypikeugdij.supabase.co</div>
-              <div><span style="color:var(--text-3);">Versão site:</span> 2.0.0</div>
-              <div><span style="color:var(--text-3);">Última build:</span> <span id="dev-build-date">—</span></div>
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Build Info</div>
+            <div style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Supabase URL</span><span>gdaiirmnqdypikeugdij.supabase.co</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Versão</span><span>2.0.0</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Data/Hora local</span><span id="dev-build-date">—</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">Viewport</span><span id="dev-viewport">—</span></div>
+              <div style="display:flex;justify-content:space-between;padding:8px 0;flex-wrap:wrap;gap:8px;"><span style="color:var(--text-3);">DPR</span><span id="dev-dpr">—</span></div>
+            </div>
+          </div>
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:16px;">Diagnóstico DB</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+              <button onclick="devRunDiag('licenses')" class="btn btn-ghost btn-sm">Query: licenses</button>
+              <button onclick="devRunDiag('profiles')" class="btn btn-ghost btn-sm">Query: profiles</button>
+              <button onclick="devRunDiag('products')" class="btn btn-ghost btn-sm">Query: products</button>
+              <button onclick="devPingSupabase()" class="btn btn-ghost btn-sm">Ping Supabase</button>
+            </div>
+            <pre id="dev-diag-out" style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;min-height:60px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);white-space:pre-wrap;word-break:break-all;margin:0;">Aguardando...</pre>
+          </div>
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px;"><div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;">Config Atual (config.js)</div><button onclick="devCopyConfig()" class="btn btn-ghost btn-sm">Copiar JSON</button></div>
+            <pre id="dev-config-out" style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);padding:14px;font-family:var(--font-mono);font-size:11px;color:var(--text-2);overflow-x:auto;white-space:pre-wrap;word-break:break-all;margin:0;"></pre>
+          </div>
+          <div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;">
+            <div style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;">Links Dev</div>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;">
+              <a href="https://github.com/BadOctop4s" target="_blank" class="btn btn-primary btn-sm">GitHub Org</a>
+              <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Supabase</a>
+              <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel</a>
             </div>
           </div>
         </div>
@@ -650,12 +666,24 @@
             </div>
           </div>
 
+          <!-- Revogar por Username -->
+          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.1);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
+            <div class="heading-sm" style="margin-bottom:16px;font-size:15px;">Revogar por Username</div>
+            <div style="display:flex;gap:10px;flex-wrap:wrap;">
+              <input id="revoke-username-input" type="text" placeholder="Username exato..." style="flex:1;min-width:200px;padding:10px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'" onkeydown="if(event.key==='Enter')adminRevokeByUsername()"/>
+              <button onclick="adminRevokeByUsername()" class="btn btn-ghost btn-sm" style="color:var(--accent);border-color:rgba(224,32,32,0.2);">Revogar</button>
+            </div>
+          </div>
+
           <!-- Lista de licenças -->
           <div
             style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:24px;margin-bottom:16px;">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
               <div class="heading-sm" style="font-size:15px;">Licenças Cadastradas</div>
-              <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <select id="admin-filter-status" onchange="adminLoadLicenses()" style="padding:6px 10px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:12px;outline:none;"><option value="all">Todas</option><option value="active">Ativas</option><option value="inactive">Inativas</option><option value="unused">Não usadas</option></select>
+                <button onclick="adminLoadLicenses()" class="btn btn-ghost btn-sm">Atualizar</button>
+              </div>
             </div>
             <div style="overflow-x:auto;">
               <table class="dash-table" id="admin-licenses-table">
@@ -709,10 +737,28 @@
           </div>
 
           <!-- Quick links -->
-          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:32px;">
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:28px;">
             <a href="https://github.com/BadOctop4s/SyncX-Site" target="_blank" class="btn btn-ghost btn-sm">Repositório do Site</a>
             <a href="https://vercel.com" target="_blank" class="btn btn-ghost btn-sm">Vercel Deploy</a>
             <a href="https://supabase.com/dashboard/project/gdaiirmnqdypikeugdij" target="_blank" class="btn btn-ghost btn-sm">Supabase DB</a>
+            <a href="https://discord.com/developers/applications" target="_blank" class="btn btn-ghost btn-sm">Discord Dev</a>
+          </div>
+
+          <!-- Announcements -->
+          <div style="background:var(--surface);border:1px solid rgba(224,32,32,0.15);border-radius:var(--radius-lg);padding:24px;margin-bottom:24px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;">
+              <div class="heading-sm" style="font-size:15px;">Anúncios do Sistema</div>
+              <button onclick="creatorLoadAnn()" class="btn btn-ghost btn-sm">Atualizar</button>
+            </div>
+            <div style="display:grid;gap:12px;margin-bottom:16px;">
+              <input id="ann-title" type="text" placeholder="Título do anúncio..." style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"/>
+              <textarea id="ann-body" rows="3" placeholder="Mensagem para todos os usuários..." style="width:100%;padding:9px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;resize:vertical;font-family:var(--font-body);" onfocus="this.style.borderColor='var(--border-h)'" onblur="this.style.borderColor='var(--border)'"></textarea>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <select id="ann-type" style="padding:8px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-size:13px;outline:none;"><option value="info">ℹ️ Info</option><option value="update">🚀 Update</option><option value="warning">⚠️ Aviso</option><option value="maintenance">🔧 Manutenção</option></select>
+                <button onclick="creatorPostAnn()" class="btn btn-primary btn-sm">Publicar Anúncio</button>
+              </div>
+            </div>
+            <div id="ann-list"><div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Clique em Atualizar para carregar</div></div>
           </div>
 
           <!-- ── PRODUCT MANAGER ── -->
@@ -873,29 +919,36 @@
   <script src="js/main.js"></script>
   <script>
     // ── PAGE ROUTING ──
+    // showPage delegates to navTo so both desktop & mobile share one path
     function showPage(page) {
-      document.querySelectorAll('.dash-page').forEach(p => p.style.display = 'none');
-      document.querySelectorAll('.sidebar-link').forEach(l => l.classList.remove('active'));
-      const pageEl = document.getElementById('page-' + page);
-      if (pageEl) pageEl.style.display = 'block';
-      const link = document.querySelector(`[data-page="${page}"]`);
-      if (link) link.classList.add('active');
-      const titles = { overview: 'Overview', license: 'Licença', downloads: 'Downloads', activate: 'Ativar Licença', staff: 'Staff', developer: 'Dev Tools', admin: 'Admin', creator: 'Creator' };
-      document.getElementById('page-title').textContent = titles[page] || page;
+      navTo(page);
     }
 
-    document.querySelectorAll('.sidebar-link[data-page]').forEach(link => {
-      link.addEventListener('click', e => {
-        e.preventDefault();
-        // Verifica tier para páginas exclusivas
-        const minTier = parseInt(link.dataset.minTier || '0');
-        if (minTier > 0 && (window.__userTier || 0) < minTier) {
-          toast('Acesso restrito ao cargo ' + (link.textContent.trim()) + '.', 'error');
-          return;
-        }
-        showPage(link.dataset.page);
+    // navTo — single nav function used by onclick on all sidebar links
+    function navTo(page) {
+      var link = document.querySelector('[data-page="' + page + '"]');
+      var minTier = link ? parseInt(link.dataset.minTier || '0') : 0;
+      if (minTier > 0 && (window.__userTier || 0) < minTier) {
+        toast('Acesso restrito.', 'error');
+        if (window._closeSB) window._closeSB();
+        return;
+      }
+      document.querySelectorAll('.dash-page').forEach(function(p) { p.style.display = 'none'; });
+      var pg = document.getElementById('page-' + page);
+      if (pg) pg.style.display = 'block';
+      document.querySelectorAll('.sidebar-link[data-page]').forEach(function(l) {
+        l.classList.toggle('active', l.dataset.page === page);
       });
-    });
+      var titles = { overview:'Overview', license:'Licença', downloads:'Downloads', activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools', admin:'Admin', creator:'Creator' };
+      var lbl = titles[page] || page;
+      var dt = document.getElementById('page-title');
+      var mt = document.getElementById('mobile-page-title');
+      if (dt) dt.textContent = lbl;
+      if (mt) mt.textContent = lbl;
+      if (window._closeSB) window._closeSB();
+      window.scrollTo(0, 0);
+      if (page === 'creator' && typeof loadProducts === 'function') { loadProducts(); adminLoadStats && adminLoadStats(); }
+    }
 
     // ── TOAST ──
     function toast(msg, type = 'success') {
@@ -1447,13 +1500,12 @@
   
 
     /* ═══════════════════════════════════════
-       MOBILE NAV - intercepts at capture phase
+       MOBILE SIDEBAR — clean implementation
     ═══════════════════════════════════════ */
     (function() {
       var ham     = document.getElementById('dash-ham');
       var sidebar = document.getElementById('sidebar');
       var overlay = document.getElementById('dash-overlay');
-      var TITLES  = { overview:'Overview', license:'Licença', downloads:'Downloads', activate:'Ativar Licença', staff:'Staff', developer:'Dev Tools', admin:'Admin', creator:'Creator' };
 
       function closeSB() {
         if (sidebar) sidebar.classList.remove('open');
@@ -1471,44 +1523,202 @@
       if (ham) ham.addEventListener('click', function(e) { e.stopPropagation(); sidebar && sidebar.classList.contains('open') ? closeSB() : openSB(); });
       if (overlay) overlay.addEventListener('click', closeSB);
 
-      /* Use CAPTURE so this fires before any other handler */
-      document.addEventListener('click', function(e) {
-        var link = e.target.closest('.sidebar-link[data-page]');
-        if (!link) return;
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        var page = link.dataset.page;
-        var minTier = parseInt(link.dataset.minTier || '0');
-        if (minTier > 0 && (window.__userTier || 0) < minTier) {
-          var toastFn = window.toast;
-          if (toastFn) toastFn('Acesso restrito.', 'error');
-          closeSB();
-          return;
-        }
-
-        /* Switch page content */
-        document.querySelectorAll('.dash-page').forEach(function(p) { p.style.display = 'none'; });
-        var pg = document.getElementById('page-' + page);
-        if (pg) { pg.style.display = 'block'; pg.style.visibility = 'visible'; pg.style.opacity = '1'; }
-
-        /* Active state */
-        document.querySelectorAll('.sidebar-link').forEach(function(l) { l.classList.toggle('active', l.dataset.page === page); });
-
-        /* Titles */
-        var lbl = TITLES[page] || page;
-        var dt = document.getElementById('page-title');
-        var mt = document.getElementById('mobile-page-title');
-        if (dt) dt.textContent = lbl;
-        if (mt) mt.textContent = lbl;
-
-        /* Close sidebar on mobile */
-        if (window.innerWidth <= 768) { closeSB(); window.scrollTo(0,0); }
-
-        /* Trigger creator load if needed */
-        if (page === 'creator' && typeof loadProducts === 'function') loadProducts();
-      }, true); /* true = capture phase */
-
+      /* Expose helpers globally so navTo() can call them */
+      window._closeSB = closeSB;
+      window._openSB  = openSB;
     })();
 
-  </script>
+  
+    /* ══════════════════════════════════════════
+       STAFF — functions
+    ══════════════════════════════════════════ */
+    async function staffLoadStats() {
+      try {
+        var r1 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',true).not('user_id','is',null);
+        var r2 = await sb.from('profiles').select('*',{count:'exact',head:true});
+        var r3 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',true).is('user_id',null);
+        var r4 = await sb.from('licenses').select('*',{count:'exact',head:true}).eq('active',false);
+        var s = function(id,v){var e=document.getElementById(id);if(e)e.textContent=v??'—';};
+        s('staff-active-lic',r1.count??0); s('staff-total-users',r2.count??0);
+        s('staff-unused-keys',r3.count??0); s('staff-inactive-keys',r4.count??0);
+      } catch(e){ console.warn('staffLoadStats',e); }
+    }
+
+    async function staffSearch() {
+      var q = document.getElementById('staff-search-input').value.trim();
+      if(!q){toast('Digite um termo.','error');return;}
+      var res = document.getElementById('staff-search-result');
+      res.style.display='block'; res.innerHTML='<div style="color:var(--text-3);font-size:13px;">Buscando...</div>';
+      var {data,error} = await sb.from('licenses').select('*').or('username.ilike.%'+q+'%,key.ilike.%'+q+'%').limit(10);
+      if(error||!data||!data.length){res.innerHTML='<div style="color:var(--text-3);font-size:13px;">Nenhum resultado.</div>';return;}
+      res.innerHTML = data.map(function(l){
+        var ok = l.active&&(!l.expires_at||new Date(l.expires_at)>new Date());
+        return '<div style="padding:10px 0;border-bottom:1px solid var(--border);display:flex;flex-wrap:wrap;gap:8px;align-items:center;">'
+          +'<span style="font-family:var(--font-mono);font-size:12px;color:var(--text-2);">'+(l.username||'Sem username')+'</span>'
+          +'<span class="badge '+(ok?'badge-green':'badge-gray')+'" style="font-size:10px;">'+(ok?'Ativa':'Inativa')+'</span>'
+          +'<span style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);">'+l.key.substring(0,22)+'...</span>'
+          +'<span style="font-size:11px;color:var(--text-3);">Expira: '+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</span>'
+          +'</div>';
+      }).join('');
+    }
+
+    async function staffLoadActivations() {
+      var tb = document.getElementById('staff-act-tbody');
+      tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      var {data,error} = await sb.from('licenses').select('*').not('user_id','is',null).order('used_at',{ascending:false}).limit(20);
+      if(error||!data||!data.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma ativação.</td></tr>';return;}
+      tb.innerHTML = data.map(function(l){
+        return '<tr>'
+          +'<td style="font-size:12px;">'+(l.username||'—')+'</td>'
+          +'<td style="font-family:var(--font-mono);font-size:10px;color:var(--text-3);" title="'+l.key+'">'+l.key.substring(0,18)+'...</td>'
+          +'<td style="font-size:12px;color:var(--text-2);">'+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</td>'
+          +'<td style="font-size:12px;color:var(--text-2);">'+(l.used_at?new Date(l.used_at).toLocaleDateString('pt-BR'):'—')+'</td>'
+          +'</tr>';
+      }).join('');
+    }
+
+    /* ══════════════════════════════════════════
+       DEVELOPER — functions
+    ══════════════════════════════════════════ */
+    function devInit() {
+      var s=function(id,v){var e=document.getElementById(id);if(e)e.textContent=v;};
+      s('dev-build-date', new Date().toLocaleString('pt-BR'));
+      s('dev-viewport', window.innerWidth+'x'+window.innerHeight);
+      s('dev-dpr', (window.devicePixelRatio||1).toFixed(1)+'x');
+      var cfg=document.getElementById('dev-config-out');
+      if(cfg){
+        try{
+          var safe=JSON.parse(JSON.stringify(SYNCX_CONFIG));
+          if(safe.supabase) safe.supabase.anonKey=safe.supabase.anonKey.substring(0,30)+'...';
+          cfg.textContent=JSON.stringify(safe,null,2);
+        }catch(e){cfg.textContent='Erro ao carregar config';}
+      }
+    }
+    async function devRunDiag(table) {
+      var out=document.getElementById('dev-diag-out');
+      out.textContent='Consultando '+table+'...';
+      var t=Date.now();
+      try{
+        var {count,error}=await sb.from(table).select('*',{count:'exact',head:true});
+        var ms=Date.now()-t;
+        out.textContent=error?'ERRO em '+table+':
+'+JSON.stringify(error,null,2):'OK · '+table+'
+registros: '+(count??'N/A')+'
+latência: '+ms+'ms';
+      }catch(e){out.textContent='EXCEÇÃO: '+e.message;}
+    }
+    async function devPingSupabase() {
+      var out=document.getElementById('dev-diag-out');
+      out.textContent='Pingando Supabase...';
+      var t=Date.now();
+      try{await sb.from('licenses').select('id').limit(1);out.textContent='✓ OK · '+(Date.now()-t)+'ms
+URL: '+SYNCX_CONFIG.supabase.url;}
+      catch(e){out.textContent='✗ Falha: '+e.message;}
+    }
+    function devCopyConfig() {
+      try{
+        var safe=JSON.parse(JSON.stringify(SYNCX_CONFIG));
+        if(safe.supabase) safe.supabase.anonKey='[REDACTED]';
+        navigator.clipboard.writeText(JSON.stringify(safe,null,2)).then(function(){toast('Config copiada (anonKey removida).');});
+      }catch(e){toast('Erro','error');}
+    }
+
+    /* ══════════════════════════════════════════
+       ADMIN — extra functions
+    ══════════════════════════════════════════ */
+    async function adminRevokeByUsername() {
+      var u = document.getElementById('revoke-username-input').value.trim();
+      if(!u){toast('Digite um username.','error');return;}
+      if(!confirm('Revogar a licença de "'+u+'"?')) return;
+      var {error} = await sb.from('licenses').update({active:false}).eq('username',u);
+      if(error){toast('Erro: '+error.message,'error');return;}
+      toast('Licença de "'+u+'" revogada.');
+      adminLoadLicenses(); adminLoadStats();
+      document.getElementById('revoke-username-input').value='';
+    }
+
+    /* Patch adminLoadLicenses to support filter */
+    var _origAdminLoadLicenses = adminLoadLicenses;
+    adminLoadLicenses = async function() {
+      var tbody = document.getElementById('admin-licenses-tbody');
+      var filterSel = document.getElementById('admin-filter-status');
+      var filter = filterSel ? filterSel.value : 'all';
+      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Carregando...</td></tr>';
+      var query = sb.from('licenses').select('*').order('created_at',{ascending:false}).limit(100);
+      if(filter==='active')   query=query.eq('active',true).not('user_id','is',null);
+      if(filter==='inactive') query=query.eq('active',false);
+      if(filter==='unused')   query=query.eq('active',true).is('user_id',null);
+      var {data,error} = await query;
+      if(error||!data){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--accent-2);padding:16px;">Erro ao carregar</td></tr>';return;}
+      if(!data.length){tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--text-3);padding:16px;">Nenhuma licença</td></tr>';return;}
+      tbody.innerHTML = data.map(function(l){
+        var ok=l.active&&(!l.expires_at||new Date(l.expires_at)>new Date());
+        var lbl=ok?'Ativa':(l.active?'Expirada':'Revogada');
+        return '<tr>'
+          +'<td style="font-family:var(--font-mono);font-size:11px;" title="'+l.key+'">'+l.key.substring(0,20)+'...</td>'
+          +'<td style="font-size:12px;">'+(l.username||'<span style="color:var(--text-4);">—</span>')+'</td>'
+          +'<td><span class="badge '+(ok?'badge-green':'badge-gray')+'">'+lbl+'</span></td>'
+          +'<td style="font-size:12px;color:var(--text-2);">'+(l.expires_at?new Date(l.expires_at).toLocaleDateString('pt-BR'):'Vitalício')+'</td>'
+          +'<td style="font-size:12px;color:var(--text-2);">'+new Date(l.created_at).toLocaleDateString('pt-BR')+'</td>'
+          +'<td><button onclick="adminRevokeKey(''+l.id+'')" class="btn btn-ghost btn-sm" style="font-size:11px;padding:4px 8px;color:var(--accent);">Revogar</button></td>'
+          +'</tr>';
+      }).join('');
+    };
+
+    /* ══════════════════════════════════════════
+       CREATOR — Announcements
+    ══════════════════════════════════════════ */
+    async function creatorPostAnn() {
+      var title=document.getElementById('ann-title').value.trim();
+      var body=document.getElementById('ann-body').value.trim();
+      var type=document.getElementById('ann-type').value;
+      if(!title||!body){toast('Preencha título e mensagem.','error');return;}
+      var {error}=await sb.from('announcements').insert({title:title,body:body,type:type});
+      if(error){toast('Erro: '+error.message+' (crie tabela announcements no Supabase)','error');return;}
+      toast('Anúncio publicado!');
+      document.getElementById('ann-title').value='';
+      document.getElementById('ann-body').value='';
+      creatorLoadAnn();
+    }
+    async function creatorLoadAnn() {
+      var list=document.getElementById('ann-list');
+      list.innerHTML='<div style="font-size:12px;color:var(--text-3);text-align:center;padding:12px;">Carregando...</div>';
+      var {data,error}=await sb.from('announcements').select('*').order('created_at',{ascending:false}).limit(10);
+      if(error){list.innerHTML='<div style="font-size:12px;color:var(--text-3);padding:8px;">Tabela <code>announcements</code> não encontrada. Crie no Supabase com colunas: id, title, body, type, created_at.</div>';return;}
+      if(!data||!data.length){list.innerHTML='<div style="font-size:12px;color:var(--text-3);text-align:center;padding:16px;">Nenhum anúncio.</div>';return;}
+      var tc={info:'badge-blue',update:'badge-green',warning:'badge-yellow',maintenance:'badge-gray'};
+      list.innerHTML=data.map(function(a){
+        return '<div style="background:var(--bg-2);border:1px solid var(--border);border-radius:var(--radius);padding:12px 14px;display:flex;gap:12px;align-items:flex-start;">'
+          +'<div style="flex:1;min-width:0;">'
+          +'<div style="display:flex;gap:8px;align-items:center;margin-bottom:4px;flex-wrap:wrap;">'
+          +'<span style="font-size:13px;font-weight:700;">'+a.title+'</span>'
+          +'<span class="badge '+(tc[a.type]||'badge-gray')+'" style="font-size:9px;">'+a.type+'</span>'
+          +'<span style="font-size:11px;color:var(--text-3);">'+new Date(a.created_at).toLocaleDateString('pt-BR')+'</span>'
+          +'</div>'
+          +'<p style="font-size:12px;color:var(--text-3);line-height:1.5;">'+a.body+'</p>'
+          +'</div>'
+          +'<button onclick="creatorDelAnn(''+a.id+'')" style="background:none;border:none;color:var(--text-4);font-size:16px;cursor:pointer;flex-shrink:0;touch-action:manipulation;">✕</button>'
+          +'</div>';
+      }).join('');
+    }
+    async function creatorDelAnn(id){
+      if(!confirm('Remover este anúncio?')) return;
+      await sb.from('announcements').delete().eq('id',id);
+      toast('Removido.'); creatorLoadAnn();
+    }
+
+    /* navTo on-enter hooks — patch showPage override */
+    var _origShowPage2 = window.showPage;
+    window.showPage = function(page) {
+      navTo(page);
+    };
+    // patch navTo to trigger staff/dev on enter
+    var _origNavTo = window.navTo;
+    window.navTo = function(page) {
+      _origNavTo(page);
+      if (page === 'staff') { staffLoadStats(); }
+      if (page === 'developer') { devInit(); }
+      if (page === 'admin') { adminLoadStats(); }
+      if (page === 'creator') { loadProducts(); adminLoadStats(); }
+    };
+</script>
