@@ -1343,28 +1343,27 @@
 
       // Atualiza overview
       setTimeout(() => loadDashboard(), 1000);
-
-      /* ══════════════════════════════════════════
-          REALTIME — Announcements listener
-         ══════════════════════════════════════════ */
-      sb.channel('announcements-changes')
-        .on('postgres_changes', {
-          event: '*',
-          schema: 'public',
-          table: 'announcements'
-        }, (payload) => {
-          // Recarrega a lista sempre que houver INSERT, UPDATE ou DELETE
-          if (typeof creatorLoadAnn === 'function') creatorLoadAnn();
-
-          // Se for um INSERT novo, mostra toast para todos os usuários logados
-          if (payload.eventType === 'INSERT') {
-            const icons = { info: 'ℹ️', update: '🚀', warning: '⚠️', maintenance: '🔧' };
-            const icon = icons[payload.new.type] || 'ℹ️';
-            toast(`${icon} ${payload.new.title}`, payload.new.type === 'warning' ? 'error' : 'success');
-          }
-        })
-        .subscribe();
     }
+    /* ══════════════════════════════════════════
+        REALTIME — Announcements listener
+       ══════════════════════════════════════════ */
+    sb.channel('announcements-changes')
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'announcements'
+      }, (payload) => {
+        // Recarrega a lista sempre que houver INSERT, UPDATE ou DELETE
+        if (typeof creatorLoadAnn === 'function') creatorLoadAnn();
+
+        // Se for um INSERT novo, mostra toast para todos os usuários logados
+        if (payload.eventType === 'INSERT') {
+          const icons = { info: 'ℹ️', update: '🚀', warning: '⚠️', maintenance: '🔧' };
+          const icon = icons[payload.new.type] || 'ℹ️';
+          toast(`${icon} ${payload.new.title}`, payload.new.type === 'warning' ? 'error' : 'success');
+        }
+      })
+      .subscribe();
 
     // ── COPY ──
     function copyLoadstringDash(btn) {
