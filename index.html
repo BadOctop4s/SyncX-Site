@@ -2768,6 +2768,65 @@
       });
     })();
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script>
+    /* ══ REALTIME ANNOUNCEMENTS — index.html ══ */
+    (function () {
+      const { createClient } = supabase;
+      const _sb = createClient(SYNCX_CONFIG.supabase.url, SYNCX_CONFIG.supabase.anonKey);
+
+      // Banner container
+      const banner = document.createElement('div');
+      banner.id = 'ann-banner';
+      banner.style.cssText = `
+      position:fixed;top:80px;left:50%;transform:translateX(-50%);
+      z-index:9999;display:flex;flex-direction:column;gap:8px;
+      width:calc(100% - 32px);max-width:520px;pointer-events:none;
+    `;
+      document.body.appendChild(banner);
+
+      function showAnnBanner(ann) {
+        const icons = { info: 'ℹ️', update: '🚀', warning: '⚠️', maintenance: '🔧' };
+        const colors = { info: '#3b82f6', update: '#22c55e', warning: '#e02020', maintenance: '#6b7280' };
+        const el = document.createElement('div');
+        el.style.cssText = `
+        background:rgba(10,10,16,0.95);
+        border:1px solid ${colors[ann.type] || 'rgba(255,255,255,0.1)'};
+        border-radius:12px;padding:14px 18px;
+        display:flex;align-items:flex-start;gap:12px;
+        backdrop-filter:blur(24px);pointer-events:all;
+        box-shadow:0 8px 32px rgba(0,0,0,0.5);
+        animation:annSlideIn 0.4s cubic-bezier(0.22,1,0.36,1) both;
+      `;
+        el.innerHTML = `
+        <span style="font-size:18px;flex-shrink:0;">${icons[ann.type] || 'ℹ️'}</span>
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:var(--font-display);font-size:13px;font-weight:700;margin-bottom:3px;">${ann.title}</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);line-height:1.4;">${ann.body}</div>
+        </div>
+        <button onclick="this.parentElement.remove()" style="background:none;border:none;color:rgba(255,255,255,0.3);font-size:18px;cursor:pointer;flex-shrink:0;line-height:1;padding:0;">✕</button>
+      `;
+        banner.appendChild(el);
+        setTimeout(() => el.remove(), 8000);
+      }
+
+      // Injetar animação CSS
+      const st = document.createElement('style');
+      st.textContent = `@keyframes annSlideIn{from{opacity:0;transform:translateY(-12px) scale(0.96)}to{opacity:1;transform:translateY(0) scale(1)}}`;
+      document.head.appendChild(st);
+
+      // Listener Realtime
+      _sb.channel('ann-index')
+        .on('postgres_changes', {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'announcements'
+        }, (payload) => {
+          showAnnBanner(payload.new);
+        })
+        .subscribe();
+    })();
+  </script>
 
 </body>
 
